@@ -165,6 +165,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .hero-intro { max-width: 670px; margin: 2.25rem 0 0; color: var(--muted); font-size: clamp(1.05rem, 1.6vw, 1.35rem); }
 .hero-intro strong { color: var(--ink); }
 .hero-actions { display: flex; align-items: center; gap: 1.5rem; margin-top: 2.25rem; }
+.hero-socials { display: flex; align-items: center; gap: .55rem; }
+.social-icon { display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .2s ease; }
+.social-icon svg { width: 18px; height: 18px; fill: currentColor; }
+.social-icon:hover { border-color: var(--accent); background: var(--accent); color: var(--paper); transform: translateY(-2px); }
+.icon-stroke { fill: none !important; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
 .now-card { padding: 1.5rem; border-top: 2px solid var(--ink); background: var(--surface); }
 .card-label { margin-bottom: 1rem; }
@@ -273,6 +278,10 @@ mark { padding: 0 .12em; background: linear-gradient(transparent 58%, var(--acce
 .footer-contact { display: flex; flex-direction: column; align-items: flex-start; gap: .75rem; }
 .footer-contact a { border-bottom: 1px solid currentColor; font-weight: 700; text-decoration: none; }
 .footer-contact p { margin: 2rem 0 0; color: #d6ebe4; font-size: .72rem; }
+.footer-socials { display: flex; flex-wrap: wrap; gap: .85rem 1.35rem; }
+.footer-contact .footer-social { display: inline-flex; align-items: center; gap: .5rem; border-bottom: 0; }
+.footer-social svg { width: 18px; height: 18px; fill: currentColor; }
+.footer-social:hover span { border-bottom: 1px solid currentColor; }
 
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
 .reveal-delay { transition-delay: .15s; }
