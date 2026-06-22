@@ -220,9 +220,12 @@ mark { padding: 0 .12em; background: linear-gradient(transparent 58%, var(--acce
 .publication-content h3 { margin: 0; font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.8rem); font-weight: 400; letter-spacing: -.03em; line-height: 1.05; }
 .publication-content p { max-width: 760px; color: #66706b; }
 .publication-content .authors { margin-top: 2rem; color: #303a36; }
+.author-self { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; }
 .authors sup, .author-notes sup { margin-left: .08em; color: #17201d; font-size: .68em; font-weight: 800; }
 .publication-content .author-notes { display: flex; flex-wrap: wrap; gap: .35rem 1.25rem; margin: -.45rem 0 1rem; color: #66706b; font-size: .72rem; }
-.publication-content .text-link { margin-top: 1rem; color: #17201d; }
+.publication-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.35rem; }
+.publication-action { display: inline-flex; align-items: center; gap: .7rem; min-height: 42px; padding: .55rem .9rem; border: 1px solid #17201d; color: #17201d; font-size: .73rem; font-weight: 800; letter-spacing: .04em; text-decoration: none; transition: background-color .2s ease, color .2s ease, transform .2s ease; }
+.publication-action:hover { background: #17201d; color: #f4f1e8; transform: translateY(-2px); }
 
 .timeline { position: relative; }
 .timeline-item { display: grid; grid-template-columns: minmax(150px, .55fr) 36px 1.7fr; gap: 1rem; padding: 2.5rem 0; border-top: 1px solid var(--line); }
