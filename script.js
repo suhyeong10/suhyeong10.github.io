@@ -4,7 +4,8 @@
   const api = 'https://api.github.com';
   const sessionKey = 'suhyeong10.editor-pat';
   const patPattern = /^github_pat_[a-zA-Z0-9_]+$/;
-  const entryPath = /^(?:_posts\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md|_data\/added_publications\/[a-z0-9-]+\.json)$/;
+  const entryPath = /^(?:(?:_posts\/\d{4}-\d{2}-\d{2}-|projects\/)[a-zA-Z0-9][a-zA-Z0-9_-]*\.(?:md|markdown)|_data\/added_publications\/[a-z0-9-]+\.json)$/;
+  const contentSha = /^[a-f0-9]{40}$/i;
   const imagePath = /^assets\/uploads\/[a-z0-9-]+\.webp$/;
   const maxImageBytes = 700 * 1024;
   const toggle = document.getElementById('admin-toggle');
@@ -16,8 +17,10 @@
   const connect = document.getElementById('admin-connect');
   const authStatus = document.getElementById('auth-status');
   const editor = document.querySelector('[data-auth-required]');
+  const ownerActions = document.querySelectorAll('[data-owner-only]');
   let credential = readSession();
   let verified = false;
+  let authAttempt = 0;
 
   class GitHubError extends Error {
     constructor(message, status) {
@@ -40,16 +43,24 @@
     toggle.setAttribute('aria-expanded', String(open));
   }
 
+  function showAuthState(status = '') {
+    signOut.hidden = !verified;
+    ownerActions.forEach((actions) => { actions.hidden = !verified; });
+    if (editor) {
+      editor.hidden = !verified;
+      signIn.hidden = verified;
+      authStatus.textContent = status;
+      connect.disabled = false;
+    }
+    window.dispatchEvent(new CustomEvent('site-admin-auth', { detail: { signedIn: verified } }));
+  }
+
   function clearSession(status = '') {
+    authAttempt += 1;
     credential = undefined;
     verified = false;
-    signOut.hidden = true;
     try { sessionStorage.removeItem(sessionKey); } catch { /* Tab storage is unavailable. */ }
-    if (editor) {
-      editor.hidden = true;
-      signIn.hidden = false;
-      authStatus.textContent = status;
-    }
+    showAuthState(status);
   }
 
   toggle.addEventListener('click', () => setOptions(options.hidden));
@@ -62,7 +73,6 @@
       toggle.focus();
     }
   });
-  signOut.hidden = !credential;
   signOut.addEventListener('click', () => {
     clearSession();
     setOptions(false);
@@ -100,27 +110,29 @@
   }
 
   async function signInWith(token, restoring = false) {
-    const before = credential;
-    connect.disabled = true;
-    authStatus.textContent = 'Checking GitHub account…';
+    const attempt = ++authAttempt;
+    if (connect) {
+      connect.disabled = true;
+      authStatus.textContent = 'Checking GitHub account…';
+    }
     try {
       const { data: account } = await github('/user', token);
+      if (attempt !== authAttempt) return;
       if (account.id !== 115800583 || account.login?.toLowerCase() !== owner) {
         throw new Error('Only @suhyeong10 can edit this website.');
       }
-      if (credential !== before) return;
       credential = token;
       verified = true;
       try { sessionStorage.setItem(sessionKey, token); } catch { /* Editing can continue on this page. */ }
-      authStatus.textContent = '';
-      signOut.hidden = false;
-      signIn.hidden = true;
-      editor.hidden = false;
-      if (!restoring) editor.querySelector('input[name="title"], input[id*="title"]')?.focus();
+      showAuthState();
+      if (!restoring) editor?.querySelector('input[name="title"], input[id*="title"]')?.focus();
     } catch (error) {
-      clearSession(error.message);
-    } finally {
-      connect.disabled = false;
+      if (attempt !== authAttempt) return;
+      if (restoring && error.status === 0) {
+        showAuthState('GitHub could not verify this tab’s session. Reload to retry or enter the token again.');
+      } else {
+        clearSession(error.message);
+      }
     }
   }
 
@@ -137,7 +149,6 @@
       }
       void signInWith(token);
     });
-    if (credential) void signInWith(credential, true);
   }
 
   window.addEventListener('pageshow', (event) => {
@@ -147,8 +158,7 @@
     clearSession();
     if (saved) {
       credential = saved;
-      signOut.hidden = false;
-      if (authForm) void signInWith(saved, true);
+      void signInWith(saved, true);
     }
   });
 
@@ -196,10 +206,50 @@
     }
   }
 
-  async function createFile(path, contents, message, images = []) {
-    const token = credential;
-    if (!verified || !token) throw new Error('Sign in on this editor page before publishing.');
-    if (!entryPath.test(path) || typeof contents !== 'string' || !contents.trim() ||
+  function fileRoute(path) {
+    if (typeof path !== 'string' || !entryPath.test(path)) throw new Error('This entry cannot be edited here.');
+    return `${repositoryApi}/contents/${path.split('/').map(encodeURIComponent).join('/')}`;
+  }
+
+  function requireOwner() {
+    if (!verified || !credential) throw new Error('Sign in with the website owner’s GitHub account first.');
+    return credential;
+  }
+
+  function handleExpiredSession(error, token) {
+    if (error.status === 401 && credential === token) {
+      clearSession('Your session expired. Reconnect GitHub to continue.');
+    }
+  }
+
+  function readBase64(value) {
+    const binary = atob(value.replace(/\s/g, ''));
+    return new TextDecoder('utf-8', { fatal: true, ignoreBOM: true })
+      .decode(Uint8Array.from(binary, (character) => character.charCodeAt(0)));
+  }
+
+  async function readEntry(path) {
+    const token = requireOwner();
+    try {
+      const { status, data } = await github(fileRoute(path) + '?ref=main', token, { allow: [404] });
+      if (status === 404) throw new GitHubError('This entry is no longer on GitHub.', 404);
+      if (data.type !== 'file' || data.encoding !== 'base64' || typeof data.content !== 'string' ||
+          !contentSha.test(data.sha)) throw new Error('GitHub could not read this entry as an editable text file.');
+      return { contents: readBase64(data.content), sha: data.sha };
+    } catch (error) {
+      handleExpiredSession(error, token);
+      throw error;
+    }
+  }
+
+  async function writeEntry(path, contents, message, images, expectedSha = null) {
+    const token = requireOwner();
+    const route = fileRoute(path);
+    const removing = contents === null;
+    if (typeof message !== 'string' || !message.trim() ||
+        (expectedSha !== null && !contentSha.test(expectedSha)) ||
+        (removing && expectedSha === null) ||
+        (!removing && (typeof contents !== 'string' || !contents.trim())) ||
         !Array.isArray(images) || images.length > 6 ||
         images.some((image) => !imagePath.test(image?.path) || image.url !== '/' + image.path ||
           typeof image.content !== 'string' || image.content.length > 4 * Math.ceil(maxImageBytes / 3) ||
@@ -208,8 +258,7 @@
       throw new Error('The entry or one of its image attachments could not be prepared.');
     }
 
-    const encodedPath = path.split('/').map(encodeURIComponent).join('/');
-    const packed = toBase64(new TextEncoder().encode(contents));
+    const packed = removing ? null : toBase64(new TextEncoder().encode(contents));
     const refPath = repositoryApi + '/git/ref/heads/main';
     const publishRefPath = repositoryApi + '/git/refs/heads/main';
     const currentHead = async () => (await github(refPath, token)).data.object.sha;
@@ -218,10 +267,23 @@
     try {
       for (let attempt = 0; attempt < 3; attempt += 1) {
         const parent = await currentHead();
-        const previous = await github(`${repositoryApi}/contents/${encodedPath}?ref=${parent}`, token, { allow: [404] });
+        const previous = await github(route + '?ref=' + parent, token, { allow: [404] });
         if (previous.status === 200) {
-          if (previous.data.content?.replace(/\s/g, '') === packed) return { content: previous.data };
-          throw new Error('An entry already uses this URL. Change the title and try again.');
+          const stale = expectedSha !== null && previous.data.sha !== expectedSha;
+          const creating = expectedSha === null;
+          const unchanged = !removing && previous.data.content?.replace(/\s/g, '') === packed;
+          if (unchanged && (!images.length || creating || stale)) {
+            const matches = await Promise.all(images.map(async (image) => {
+              const existing = await github(`${repositoryApi}/contents/${image.path}?ref=${parent}`, token, { allow: [404] });
+              return existing.status === 200 && existing.data.content?.replace(/\s/g, '') === image.content;
+            }));
+            if (matches.every(Boolean)) return { content: previous.data };
+          }
+          if (creating) throw new GitHubError('An entry already uses this URL. Change the title and try again.', 409);
+          if (stale) throw new GitHubError('This entry changed on GitHub. Reload the latest version before saving or deleting.', 409);
+        } else if (expectedSha !== null) {
+          if (removing) return { content: null };
+          throw new GitHubError('This entry was deleted on GitHub. Use a new entry to publish it again.', 404);
         }
 
         if (!assetEntries) {
@@ -235,11 +297,17 @@
         }
 
         const { data: parentCommit } = await github(repositoryApi + '/git/commits/' + parent, token);
+        const entry = {
+          path,
+          mode: '100644',
+          type: 'blob',
+          ...(removing ? { sha: null } : { content: contents })
+        };
         const { data: tree } = await github(repositoryApi + '/git/trees', token, {
           method: 'POST',
           body: {
             base_tree: parentCommit.tree.sha,
-            tree: [...assetEntries, { path, mode: '100644', type: 'blob', content: contents }]
+            tree: [...assetEntries, entry]
           }
         });
         const { data: commit } = await github(repositoryApi + '/git/commits', token, {
@@ -249,19 +317,38 @@
         const updated = await github(publishRefPath, token, {
           method: 'PATCH', body: { sha: commit.sha, force: false }, allow: [409, 422]
         });
-        if (updated.status === 200) return { commit };
+        if (updated.status === 200) {
+          if (removing) return { commit, content: null };
+          const result = tree.tree?.find((item) => item.path === path);
+          if (result?.sha) return { commit, content: { path, sha: result.sha } };
+          const stored = await github(route + '?ref=' + commit.sha, token);
+          return { commit, content: stored.data };
+        }
         if (await currentHead() === parent) {
           throw new Error(updated.data.message || 'GitHub declined to update the branch.');
         }
       }
       throw new Error('The site was updated while you were publishing. Try again.');
     } catch (error) {
-      if (error.status === 401 && credential === token) {
-        clearSession('Your session expired. Reconnect GitHub to continue with your draft.');
-      }
+      handleExpiredSession(error, token);
       throw error;
     }
   }
 
-  window.siteAdmin = Object.freeze({ createFile, prepareImage });
+  function createFile(path, contents, message, images = []) {
+    return writeEntry(path, contents, message, images);
+  }
+
+  function updateEntry(path, contents, message, images, sha) {
+    if (!contentSha.test(sha)) throw new Error('Reload the entry before saving your changes.');
+    return writeEntry(path, contents, message, images, sha);
+  }
+
+  function deleteEntry(path, message, sha) {
+    if (!contentSha.test(sha)) throw new Error('Reload the entry before deleting it.');
+    return writeEntry(path, null, message, [], sha);
+  }
+
+  window.siteAdmin = Object.freeze({ createFile, prepareImage, readEntry, updateEntry, deleteEntry, isSignedIn: () => verified });
+  if (credential) void signInWith(credential, true);
 })();

@@ -1,0 +1,17 @@
+{
+  "title": "Do All Visual Tokens Matter Equally? Object-Evidence Preserving Token Merging for Vision-Language Retrieval",
+  "authors": [
+    "Suhyeong Park",
+    "Junha Jung",
+    "Jungwoo Park",
+    "Jaewoo Kang"
+  ],
+  "venue": "Preprint",
+  "year": 2026,
+  "publication_date": "2026-07-06",
+  "paper": "https://arxiv.org/abs/2607.04605",
+  "project": "/blog/projects/samer/",
+  "figure": "/assets/projects/samer-figure.webp",
+  "model": "https://huggingface.co/collections/dmis-lab/samer",
+  "code": "https://github.com/dmis-lab/SaMer"
+}

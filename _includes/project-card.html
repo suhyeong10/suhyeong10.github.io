@@ -1,7 +1,9 @@
 <a class="project-card" href="{{ include.href | escape }}">
-  <div class="project-card-media">
-    <img src="{{ include.figure | relative_url }}" alt="" loading="lazy" decoding="async">
-  </div>
+  {% if include.figure %}
+    <div class="project-card-media">
+      <img src="{{ include.figure | relative_url }}" alt="" loading="lazy" decoding="async">
+    </div>
+  {% endif %}
   <p class="eyebrow">{{ include.venue | escape }} · {{ include.year }}</p>
   <h3>{{ include.title | escape }} <span aria-hidden="true">↗</span></h3>
   <p>{{ include.summary | escape }}</p>

@@ -1,16 +1,12 @@
-{% assign added_publications = '' | split: '' %}
-{% for entry in site.data.added_publications %}
-  {% assign added_publication = entry | slice: 1, 1 %}
-  {% assign added_publications = added_publications | concat: added_publication %}
-{% endfor %}
-{% assign publications = added_publications | concat: site.data.publications %}
-{% comment %}Sort by author priority, public release date (or year), then original list position.{% endcomment %}
+{% assign publications = site.data.added_publications %}
+{% comment %}Sort by author priority and public release date, using the year when a date is unavailable.{% endcomment %}
 {%- capture publication_order -%}
-  {%- for publication in publications -%}
+  {%- for record in publications -%}
+    {%- assign publication = record[1] -%}
     {%- assign first_author = publication.authors.first | downcase | remove: '-' -%}
     {%- assign release_date = publication.publication_date | default: publication.year -%}
     {%- if publication.co_first_author or first_author == 'suhyeong park' -%}1{%- else -%}0{%- endif -%}
-    :{{- release_date -}}:{{- forloop.index0 -}}{%- unless forloop.last -%},{%- endunless -%}
+    :{{- release_date -}}:{{- record[0] -}}{%- unless forloop.last -%},{%- endunless -%}
   {%- endfor -%}
 {%- endcapture -%}
 {% assign publication_order = publication_order | split: ',' | sort | reverse %}
@@ -20,21 +16,30 @@
 {% assign publication_heading = include.heading | default: 'h3' %}
 <div class="publication-list">
   {% for entry in publication_order %}
-    {% assign publication_index = entry | split: ':' | last | plus: 0 %}
-    {% assign publication = publications[publication_index] %}
+    {% assign publication_id = entry | split: ':' | last %}
+    {% assign publication = publications[publication_id] %}
+    {% assign project_url = publication.project %}
+    {% assign project_section = project_url | slice: 0, 15 %}
+    {% assign missing_project = false %}
+    {% if project_section == '/blog/projects/' %}
+      {% assign project_page = site.pages | where: 'url', project_url | first %}
+      {% unless project_page %}
+        {% assign missing_project = true %}
+        {% assign project_url = nil %}
+      {% endunless %}
+    {% endif %}
+    {% assign project_prefix = project_url | slice: 0 %}
+    {% if project_prefix == '/' %}{% assign project_url = project_url | relative_url %}{% endif %}
     <article class="publication{% if publication.figure %} publication-with-figure{% endif %}">
       {% if publication.figure %}
-        {% assign thumbnail_project = publication.project %}
-        {% assign thumbnail_prefix = thumbnail_project | slice: 0 %}
-        {% if thumbnail_prefix == '/' %}{% assign thumbnail_project = thumbnail_project | relative_url %}{% endif %}
         <figure class="publication-figure">
-          {% if thumbnail_project %}
-            <a class="publication-thumbnail" href="{{ thumbnail_project | escape }}" aria-label="Project page for {{ publication.title | escape }}">
+          {% if project_url %}
+            <a class="publication-thumbnail" href="{{ project_url | escape }}" aria-label="Project page for {{ publication.title | escape }}">
           {% else %}
             <div class="publication-thumbnail">
           {% endif %}
           <img src="{{ publication.figure | relative_url }}" alt="{{ publication.figure_alt | escape }}" loading="lazy" decoding="async">
-          {% if thumbnail_project %}</a>{% else %}</div>{% endif %}
+          {% if project_url %}</a>{% else %}</div>{% endif %}
           {% if publication.figure_credit %}
             <figcaption>{{ publication.figure_credit | escape }} <a href="https://creativecommons.org/licenses/by/4.0/">License ↗</a></figcaption>
           {% endif %}
@@ -42,9 +47,13 @@
       {% endif %}
       <div class="publication-content">
         <p class="publication-meta">{{ publication.venue | escape }} <span>· {{ publication.year }}</span></p>
-        <{{ publication_heading }}>{{ publication.title | escape }}</{{ publication_heading }}>
+        <{{ publication_heading }}>{% if project_url %}<a href="{{ project_url | escape }}">{{ publication.title | escape }}</a>{% elsif missing_project %}<a href="{{ publication.paper | escape }}">{{ publication.title | escape }}</a>{% else %}{{ publication.title | escape }}{% endif %}</{{ publication_heading }}>
         {% include publication-authors.html authors=publication.authors %}
-        {% include publication-links.html publication=publication %}
+        {% include publication-links.html publication=publication hide_project=missing_project %}
+        {% assign edit_path = '_data/added_publications/' | append: publication_id | append: '.json' %}
+        <p class="owner-actions" data-owner-only hidden>
+          <a href="{{ '/write/publication/' | relative_url }}?edit={{ edit_path | url_encode }}" aria-label="Edit publication {{ publication.title | escape }}">Edit publication</a>
+        </p>
       </div>
     </article>
   {% endfor %}

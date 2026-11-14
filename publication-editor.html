@@ -14,7 +14,16 @@ permalink: /write/publication/
   {% include editor-sign-in.html %}
 
   <div data-auth-required hidden>
-    <form class="editor-form publication-form" id="publication-editor-form">
+    <section class="editor-result" id="publication-editor-load" aria-live="polite" hidden>
+      <p id="publication-editor-load-status">Loading publication…</p>
+      <button class="button" type="button" id="publication-editor-load-retry" hidden>Retry</button>
+    </section>
+    <form class="editor-form publication-form" id="publication-editor-form" hidden>
+      <div class="editor-draft-conflict" id="publication-draft-conflict" hidden>
+        <p>GitHub has a newer version of this publication. Your unsaved draft is available to restore.</p>
+        <button class="button" type="button" id="publication-restore-draft">Restore my draft</button>
+        <button class="button" type="button" id="publication-discard-draft">Discard my draft</button>
+      </div>
       <fieldset class="editor-fields">
         <label class="editor-field">
           Title
@@ -41,16 +50,16 @@ permalink: /write/publication/
         </div>
         <label class="editor-field">
           Publication date (optional)
-          <input name="publication_date" type="date" aria-describedby="publication-date-help">
-          <small id="publication-date-help">Use the paper’s first public release date. The year is used when a date is unavailable.</small>
+          <input name="publication_date" type="text" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD" aria-describedby="publication-date-help">
+          <small id="publication-date-help">Use YYYY-MM-DD or YYYY-MM for the first public release. Leave blank when only the year is known.</small>
         </label>
         <label class="editor-field">
           Paper URL
           <input name="paper" type="url" maxlength="2048" required>
         </label>
         <label class="editor-field">
-          Project URL (optional)
-          <input name="project" type="url" maxlength="2048">
+          Project or blog URL (optional)
+          <input name="project" type="text" inputmode="url" maxlength="2048" placeholder="https://… or /blog/…">
         </label>
         <div class="editor-field-row">
           <label class="editor-field">
@@ -86,13 +95,23 @@ permalink: /write/publication/
         <a class="button" href="{{ '/publications/' | relative_url }}">Back to publications</a>
         <button class="button button-primary" type="submit">Publish publication</button>
       </div>
+      <div class="editor-danger-zone" id="publication-delete-zone" hidden>
+        <button class="button button-danger" type="button" id="publication-delete">Delete publication</button>
+        <div id="publication-delete-confirmation" hidden>
+          <p>Delete this publication from Home and Publications?</p>
+          <div class="publication-delete-actions">
+            <button class="button" type="button" id="publication-cancel-delete">Keep editing</button>
+            <button class="button button-danger" type="button" id="publication-confirm-delete">Confirm deletion</button>
+          </div>
+        </div>
+      </div>
     </form>
     <section class="editor-result" id="publication-editor-result" tabindex="-1" hidden>
-      <h2>Publication saved</h2>
-      <p>It will appear in Publications after GitHub Pages rebuilds.</p>
+      <h2 id="publication-result-heading">Publication saved</h2>
+      <p id="publication-result-description">It will appear in Publications after GitHub Pages rebuilds.</p>
       <div class="editor-actions">
         <a class="button button-primary" href="{{ '/publications/' | relative_url }}">View publications</a>
-        <button class="button" id="publication-add-another" type="button">Add another publication</button>
+        <a class="button" href="{{ '/write/publication/' | relative_url }}">Add another publication</a>
       </div>
     </section>
   </div>

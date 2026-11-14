@@ -14,6 +14,7 @@ permalink: /write/blog/
   {% include editor-sign-in.html %}
 
   <div data-auth-required hidden>
+    <p class="editor-status" data-blog-load-status role="status"></p>
     <form id="blog-form">
       <fieldset data-blog-fields>
         <label for="blog-title-input">Title</label>
@@ -50,8 +51,26 @@ permalink: /write/blog/
           <button class="button button-primary blog-editor-publish" type="submit">Publish</button>
         </div>
       </fieldset>
+      <button class="button" type="button" data-blog-load-latest hidden>Discard draft and load latest</button>
       <p class="editor-status blog-editor-status" role="status" data-blog-status></p>
       <a data-blog-view hidden>Open post</a>
     </form>
+    <section class="editor-danger-zone" data-blog-delete-area aria-labelledby="blog-delete-title" hidden>
+      <h2 id="blog-delete-title">Delete post</h2>
+      <button class="button" type="button" data-blog-delete>Delete post</button>
+      <div data-blog-confirmation hidden>
+        <p>Delete this published post from the site? This removes its public page after the next build.</p>
+        <div class="owner-actions">
+          <button class="button button-danger" type="button" data-blog-confirm-delete>Delete permanently</button>
+          <button class="button" type="button" data-blog-cancel-delete>Cancel</button>
+        </div>
+      </div>
+      <p class="editor-status" data-blog-delete-status role="status"></p>
+    </section>
+    <section data-blog-deleted hidden tabindex="-1">
+      <h2>Post deleted</h2>
+      <p>GitHub Pages will remove the post in its next build.</p>
+      <p><a href="{{ '/blog/' | relative_url }}">Return to Blog</a></p>
+    </section>
   </div>
 </section>

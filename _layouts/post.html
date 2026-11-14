@@ -7,6 +7,9 @@ nav: blog
     <a class="back-link" href="{{ '/blog/' | relative_url }}">← Blog</a>
     <h1 class="page-title">{{ page.title | escape }}</h1>
     <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B %-d, %Y' }}</time>
+    <p class="owner-actions" data-owner-only hidden>
+      <a class="button" href="{{ '/write/blog/' | relative_url }}?edit={{ page.path | url_encode }}&amp;return={{ page.url | relative_url | url_encode }}">Edit or delete post</a>
+    </p>
   </header>
   {% if page.markdown %}
     <textarea id="post-markdown" hidden aria-hidden="true">

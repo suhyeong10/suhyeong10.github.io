@@ -1,0 +1,16 @@
+{
+  "title": "Reason Through the Latent! Making Latent Visual Reasoning Necessary",
+  "authors": [
+    "Suhyeong Park",
+    "Junha Jung",
+    "Jaewoo Kang"
+  ],
+  "venue": "Preprint",
+  "year": 2026,
+  "publication_date": "2026-09-06",
+  "paper": "https://arxiv.org/abs/2609.06746",
+  "project": "/blog/projects/cvrr/",
+  "figure": "/assets/projects/cvrr-figure.webp",
+  "model": "https://huggingface.co/collections/dmis-lab/cvrr",
+  "code": "https://github.com/dmis-lab/CVRR"
+}

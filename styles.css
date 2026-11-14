@@ -159,6 +159,39 @@ button:disabled { cursor: wait; }
   text-decoration: underline;
 }
 
+.profile-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: .42rem;
+  white-space: nowrap;
+}
+
+.profile-link-icon { flex: 0 0 16px; width: 16px; height: 16px; }
+
+.recent-updates {
+  display: grid;
+  grid-template-columns: minmax(130px, 174px) minmax(0, 1fr);
+  gap: 1rem 1.35rem;
+  align-items: start;
+  margin-bottom: clamp(2.6rem, 5vw, 4.1rem);
+  padding: clamp(1.15rem, 3vw, 1.9rem);
+  border-block: 1px solid #b8d2da;
+  border-inline-start: 3px solid var(--accent);
+  background: var(--accent-soft);
+}
+
+.recent-updates h2 {
+  color: var(--accent);
+  font: 700 1.6rem/1.14 var(--display);
+  letter-spacing: -.045em;
+}
+
+.recent-updates ul { display: grid; gap: .52rem; margin: 0; padding: 0; list-style: none; }
+.recent-updates li { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: .75rem; font-size: .94rem; }
+.recent-updates time { color: var(--muted); font-size: .81rem; line-height: 1.8; white-space: nowrap; }
+.recent-updates a { font-weight: 600; text-decoration: none; }
+.recent-updates a:hover { text-decoration: underline; }
+
 .profile-photo { margin: 0; }
 
 .profile-photo img {
@@ -257,6 +290,21 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
   letter-spacing: -.035em;
   overflow-wrap: anywhere;
 }
+
+.publication-content :is(h2, h3) a { color: inherit; text-decoration-color: var(--border); }
+.publication-content :is(h2, h3) a:hover { color: var(--accent); text-decoration-color: currentColor; }
+.owner-actions { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .7rem; }
+.owner-actions a { font-size: .87rem; font-weight: 600; }
+.editor-danger-zone {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+.editor-danger-zone p { margin: .45rem 0; color: var(--muted); font-size: .9rem; }
+.button-danger { color: #982b2b; border-color: #e0b1b1; }
+.button-danger:hover { color: #701f1f; background: #fbefef; }
 
 .publication-authors {
   margin-top: .35rem;
@@ -499,6 +547,7 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
   .profile h1 { margin-bottom: 1.12rem; }
   .profile-photo { width: 150px; }
   .profile-photo img { aspect-ratio: 150 / 174; }
+  .recent-updates { grid-template-columns: minmax(0, 1fr); }
   .publication-with-figure { grid-template-columns: minmax(0, 155px) minmax(0, 1fr); }
   .project-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .home-section { margin-bottom: 2.6rem; }
@@ -513,6 +562,7 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
   .site-nav a { font-size: .82rem; }
   .profile h1 { font-size: clamp(2.65rem, 11.8vw, 3.65rem); }
   .profile-intro > p { font-size: 1rem; }
+  .recent-updates li { grid-template-columns: 65px minmax(0, 1fr); gap: .55rem; }
   .profile-photo { width: 111px; }
   .profile-photo img { aspect-ratio: 111 / 146; }
   .profile-photo figcaption { width: max-content; max-width: 230px; }

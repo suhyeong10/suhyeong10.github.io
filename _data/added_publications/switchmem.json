@@ -1,0 +1,20 @@
+{
+  "title": "Learning How to Remember: Memory Modality Selection for GUI Agents",
+  "authors": [
+    "Taeyun Roh",
+    "Suhyeong Park",
+    "Gijin Kim",
+    "Wonjune Jang",
+    "Jaewoo Kang"
+  ],
+  "venue": "Preprint",
+  "year": 2026,
+  "publication_date": "2026-10-13",
+  "paper": "https://arxiv.org/abs/2610.17928",
+  "project": "https://txxnrd.github.io/switchmem/",
+  "external_project": "SwitchMem",
+  "project_summary": "Select a text or image memory representation for each step of a GUI agent’s interaction.",
+  "figure": "/assets/projects/switchmem-figure.webp",
+  "figure_credit": "Figure 5 by Roh et al. (2026), CC BY 4.0. Resized and converted to WebP.",
+  "code": "https://github.com/dmis-lab/SwitchMem"
+}

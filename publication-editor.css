@@ -48,3 +48,19 @@
 
 .editor-result p { margin: .55rem 0 1rem; }
 .editor-draft-note { margin: 0; }
+
+.editor-draft-conflict {
+  padding: .85rem 1rem;
+  background: var(--accent-soft);
+  border-radius: 4px;
+}
+
+.editor-draft-conflict p,
+.publication-delete-actions { margin-bottom: .65rem; }
+
+.publication-delete-actions {
+  display: flex;
+  gap: .55rem;
+  flex-wrap: wrap;
+  margin-top: .65rem;
+}

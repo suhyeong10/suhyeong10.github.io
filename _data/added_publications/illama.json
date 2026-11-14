@@ -1,0 +1,17 @@
+{
+  "title": "Leveraging Knowledge Graph-Enhanced LLMs for Context-Aware Medical Consultation",
+  "authors": [
+    "Su-Hyeong Park",
+    "Ho-Beom Kim",
+    "Seong-Jin Park",
+    "Dinara Aliyeva",
+    "Kang-Min Kim"
+  ],
+  "venue": "EMNLP",
+  "year": 2025,
+  "publication_date": "2025-11",
+  "paper": "https://aclanthology.org/2025.emnlp-main.1549/",
+  "project": "/blog/projects/illama/",
+  "figure": "/assets/projects/illama-figure.webp",
+  "code": "https://github.com/suhyeong10/ILlama"
+}

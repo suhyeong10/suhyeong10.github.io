@@ -11,6 +11,9 @@ nav: blog
     {% if page.author_note %}<p class="project-author-note">{{ page.author_note | escape }}</p>{% endif %}
     <p class="project-summary">{{ page.summary | escape }}</p>
     {% include publication-links.html publication=page %}
+    <p class="owner-actions" data-owner-only hidden>
+      <a class="button" href="{{ '/write/blog/' | relative_url }}?edit={{ page.path | url_encode }}&amp;return={{ page.url | relative_url | url_encode }}">Edit or delete project article</a>
+    </p>
   </header>
   {% if page.figure %}
     <figure class="project-figure">
@@ -23,13 +26,18 @@ nav: blog
       </figcaption>
     </figure>
   {% endif %}
-  <nav class="project-section-nav" aria-label="On this page">
-    <a href="#abstract">Abstract</a>
-    <a href="#problem">Problem</a>
-    <a href="#method">Method</a>
-    <a href="#results">Results</a>
-    <a href="#analysis">Analysis</a>
-    <a href="#resources">Resources</a>
-  </nav>
+  {%- assign section_names = 'Abstract,Problem,Method,Results,Analysis,Resources' | split: ',' -%}
+  {%- capture section_links -%}
+    {%- for name in section_names -%}
+      {%- assign section_id = name | downcase -%}
+      {%- assign marker = 'id="' | append: section_id | append: '"' -%}
+      {%- if content contains marker -%}
+        <a href="#{{ section_id }}">{{ name }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {% if section_links != empty %}
+    <nav class="project-section-nav" aria-label="On this page">{{ section_links }}</nav>
+  {% endif %}
   <div class="prose project-prose">{{ content }}</div>
 </article>

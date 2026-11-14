@@ -1,0 +1,21 @@
+{
+  "title": "BUZZY: Contrastive Scoring to Mitigate Text-Induced Bias in Multimodal Multiple-Choice QA",
+  "authors": [
+    "Taeyun Roh",
+    "Suhyeong Park",
+    "Dongyoung Lee",
+    "Wonjune Jang",
+    "Junha Jung",
+    "Eunyeong Jo",
+    "Jaewoo Kang"
+  ],
+  "venue": "Preprint",
+  "year": 2026,
+  "publication_date": "2026-03-30",
+  "paper": "https://arxiv.org/abs/2603.28026",
+  "project": "https://txxnrd.github.io/buzzy/",
+  "external_project": "BUZZY",
+  "project_summary": "Reduce text-induced answer bias with training-free contrastive scoring.",
+  "figure": "/assets/projects/buzzy-figure.webp",
+  "figure_credit": "Framework figure by Roh et al. (2026), CC BY 4.0. Resized and converted to WebP."
+}
