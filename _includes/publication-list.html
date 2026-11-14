@@ -41,6 +41,9 @@
           {% if publication.project %}
             <a href="{{ publication.project | escape }}">Project <span aria-hidden="true">↗</span></a>
           {% endif %}
+          {% if publication.model %}
+            <a href="{{ publication.model | escape }}">Model <span aria-hidden="true">↗</span></a>
+          {% endif %}
           {% if publication.code %}
             <a href="{{ publication.code | escape }}">Code <span aria-hidden="true">↗</span></a>
           {% endif %}

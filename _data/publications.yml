@@ -21,6 +21,8 @@
   year: 2026
   publication_date: '2026-09-06'
   paper: https://arxiv.org/abs/2609.06746
+  model: https://huggingface.co/collections/dmis-lab/cvrr
+  code: https://github.com/dmis-lab/CVRR
 
 - title: Do All Visual Tokens Matter Equally? Object-Evidence Preserving Token Merging for Vision-Language Retrieval
   authors:
@@ -33,6 +35,7 @@
   publication_date: '2026-07-06'
   paper: https://arxiv.org/abs/2607.04605
   project: https://suhyeong10.github.io/samer-project-page/
+  code: https://github.com/dmis-lab/SaMer
 
 - title: "BUZZY: Contrastive Scoring to Mitigate Text-Induced Bias in Multimodal Multiple-Choice QA"
   authors:
