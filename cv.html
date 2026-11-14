@@ -29,11 +29,15 @@ permalink: /cv/
         {% for key in cv_publication_order %}
           {% assign paper_index = key | split: ':' | last | plus: 0 %}
           {% assign paper = cv.publications[paper_index] %}
+          {% assign display_date = paper.year %}
+          {% if paper.publication_date.size >= 7 %}
+            {% assign display_date = paper.publication_date | slice: 0, 7 | append: '-01' | date: '%b %Y' %}
+          {% endif %}
           <div class="cv-entry">
             <div class="cv-entry-heading">
               <h3><a href="{{ paper.paper | escape }}">{{ paper.title | escape }}</a></h3>
               <div class="cv-entry-controls">
-                <p class="cv-entry-date">{{ paper.venue | escape }} {{ paper.year | escape }}</p>
+                <p class="cv-entry-date">{{ paper.venue | escape }} · {{ display_date | escape }}</p>
                 <button type="button" class="cv-edit-control" data-cv-section="publications" data-cv-section-name="Publications" data-cv-edit="{{ paper_index }}" data-cv-entry="{{ paper.id | escape }}" data-cv-edit-control hidden aria-label="Edit {{ paper.title | escape }}" title="Edit publication">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6 4 4M5 19l4-.7L19 8.2a2.8 2.8 0 0 0-4-4L5 14.3 5 19Z"/></svg>
                 </button>
