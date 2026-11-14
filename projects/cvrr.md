@@ -1,6 +1,8 @@
 ---
 layout: project
-title: "Reason Through the Latent! Making Latent Visual Reasoning Necessary"
+title: |-
+  Reason Through the Latent!
+  Making Latent Visual Reasoning Necessary
 short_title: CVRR
 nav: blog
 permalink: /blog/projects/cvrr/

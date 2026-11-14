@@ -1,6 +1,8 @@
 ---
 layout: project
-title: "Leveraging Knowledge Graph-Enhanced LLMs for Context-Aware Medical Consultation"
+title: |-
+  Leveraging Knowledge Graph-Enhanced LLMs for
+  Context-Aware Medical Consultation
 short_title: ILlama
 nav: blog
 permalink: /blog/projects/illama/

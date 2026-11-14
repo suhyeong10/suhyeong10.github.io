@@ -1,6 +1,8 @@
 ---
 layout: project
-title: "Do All Visual Tokens Matter Equally? Object-Evidence Preserving Token Merging for Vision-Language Retrieval"
+title: |-
+  Do All Visual Tokens Matter Equally?
+  Object-Evidence Preserving Token Merging for Vision-Language Retrieval
 short_title: SaMer
 nav: blog
 permalink: /blog/projects/samer/

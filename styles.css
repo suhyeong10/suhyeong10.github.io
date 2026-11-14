@@ -16,12 +16,12 @@
   color-scheme: light;
   --bg: #f8f7f4;
   --surface: #fff;
-  --ink: #212823;
+  --ink: #171717;
   --text: var(--ink);
-  --muted: #56615b;
-  --accent: #07536b;
-  --accent-strong: #063e51;
-  --accent-soft: #eaf2f4;
+  --muted: var(--ink);
+  --accent: var(--ink);
+  --accent-strong: #000;
+  --accent-soft: #eeeae5;
   --border: #d7dcd4;
   --sans: "IBM Plex Sans", "Segoe UI", sans-serif;
   --display: "Space Grotesk", var(--sans);
@@ -175,9 +175,9 @@ button:disabled { cursor: wait; }
   align-items: start;
   margin-bottom: clamp(2.6rem, 5vw, 4.1rem);
   padding: clamp(1.15rem, 3vw, 1.9rem);
-  border-block: 1px solid #b8d2da;
-  border-inline-start: 3px solid var(--accent);
-  background: var(--accent-soft);
+  border: 1px solid #d9cde4;
+  border-radius: .4rem;
+  background: #efe7f5;
 }
 
 .recent-updates h2 {
@@ -322,7 +322,12 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
 .page-title { font-size: clamp(2.7rem, 5.6vw, 4.25rem); }
 .page-heading time { display: block; margin-top: .8rem; color: var(--muted); }
 .site-main > .publication-list { margin-bottom: 4rem; }
-.blog-post { max-width: 760px; margin-bottom: 4rem; }
+.blog-post { max-width: 760px; margin: 0 auto 4rem; }
+.blog-post .page-title, .project-hero .page-title {
+  text-align: center;
+  text-wrap: balance;
+  white-space: pre-line;
+}
 .blog-post .page-title { margin-top: .75rem; }
 .post-source { white-space: pre-wrap; overflow-wrap: anywhere; }
 
@@ -350,9 +355,8 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
 .blog-posts h3 { font-size: 1.12rem; line-height: 1.4; }
 
 .project-page { margin-bottom: 4.5rem; }
-.project-hero { max-width: 860px; padding: clamp(2.5rem, 6vw, 4.5rem) 0 1.7rem; }
-.project-hero .eyebrow { margin: 1.4rem 0 .65rem; }
-.project-hero .page-title { font-size: clamp(2.3rem, 5vw, 3.9rem); line-height: 1.04; }
+.project-hero { padding: clamp(2.5rem, 6vw, 4.5rem) 0 1.7rem; }
+.project-hero .page-title { margin-top: 1.25rem; font-size: clamp(1.75rem, 4vw, 2.05rem); line-height: 1.12; }
 .project-hero .publication-authors { margin-top: .9rem; }
 .project-summary { max-width: 61ch; margin-top: .9rem; font-size: 1.1rem; }
 .project-hero .publication-links { margin-top: .95rem; }
