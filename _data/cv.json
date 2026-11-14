@@ -1,5 +1,5 @@
 {
-  "revision": "rename-projects-2026-11-14",
+  "revision": "cv-publication-date-order-2026-11-14",
   "contact": {
     "location": "Seoul, Republic of Korea",
     "email": "pshpulip22@korea.ac.kr"
@@ -183,7 +183,8 @@
       "venue": "Preprint",
       "year": 2026,
       "paper": "https://arxiv.org/abs/2609.06746",
-      "id": "cvrr"
+      "id": "cvrr",
+      "publication_date": "2026-09-06"
     },
     {
       "title": "Do All Visual Tokens Matter Equally? Object-Evidence Preserving Token Merging for Vision-Language Retrieval",
@@ -196,7 +197,8 @@
       "venue": "Preprint",
       "year": 2026,
       "paper": "https://arxiv.org/abs/2607.04605",
-      "id": "samer"
+      "id": "samer",
+      "publication_date": "2026-07-06"
     },
     {
       "title": "Leveraging Knowledge Graph-Enhanced LLMs for Context-Aware Medical Consultation",
@@ -210,7 +212,8 @@
       "venue": "EMNLP",
       "year": 2025,
       "paper": "https://aclanthology.org/2025.emnlp-main.1549/",
-      "id": "illama"
+      "id": "illama",
+      "publication_date": "2025-11"
     },
     {
       "title": "Learning How to Remember: Memory Modality Selection for GUI Agents",
@@ -224,7 +227,8 @@
       "venue": "Preprint",
       "year": 2026,
       "paper": "https://arxiv.org/abs/2610.17928",
-      "id": "switchmem"
+      "id": "switchmem",
+      "publication_date": "2026-10-13"
     },
     {
       "title": "BUZZY: Contrastive Scoring to Mitigate Text-Induced Bias in Multimodal Multiple-Choice QA",
@@ -240,7 +244,8 @@
       "venue": "Preprint",
       "year": 2026,
       "paper": "https://arxiv.org/abs/2603.28026",
-      "id": "buzzy"
+      "id": "buzzy",
+      "publication_date": "2026-03-30"
     }
   ]
 }

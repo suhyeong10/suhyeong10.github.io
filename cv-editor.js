@@ -63,11 +63,19 @@
     }
   }
 
+  function validPublicationDate(value, year) {
+    if (!/^\d{4}(?:-(?:0[1-9]|1[0-2])(?:-(?:0[1-9]|[12]\d|3[01]))?)?$/.test(value) ||
+        Number(value.slice(0, 4)) !== year) return false;
+    if (value.length < 10) return true;
+    const date = new Date(value + 'T00:00:00Z');
+    return Number.isFinite(date.valueOf()) && date.toISOString().slice(0, 10) === value;
+  }
+
   function fill(entry, publication) {
     form.elements.title.value = entry.title || '';
     if (publication) {
       form.elements.authors.value = (entry.authors || []).join(', ');
-      for (const key of ['venue', 'year', 'paper']) form.elements[key].value = entry[key] ?? '';
+      for (const key of ['venue', 'year', 'publication_date', 'paper']) form.elements[key].value = entry[key] ?? '';
       return;
     }
     for (const key of entryKeys) form.elements[key].value = entry[key] ?? '';
@@ -83,9 +91,15 @@
       next.venue = field('venue');
       next.year = Number(field('year'));
       next.paper = field('paper');
+      const publicationDate = field('publication_date');
       if (!next.authors.length || !next.venue) throw new Error('Enter the authors and the venue or publication type.');
       if (!Number.isInteger(next.year) || next.year < 1000 || next.year > 9999) throw new Error('Enter a four-digit year.');
+      if (publicationDate && !validPublicationDate(publicationDate, next.year)) {
+        throw new Error('Enter a valid YYYY-MM-DD, YYYY-MM, or YYYY publication date that matches the year.');
+      }
       if (!validLink(next.paper)) throw new Error('Enter an HTTP or HTTPS paper URL.');
+      if (publicationDate) next.publication_date = publicationDate;
+      else delete next.publication_date;
       return next;
     }
     if (field('href') && !validLink(field('href'), true)) throw new Error('Use HTTP, HTTPS, or a link within this site.');
