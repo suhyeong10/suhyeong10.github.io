@@ -4,15 +4,32 @@ title: Blog
 nav: blog
 permalink: /blog/
 ---
-<section class="blog-index" aria-labelledby="blog-title">
-  <header class="page-heading">
-    <h1 id="blog-title" class="page-title">Blog</h1>
-  </header>
+<header class="page-heading">
+  <h1 id="blog-title" class="page-title">Blog</h1>
+</header>
+
+{% assign projects = site.pages | where: 'project_card', true | sort: 'publication_date' | reverse %}
+<section class="blog-projects" id="research-projects" aria-labelledby="projects-title">
+  <h2 class="blog-section-title" id="projects-title">Research projects</h2>
+  <div class="project-card-grid">
+    {% for project in projects %}
+      {% assign project_url = project.url | relative_url %}
+      {% include project-card.html href=project_url figure=project.figure venue=project.venue year=project.year title=project.short_title summary=project.summary %}
+    {% endfor %}
+    {% assign external_projects = site.data.publications | where_exp: "paper", "paper.external_project" %}
+    {% for paper in external_projects %}
+      {% include project-card.html href=paper.project figure=paper.figure venue=paper.venue year=paper.year title=paper.external_project summary=paper.project_summary %}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="blog-index" aria-labelledby="posts-title">
+  <h2 class="blog-section-title" id="posts-title">Posts</h2>
   {% if site.posts.size > 0 %}
     <ul class="blog-posts">
       {% for post in site.posts %}
         <li>
-          <h2><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h2>
+          <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
           <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%b %d, %Y' }}</time>
         </li>
       {% endfor %}

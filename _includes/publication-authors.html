@@ -1,0 +1,10 @@
+<p class="publication-authors">
+  {%- for author in include.authors -%}
+    {%- if author == 'Suhyeong Park' or author == 'Su-Hyeong Park' -%}
+      <strong>{{ author | escape }}</strong>
+    {%- else -%}
+      {{ author | escape }}
+    {%- endif -%}
+    {%- unless forloop.last %}, {% endunless -%}
+  {%- endfor -%}
+</p>

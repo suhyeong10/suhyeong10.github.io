@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#f8f7f4">
   <meta name="description" content="Suhyeong Park’s research, publications, and blog.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self' https://api.github.com; img-src 'self' https: data:; base-uri 'none'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self' {% if site.github_auth_origin != empty and site.github_auth_origin %}{{ site.github_auth_origin | escape }}{% else %}https://api.github.com{% endif %}; img-src 'self' https: data:; base-uri 'none'; object-src 'none'; form-action 'none'">
   <title>{% if page.title %}{{ page.title | escape }} · {% endif %}Suhyeong Park</title>
   <link rel="stylesheet" href="{{ '/styles.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/blog.css' | relative_url }}">

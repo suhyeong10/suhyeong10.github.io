@@ -1,0 +1,27 @@
+---
+layout: default
+nav: blog
+---
+<article class="project-page">
+  <header class="project-hero">
+    <a class="back-link" href="{{ '/blog/#research-projects' | relative_url }}">← Research projects</a>
+    <p class="eyebrow">{{ page.short_title | escape }} · {{ page.venue | escape }} {{ page.year }}</p>
+    <h1 class="page-title">{{ page.title | escape }}</h1>
+    {% include publication-authors.html authors=page.authors %}
+    {% if page.author_note %}<p class="project-author-note">{{ page.author_note | escape }}</p>{% endif %}
+    <p class="project-summary">{{ page.summary | escape }}</p>
+    {% include publication-links.html publication=page %}
+  </header>
+  {% if page.figure %}
+    <figure class="project-figure">
+      <a href="{{ page.figure | relative_url }}" aria-label="Open full-size {{ page.short_title | escape }} figure">
+        <img src="{{ page.figure | relative_url }}" alt="{{ page.figure_alt | escape }}" width="{{ page.figure_width }}" height="{{ page.figure_height }}" fetchpriority="high">
+      </a>
+      <figcaption>
+        {% if page.figure_caption %}<p>{{ page.figure_caption | escape }}</p>{% endif %}
+        {% if page.figure_credit %}<p>{{ page.figure_credit | escape }} {% if page.figure_source %}<a href="{{ page.figure_source | escape }}">Source ↗</a>{% endif %}{% if page.figure_license %} · <a href="{{ page.figure_license | escape }}">License ↗</a>{% endif %}</p>{% endif %}
+      </figcaption>
+    </figure>
+  {% endif %}
+  <div class="prose project-prose">{{ content }}</div>
+</article>

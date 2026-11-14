@@ -1,0 +1,16 @@
+{% assign linked_publication = include.publication %}
+<p class="publication-links">
+  <a href="{{ linked_publication.paper | escape }}">Paper <span aria-hidden="true">↗</span></a>
+  {% if linked_publication.project %}
+    {% assign project_href = linked_publication.project %}
+    {% assign project_prefix = project_href | slice: 0 %}
+    {% if project_prefix == '/' %}{% assign project_href = project_href | relative_url %}{% endif %}
+    <a href="{{ project_href | escape }}">Project <span aria-hidden="true">↗</span></a>
+  {% endif %}
+  {% if linked_publication.model %}
+    <a href="{{ linked_publication.model | escape }}">Model <span aria-hidden="true">↗</span></a>
+  {% endif %}
+  {% if linked_publication.code %}
+    <a href="{{ linked_publication.code | escape }}">Code <span aria-hidden="true">↗</span></a>
+  {% endif %}
+</p>
