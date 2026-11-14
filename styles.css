@@ -131,9 +131,6 @@ button:disabled { cursor: wait; }
   letter-spacing: .015em;
 }
 
-.research-interests a { text-decoration: none; }
-.research-interests a:hover { text-decoration: underline; }
-
 .profile h1, .page-title {
   font: 700 clamp(2.9rem, 6.6vw, 5.15rem)/.99 var(--display);
   letter-spacing: -.075em;
