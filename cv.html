@@ -7,8 +7,12 @@ permalink: /cv/
 ---
 
 {% assign cv = site.data.cv %}
+{%- assign cv_has_equal = false -%}
+{%- assign cv_has_corresponding = false -%}
 {%- capture cv_publication_order -%}
   {%- for paper in cv.publications -%}
+    {%- if paper.co_first_authors.size > 0 -%}{%- assign cv_has_equal = true -%}{%- endif -%}
+    {%- if paper.corresponding_authors.size > 0 -%}{%- assign cv_has_corresponding = true -%}{%- endif -%}
     {%- assign paper_date = paper.publication_date | default: paper.year | append: '' -%}
     {%- case paper_date.size -%}
       {%- when 4 -%}{%- assign paper_date = paper_date | append: '-00-00' -%}
@@ -25,6 +29,12 @@ permalink: /cv/
         <h2 id="cv-publications">Publications</h2>
         <button type="button" class="cv-edit-control" data-cv-section="publications" data-cv-section-name="Publications" data-cv-edit-control hidden aria-label="Add a publication" title="Add a publication">+</button>
       </div>
+      {% if cv_has_equal or cv_has_corresponding %}
+        <p class="author-legend">
+          {% if cv_has_equal %}<span>* Equal contribution</span>{% endif %}
+          {% if cv_has_corresponding %}<span>† Corresponding author</span>{% endif %}
+        </p>
+      {% endif %}
       <div class="cv-entries">
         {% for key in cv_publication_order %}
           {% assign paper_index = key | split: ':' | last | plus: 0 %}
@@ -43,7 +53,7 @@ permalink: /cv/
                 </button>
               </div>
             </div>
-            {% include publication-authors.html authors=paper.authors co_first_authors=paper.co_first_authors corresponding_authors=paper.corresponding_authors class_name='cv-entry-meta' %}
+            {% include publication-authors.html authors=paper.authors co_first_authors=paper.co_first_authors corresponding_authors=paper.corresponding_authors class_name='cv-entry-meta' hide_legend=true %}
           </div>
         {% endfor %}
       </div>

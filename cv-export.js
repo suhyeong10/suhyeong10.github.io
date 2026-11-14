@@ -122,7 +122,6 @@
       const titleLines = wrap(text(title), entryTitle, available - (date ? dateWidth + 15 : 0));
       const details = [
         { lines: wrap(text(entry.querySelector('.cv-entry-meta')), small), style: small },
-        { lines: wrap([...entry.querySelectorAll('.author-legend span')].map(text).join(' · '), small), style: small },
         { lines: wrap(text(entry.querySelector('.cv-entry-description')), body), style: body },
         ...[...entry.querySelectorAll('.cv-entry-details li')].map((bullet) => ({
           lines: wrap(text(bullet), body, available - 11), style: body, bullet: true
@@ -192,7 +191,8 @@
       const titleLines = wrap(text(section.querySelector('h2')), sectionTitle);
       const entries = [...section.querySelectorAll('.cv-entry')].map(formatEntry);
       if (!titleLines.length || !entries.length) continue;
-      const headingHeight = titleLines.length * sectionTitle.line + 7;
+      const legendLines = wrap([...section.querySelectorAll('.author-legend span')].map(text).join(' · '), small);
+      const headingHeight = titleLines.length * sectionTitle.line + 7 + legendLines.length * small.line;
       const first = entries[0];
       const pageSpace = bottom - page.top;
       const firstMinimum = first.height + headingHeight <= pageSpace
@@ -201,6 +201,7 @@
       lineBlock(titleLines, sectionTitle);
       rule(y + 1);
       y += 7;
+      lineBlock(legendLines, small);
       for (const [index, entry] of entries.entries()) {
         const minimum = entry.height <= pageSpace ? entry.height : body.line * 2;
         if (index > 0 && y + minimum > bottom) newPage();
