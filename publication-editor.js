@@ -52,6 +52,7 @@
     const authors = values.get('authors').split(',').map((name) => name.trim()).filter(Boolean);
     const venue = values.get('venue').trim();
     const year = Number(values.get('year'));
+    const publicationDate = values.get('publication_date');
     const paper = values.get('paper').trim();
     const project = values.get('project').trim();
     const code = values.get('code').trim();
@@ -66,7 +67,14 @@
       return;
     }
 
+    if (publicationDate && Number(publicationDate.split('-')[0]) !== year) {
+      setStatus('The publication date and year must match.', true);
+      return;
+    }
+
     const publication = { title, authors, venue, year, paper };
+    if (publicationDate) publication.publication_date = publicationDate;
+    if (values.has('co_first_author')) publication.co_first_author = true;
     if (project) publication.project = project;
     if (code) publication.code = code;
     const key = JSON.stringify(publication);

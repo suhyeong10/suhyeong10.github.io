@@ -7,6 +7,7 @@
     - Jaewoo Kang
   venue: Preprint
   year: 2026
+  publication_date: '2026-10-13'
   paper: https://arxiv.org/abs/2610.17928
   project: https://txxnrd.github.io/switchmem/
   code: https://github.com/dmis-lab/SwitchMem
@@ -18,6 +19,7 @@
     - Jaewoo Kang
   venue: Preprint
   year: 2026
+  publication_date: '2026-09-06'
   paper: https://arxiv.org/abs/2609.06746
 
 - title: Do All Visual Tokens Matter Equally? Object-Evidence Preserving Token Merging for Vision-Language Retrieval
@@ -28,6 +30,7 @@
     - Jaewoo Kang
   venue: Preprint
   year: 2026
+  publication_date: '2026-07-06'
   paper: https://arxiv.org/abs/2607.04605
   project: https://suhyeong10.github.io/samer-project-page/
 
@@ -42,6 +45,7 @@
     - Jaewoo Kang
   venue: Preprint
   year: 2026
+  publication_date: '2026-03-30'
   paper: https://arxiv.org/abs/2603.28026
   project: https://txxnrd.github.io/buzzy/
 
@@ -54,5 +58,6 @@
     - Kang-Min Kim
   venue: EMNLP
   year: 2025
+  publication_date: '2025-11'
   paper: https://aclanthology.org/2025.emnlp-main.1549/
   code: https://github.com/suhyeong10/ILlama

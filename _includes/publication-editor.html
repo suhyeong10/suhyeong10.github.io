@@ -14,6 +14,10 @@
         <input name="authors" type="text" aria-describedby="publication-authors-help" required>
         <small id="publication-authors-help">Use commas to separate author names in publication order.</small>
       </label>
+      <label class="editor-checkbox">
+        <input name="co_first_author" type="checkbox">
+        Suhyeong Park is a co-first author
+      </label>
       <div class="editor-field-row">
         <label class="editor-field">
           Venue or type
@@ -24,6 +28,11 @@
           <input name="year" type="number" min="1000" max="9999" inputmode="numeric" required>
         </label>
       </div>
+      <label class="editor-field">
+        Publication date (optional)
+        <input name="publication_date" type="date" aria-describedby="publication-date-help">
+        <small id="publication-date-help">Use the paper’s first public release date. The year is used when a date is unavailable.</small>
+      </label>
       <label class="editor-field">
         Paper URL
         <input name="paper" type="url" required>
