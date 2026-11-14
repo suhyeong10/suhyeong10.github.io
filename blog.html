@@ -34,7 +34,7 @@ permalink: /blog/
       {% assign project_date = project.publication_date | default: project.date %}
       {% assign project_year = project.year | default: project_date | slice: 0, 4 %}
       <div>
-        {% include project-card.html href=project_url figure=project.figure venue=project.venue year=project_year title=project_title summary=project.summary %}
+        {% include project-card.html href=project_url figure=project.figure venue=project.venue year=project_year title=project_title %}
         <p class="owner-actions" data-owner-only hidden>
           <a href="{{ '/write/blog/' | relative_url }}?edit={{ project.path | url_encode }}&amp;return={{ project_url | url_encode }}">Edit or delete project article</a>
         </p>
@@ -49,7 +49,7 @@ permalink: /blog/
     {% endfor %}
     {% assign external_projects = external_projects | sort: 'publication_date' | reverse %}
     {% for paper in external_projects %}
-      {% include project-card.html href=paper.project figure=paper.figure venue=paper.venue year=paper.year title=paper.external_project summary=paper.project_summary %}
+      {% include project-card.html href=paper.project figure=paper.figure venue=paper.venue year=paper.year title=paper.external_project %}
     {% endfor %}
   </div>
 </section>
