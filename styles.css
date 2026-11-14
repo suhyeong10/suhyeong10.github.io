@@ -349,7 +349,6 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
 .project-card { display: block; min-width: 0; color: var(--ink); text-decoration: none; }
 .project-card .eyebrow { margin-top: .8rem; }
 .project-card h3 { margin: .12rem 0 .28rem; font: 700 1.45rem/1.2 var(--display); letter-spacing: -.045em; }
-.project-card h3 span { color: var(--accent); font-size: 1rem; }
 .project-card:hover h3 { color: var(--accent); }
 .blog-index { margin-bottom: 4rem; }
 .blog-index .blog-posts { margin-top: 0; }
