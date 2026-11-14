@@ -1,6 +1,9 @@
 {% assign linked_publication = include.publication %}
+{% if linked_publication.paper or linked_publication.model or linked_publication.code or linked_publication.project %}
 <p class="publication-links">
-  <a href="{{ linked_publication.paper | escape }}">{% if include.icons %}{% include resource-icon.html name='paper' %}{% endif %}Paper{% unless include.icons %} <span aria-hidden="true">↗</span>{% endunless %}</a>
+  {% if linked_publication.paper %}
+    <a href="{{ linked_publication.paper | escape }}">{% include resource-icon.html name='paper' %}Paper</a>
+  {% endif %}
   {% if linked_publication.project and include.hide_project != true %}
     {% assign project_href = linked_publication.project %}
     {% assign project_prefix = project_href | slice: 0 %}
@@ -8,9 +11,10 @@
     <a href="{{ project_href | escape }}">Project <span aria-hidden="true">↗</span></a>
   {% endif %}
   {% if linked_publication.model %}
-    <a href="{{ linked_publication.model | escape }}">{% if include.icons %}{% include resource-icon.html name='model' %}{% endif %}Model{% unless include.icons %} <span aria-hidden="true">↗</span>{% endunless %}</a>
+    <a href="{{ linked_publication.model | escape }}">{% include resource-icon.html name='model' url=linked_publication.model %}Model</a>
   {% endif %}
   {% if linked_publication.code %}
-    <a href="{{ linked_publication.code | escape }}">{% if include.icons %}{% include resource-icon.html name='code' %}{% endif %}Code{% unless include.icons %} <span aria-hidden="true">↗</span>{% endunless %}</a>
+    <a href="{{ linked_publication.code | escape }}">{% include resource-icon.html name='code' url=linked_publication.code %}Code</a>
   {% endif %}
 </p>
+{% endif %}

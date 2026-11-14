@@ -317,6 +317,8 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
 .author-mark { margin-left: .08em; color: var(--accent); font-size: .73em; line-height: 0; }
 .author-legend { display: flex; flex-wrap: wrap; gap: .1rem .8rem; margin-top: .15rem; color: var(--muted); font-size: .8rem; }
 .publication-links { display: flex; flex-wrap: wrap; gap: .25rem 1.2rem; margin-top: .55rem; }
+.publication-links a { display: inline-flex; align-items: center; gap: .35rem; }
+.publication-links img, .publication-links svg { flex: none; }
 
 .page-heading { padding: clamp(3rem, 6.5vw, 5rem) 0 2rem; }
 .page-title { font-size: clamp(2.7rem, 5.6vw, 4.25rem); }
@@ -362,8 +364,7 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
 .project-hero .page-title { margin-top: 1.25rem; font-size: clamp(1.75rem, 4vw, 2.05rem); line-height: 1.12; }
 .project-hero .publication-authors { margin-top: .9rem; text-align: center; }
 .project-hero .author-legend { justify-content: center; text-align: center; }
-.project-hero .publication-links { justify-content: center; margin-top: .95rem; }
-.project-hero .publication-links a { display: inline-flex; align-items: center; gap: .35rem; }
+.blog-post .publication-links, .project-hero .publication-links { justify-content: center; margin-top: .95rem; }
 
 .project-figure { margin: 0 0 2.15rem; }
 .project-figure > a {

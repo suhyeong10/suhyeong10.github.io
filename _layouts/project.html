@@ -17,7 +17,7 @@ nav: blog
     {% elsif page.authors %}
       {% include publication-authors.html authors=page.authors co_first_authors=page.co_first_authors corresponding_authors=page.corresponding_authors %}
     {% endif %}
-    {% if page.paper %}{% include publication-links.html publication=page icons=true %}{% endif %}
+    {% include publication-links.html publication=page %}
     <p class="owner-actions" data-owner-only hidden>
       <a class="button" href="{{ '/write/blog/' | relative_url }}?edit={{ page.path | url_encode }}&amp;return={{ page.url | relative_url | url_encode }}">{% if page.blog_section == 'post' %}Edit or delete post{% else %}Edit or delete project article{% endif %}</a>
     </p>

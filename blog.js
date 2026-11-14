@@ -5,6 +5,7 @@ const draftKey = "suhyeong10.blog-draft.v1";
 const postPathPattern = /^(?:_posts\/\d{4}-\d{2}-\d{2}-|projects\/)[a-zA-Z0-9][a-zA-Z0-9_-]*\.(?:md|markdown)$/;
 const maxImages = 6;
 const maxImageCharacters = 2500000;
+const resourceNames = ["paper", "model", "code"];
 const researchOutline = "## Abstract\n\n\n\n## Problem\n\n\n\n## Method\n\n\n\n## Results\n\n\n\n## Analysis\n\n\n\n## Resources\n\n";
 const postClock = new Intl.DateTimeFormat("en-CA", {
   timeZone: "Asia/Seoul",
@@ -89,6 +90,7 @@ function setupEditor(form) {
   const titleField = form.elements.title;
   const sectionField = form.elements.section;
   const bodyField = form.elements.markdown;
+  const resourceFields = resourceNames.map((name) => form.elements[name]);
   const fields = form.querySelector("[data-blog-fields]");
   const preview = form.querySelector("#blog-preview");
   const draftMessage = form.querySelector("[data-blog-draft]");
@@ -134,6 +136,14 @@ function setupEditor(form) {
     titleField.value = draft.title ?? "";
     bodyField.value = draft.body ?? "";
     sectionField.value = draft.section ?? record?.section ?? "post";
+    for (const field of resourceFields) {
+      field.value = draft.resources?.[field.name] ?? record?.resources[field.name] ?? "";
+      field.setCustomValidity("");
+    }
+  }
+
+  function readResourceFields() {
+    return Object.fromEntries(resourceFields.map((field) => [field.name, field.value.trim()]));
   }
 
   function setStatus(element, message, error = false) {
@@ -157,12 +167,14 @@ function setupEditor(form) {
     const title = titleField.value;
     const body = bodyField.value;
     const section = sectionField.value;
-    draft = { ...draft, title, body, section };
+    const resources = readResourceFields();
+    const resourcesChanged = resourceNames.some((name) => resources[name] !== (record?.resources[name] ?? ""));
+    draft = { ...draft, title, body, section, resources };
     try {
       const dirty = editing
         ? title !== record.title || body !== record.body || section !== record.section
         : title || body || section !== "post";
-      if (dirty) {
+      if (dirty || resourcesChanged) {
         localStorage.setItem(storageKey, JSON.stringify(draft));
         draftMessage.textContent = "Draft saved in this browser.";
       } else {
@@ -286,7 +298,8 @@ function setupEditor(form) {
   window.addEventListener("pagehide", saveDraft);
 
   form.addEventListener("input", (event) => {
-    if (event.target !== titleField && event.target !== bodyField && event.target !== sectionField) return;
+    if (event.target !== titleField && event.target !== bodyField && event.target !== sectionField &&
+        !resourceFields.includes(event.target)) return;
     event.target.setCustomValidity("");
     if (event.target === titleField && !editing) draft.createdAt = undefined;
     if (!conflicted) setStatus(status, "");
@@ -372,10 +385,15 @@ function setupEditor(form) {
     const title = titleField.value.trim();
     const body = bodyField.value;
     const section = sectionField.value;
+    const resources = readResourceFields();
     const entryType = section === "research" ? "project article" : "blog post";
     postLink.textContent = section === "research" ? "Open project" : "Open post";
     titleField.setCustomValidity(title ? "" : "Enter a title.");
     bodyField.setCustomValidity(body.trim() ? "" : "Write something for this article.");
+    for (const field of resourceFields) {
+      const url = resources[field.name];
+      field.setCustomValidity(!url || isWebUrl(url) ? "" : "Enter an absolute HTTP or HTTPS URL.");
+    }
     if (!form.reportValidity()) return;
 
     if (!window.siteAdmin?.createFile) {
@@ -394,7 +412,7 @@ function setupEditor(form) {
       markdown.render(body, context);
       const images = [...context.usedImages];
       if (editing) {
-        const contents = updatePost(record, title, body, section);
+        const contents = updatePost(record, title, body, section, resources);
         const result = await window.siteAdmin.updateEntry(editPath, contents, `Update ${entryType}: ${title}`, images, record.sha);
         record = { ...parsePost(contents, editPath), sha: result.content.sha };
         hydrateDraft({ title: record.title, body: record.body, baseSha: record.sha, images: [] });
@@ -405,7 +423,7 @@ function setupEditor(form) {
         postLink.focus();
         return;
       }
-      const post = makePost(title, body, new Date(draft.createdAt), section);
+      const post = makePost(title, body, new Date(draft.createdAt), section, resources);
       await window.siteAdmin.createFile(post.path, post.contents, `Publish ${entryType}: ${title}`, images);
 
       form.reset();
@@ -436,7 +454,11 @@ function readDraft(storageKey) {
       const images = Array.isArray(saved.images) ? saved.images.slice(0, maxImages).filter(validAttachment) : [];
       const baseSha = typeof saved.baseSha === "string" ? saved.baseSha : undefined;
       const section = saved.section === "research" || saved.section === "post" ? saved.section : undefined;
-      return { title: saved.title, body: saved.body, section, createdAt, baseSha, images };
+      const resources = Object.fromEntries(resourceNames.flatMap((name) => {
+        const value = saved.resources?.[name];
+        return typeof value === "string" ? [[name, value]] : [];
+      }));
+      return { title: saved.title, body: saved.body, section, resources, createdAt, baseSha, images };
     }
   } catch {
     // The open editor can still retain the draft in memory.
@@ -456,7 +478,17 @@ function postDestination(value) {
   return blog;
 }
 
-// The editor owns the title, blog section and Markdown body. Keep the
+function isWebUrl(value) {
+  if (!/^https?:\/\/[^/]/i.test(value) || /[\s\\]/.test(value)) return false;
+  try {
+    const url = new URL(value);
+    return Boolean(url.hostname && !url.username && !url.password);
+  } catch {
+    return false;
+  }
+}
+
+// The editor owns the title, blog section, resource URLs and Markdown body. Keep the
 // other front matter (including the permalink, authors and date) as written.
 function parsePost(contents, path) {
   const input = contents.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
@@ -470,13 +502,18 @@ function parsePost(contents, path) {
   const sectionField = locateField(metadata, "blog_section");
   const titleFallback = path.split("/").at(-1).replace(/^\d{4}-\d{2}-\d{2}-/, "")
     .replace(/\.(?:md|markdown)$/i, "").replace(/[-_]+/g, " ");
-  const title = titleField ? readTitle(metadata, titleField) : titleFallback;
-  const sectionValue = sectionField && readTitle(metadata, sectionField);
+  const title = titleField ? readScalar(metadata, titleField).replace(/[\r\n]+/g, " ").trim() : titleFallback;
+  const sectionValue = sectionField && readScalar(metadata, sectionField);
   const section = sectionValue === "research" || sectionValue === "post" ? sectionValue :
     path.startsWith("projects/") ? "research" : "post";
   const originalBody = input.slice(frontMatter[0].length);
   const body = markdownField ? readBlock(metadata, markdownField) : originalBody;
-  return { title, body, section, metadata, titleField, markdownField, sectionField, originalBody, contents };
+  const resourceFields = Object.fromEntries(resourceNames.map((name) => [name, locateField(metadata, name)]));
+  const resources = Object.fromEntries(resourceNames.map((name) => {
+    const field = resourceFields[name];
+    return [name, field ? readScalar(metadata, field) : ""];
+  }));
+  return { title, body, section, resources, metadata, titleField, markdownField, sectionField, resourceFields, originalBody, contents };
 }
 
 function locateField(lines, name) {
@@ -488,7 +525,7 @@ function locateField(lines, name) {
   return { start, end, marker: lines[start].slice(name.length + 1).trim() };
 }
 
-function readTitle(lines, field) {
+function readScalar(lines, field) {
   const value = field.marker;
   if (value.startsWith('"')) {
     const quoted = value.match(/^"(?:[^"\\]|\\.)*"/)?.[0];
@@ -517,13 +554,12 @@ function readBlock(lines, field) {
   return block.map((line) => line.slice(spaces)).join("\n").replace(/\n+$/, "");
 }
 
-function updatePost(record, title, body, section) {
-  if (title === record.title && body === record.body && section === record.section) return record.contents;
+function updatePost(record, title, body, section, resources) {
   const output = [...record.metadata];
   const changes = [];
   if (title !== record.title) {
     const { start, end } = record.titleField ?? { start: 0, end: 0 };
-    changes.push({ start, end, lines: [`title: ${encodeTitle(title)}`] });
+    changes.push({ start, end, lines: [`title: ${encodeScalar(title)}`] });
   }
   if (record.markdownField && body !== record.body) {
     const { start, end } = record.markdownField;
@@ -533,11 +569,17 @@ function updatePost(record, title, body, section) {
     const { start, end } = record.sectionField ?? { start: output.length, end: output.length };
     changes.push({ start, end, lines: [`blog_section: ${section}`] });
   }
+  for (const name of resourceNames) {
+    if (resources[name] === record.resources[name]) continue;
+    const { start, end } = record.resourceFields[name] ?? { start: output.length, end: output.length };
+    changes.push({ start, end, lines: resources[name] ? [`${name}: ${encodeScalar(resources[name])}`] : [] });
+  }
+  if (!changes.length && body === record.body) return record.contents;
   for (const change of changes.sort((left, right) => right.start - left.start)) {
     output.splice(change.start, change.end - change.start, ...change.lines);
   }
   while (output.at(-1) === "") output.pop();
-  const postBody = record.markdownField ? record.originalBody : body.endsWith("\n") ? body : body + "\n";
+  const postBody = record.markdownField || body === record.body ? record.originalBody : body.endsWith("\n") ? body : body + "\n";
   return ["---", ...output, "---", postBody].join("\n");
 }
 
@@ -545,13 +587,13 @@ function markdownBlock(body) {
   return body.replace(/\r\n?/g, "\n").split("\n").map((line) => "  " + line);
 }
 
-function encodeTitle(title) {
-  return JSON.stringify(title).replace(/[\u0085\u2028\u2029]/g, (character) => {
+function encodeScalar(value) {
+  return JSON.stringify(value).replace(/[\u0085\u2028\u2029]/g, (character) => {
     return `\\u${character.charCodeAt(0).toString(16).padStart(4, "0")}`;
   });
 }
 
-function makePost(title, body, createdAt, section) {
+function makePost(title, body, createdAt, section, resources) {
   const parts = Object.fromEntries(postClock.formatToParts(createdAt).map(({ type, value }) => [type, value]));
   const { year, month, day, hour, minute, second } = parts;
   const date = `${year}-${month}-${day}`;
@@ -560,11 +602,12 @@ function makePost(title, body, createdAt, section) {
   const route = project ? `blog/projects/${slug}/` : `blog/${year}/${month}/${day}/${slug}/`;
   const contents = [
     "---",
-    `title: ${encodeTitle(title)}`,
+    `title: ${encodeScalar(title)}`,
     `date: "${date} ${hour}:${minute}:${second} +0900"`,
     `slug: ${JSON.stringify(slug)}`,
     `blog_section: ${section}`,
     ...(project ? ["layout: project", `permalink: /${route}`, "project_card: true", `publication_date: "${date}"`] : []),
+    ...resourceNames.filter((name) => resources[name]).map((name) => `${name}: ${encodeScalar(resources[name])}`),
     "markdown: |2-",
     ...markdownBlock(body),
     "---",

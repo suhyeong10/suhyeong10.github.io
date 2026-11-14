@@ -68,6 +68,14 @@
 
 #blog-form .blog-section-label { margin-top: 1rem; }
 #blog-form select { max-width: 18rem; }
+.blog-resource-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .5rem 1rem;
+  margin-top: 1rem;
+}
+#blog-form .blog-resource-fields label { min-width: 0; margin-bottom: 0; }
+.blog-resource-fields input { margin-top: .35rem; }
 
 .blog-editor-columns {
   display: grid;
@@ -162,7 +170,7 @@
     grid-template-columns: 1fr;
   }
 
-  .blog-image-toolbar { grid-template-columns: minmax(0, 1fr); }
+  .blog-image-toolbar, .blog-resource-fields { grid-template-columns: minmax(0, 1fr); }
   .blog-image-toolbar .button { justify-self: start; }
 
   .blog-editor-preview {
