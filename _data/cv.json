@@ -1,5 +1,5 @@
 {
-  "revision": "initial-2026-11-14",
+  "revision": "rename-projects-2026-11-14",
   "contact": {
     "location": "Seoul, Republic of Korea",
     "email": "pshpulip22@korea.ac.kr"
@@ -65,7 +65,7 @@
       ]
     },
     {
-      "title": "Selected Projects",
+      "title": "Projects",
       "entries": [
         {
           "title": "Efficient Lesion Search in Ultrasound Images via RL",
