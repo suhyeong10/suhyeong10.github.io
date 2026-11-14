@@ -1,0 +1,58 @@
+- title: "Learning How to Remember: Memory Modality Selection for GUI Agents"
+  authors:
+    - Taeyun Roh
+    - Suhyeong Park
+    - Gijin Kim
+    - Wonjune Jang
+    - Jaewoo Kang
+  venue: Preprint
+  year: 2026
+  paper: https://arxiv.org/abs/2610.17928
+  project: https://txxnrd.github.io/switchmem/
+  code: https://github.com/dmis-lab/SwitchMem
+
+- title: Reason Through the Latent! Making Latent Visual Reasoning Necessary
+  authors:
+    - Suhyeong Park
+    - Junha Jung
+    - Jaewoo Kang
+  venue: Preprint
+  year: 2026
+  paper: https://arxiv.org/abs/2609.06746
+
+- title: Do All Visual Tokens Matter Equally? Object-Evidence Preserving Token Merging for Vision-Language Retrieval
+  authors:
+    - Suhyeong Park
+    - Junha Jung
+    - Jungwoo Park
+    - Jaewoo Kang
+  venue: Preprint
+  year: 2026
+  paper: https://arxiv.org/abs/2607.04605
+  project: https://suhyeong10.github.io/samer-project-page/
+
+- title: "BUZZY: Contrastive Scoring to Mitigate Text-Induced Bias in Multimodal Multiple-Choice QA"
+  authors:
+    - Taeyun Roh
+    - Suhyeong Park
+    - Dongyoung Lee
+    - Wonjune Jang
+    - Junha Jung
+    - Eunyeong Jo
+    - Jaewoo Kang
+  venue: Preprint
+  year: 2026
+  paper: https://arxiv.org/abs/2603.28026
+  project: https://txxnrd.github.io/buzzy/
+
+- title: Leveraging Knowledge Graph-Enhanced LLMs for Context-Aware Medical Consultation
+  authors:
+    - Su-Hyeong Park
+    - Ho-Beom Kim
+    - Seong-Jin Park
+    - Dinara Aliyeva
+    - Kang-Min Kim
+  venue: EMNLP
+  year: 2025
+  paper: https://aclanthology.org/2025.emnlp-main.1549/
+  code: https://github.com/suhyeong10/ILlama

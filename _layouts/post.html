@@ -1,0 +1,19 @@
+---
+layout: default
+nav: blog
+---
+<article class="blog-post">
+  <header class="page-heading">
+    <a class="back-link" href="{{ '/blog/' | relative_url }}">← Blog</a>
+    <h1 class="page-title">{{ page.title | escape }}</h1>
+    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B %-d, %Y' }}</time>
+  </header>
+  {% if page.markdown %}
+    <textarea id="post-markdown" hidden aria-hidden="true">
+{{ page.markdown | escape }}</textarea>
+    <div id="post-content" class="prose"></div>
+    <noscript><pre class="post-source">{{ page.markdown | escape }}</pre></noscript>
+  {% else %}
+    <div class="prose">{{ content }}</div>
+  {% endif %}
+</article>

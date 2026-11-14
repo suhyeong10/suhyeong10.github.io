@@ -1,0 +1,11 @@
+title: Suhyeong Park
+url: https://suhyeong10.github.io
+timezone: Asia/Seoul
+permalink: /blog/:year/:month/:day/:title/
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      nav: blog

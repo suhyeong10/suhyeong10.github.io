@@ -1,0 +1,49 @@
+<dialog class="editor-dialog publication-editor" id="publication-editor" aria-labelledby="publication-editor-title">
+  <form class="editor-form" id="publication-editor-form">
+    <header class="editor-heading">
+      <h2 id="publication-editor-title">Add publication</h2>
+    </header>
+
+    <fieldset class="editor-fields">
+      <label class="editor-field">
+        Title
+        <input name="title" type="text" required autofocus>
+      </label>
+      <label class="editor-field">
+        Authors
+        <input name="authors" type="text" aria-describedby="publication-authors-help" required>
+        <small id="publication-authors-help">Use commas to separate author names in publication order.</small>
+      </label>
+      <div class="editor-field-row">
+        <label class="editor-field">
+          Venue or type
+          <input name="venue" type="text" placeholder="EMNLP, Preprint, …" required>
+        </label>
+        <label class="editor-field">
+          Year
+          <input name="year" type="number" min="1000" max="9999" inputmode="numeric" required>
+        </label>
+      </div>
+      <label class="editor-field">
+        Paper URL
+        <input name="paper" type="url" required>
+      </label>
+      <div class="editor-field-row">
+        <label class="editor-field">
+          Project URL (optional)
+          <input name="project" type="url">
+        </label>
+        <label class="editor-field">
+          Code URL (optional)
+          <input name="code" type="url">
+        </label>
+      </div>
+    </fieldset>
+
+    <p class="editor-status" id="publication-editor-status" role="status"></p>
+    <div class="editor-actions">
+      <button class="button" type="button" data-close-publication-editor>Close</button>
+      <button class="button button-primary" type="submit">Publish</button>
+    </div>
+  </form>
+</dialog>
