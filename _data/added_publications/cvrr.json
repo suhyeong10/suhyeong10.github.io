@@ -12,5 +12,8 @@
   "project": "/blog/projects/cvrr/",
   "figure": "/assets/projects/cvrr-figure.webp",
   "model": "https://huggingface.co/collections/dmis-lab/cvrr",
-  "code": "https://github.com/dmis-lab/CVRR"
+  "code": "https://github.com/dmis-lab/CVRR",
+  "corresponding_authors": [
+    "Jaewoo Kang"
+  ]
 }

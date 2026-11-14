@@ -4,5 +4,6 @@
   "label": "CVRR",
   "after": ", a study of how vision-language models use latent visual reasoning.",
   "url": "/blog/projects/cvrr/",
-  "fallback_url": "https://arxiv.org/abs/2609.06746"
+  "fallback_url": "https://arxiv.org/abs/2609.06746",
+  "details": "CVRR repeatedly revisits the image, then answers using the final recurrent state as its only source of visual information. This lets us test whether the model relies on that computation when it answers."
 }

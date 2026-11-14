@@ -7,7 +7,10 @@
   const entryPath = editSearch.get('edit');
   const validEntryPath = /^_data\/added_publications\/[a-z0-9-]+\.json$/.test(entryPath || '');
   const draftStorageKey = 'suhyeong10.publication-draft.v1' + (editing ? ':' + entryPath : '');
-  const fieldNames = ['title', 'authors', 'venue', 'year', 'publication_date', 'paper', 'project', 'model', 'code', 'co_first_author', 'figure_alt'];
+  const fieldNames = [
+    'title', 'authors', 'co_first_authors', 'corresponding_authors', 'co_first_author',
+    'venue', 'year', 'publication_date', 'paper', 'project', 'model', 'code', 'figure_alt'
+  ];
   const fields = form.querySelector('fieldset');
   const status = document.getElementById('publication-editor-status');
   const draftNote = document.getElementById('publication-draft-note');
@@ -43,6 +46,10 @@
   function setStatus(message, isError = false) {
     status.textContent = message;
     status.classList.toggle('is-error', isError);
+  }
+
+  function splitNames(value) {
+    return value.split(',').map((name) => name.trim()).filter(Boolean);
   }
 
   function setDeleteConfirmation(open) {
@@ -138,8 +145,8 @@
     for (const name of fieldNames) {
       const input = form.elements[name];
       const value = publication[name];
-      if (name === 'authors') input.value = publication.authors.join(', ');
-      else if (input.type === 'checkbox') input.checked = value === true;
+      if (Array.isArray(value)) input.value = value.join(', ');
+      else if (name === 'co_first_author') input.checked = value === true && !publication.co_first_authors?.length;
       else if (value != null) input.value = String(value);
     }
     figure = undefined;
@@ -301,7 +308,9 @@
 
     const values = new FormData(form);
     const title = values.get('title').trim();
-    const authors = values.get('authors').split(',').map((name) => name.trim()).filter(Boolean);
+    const authors = splitNames(values.get('authors'));
+    const coFirstAuthors = [...new Set(splitNames(values.get('co_first_authors')))];
+    const correspondingAuthors = [...new Set(splitNames(values.get('corresponding_authors')))];
     const venue = values.get('venue').trim();
     const year = Number(values.get('year'));
     const publicationDate = values.get('publication_date').trim();
@@ -312,6 +321,10 @@
 
     if (!title || !authors.length || !venue || !Number.isInteger(year) || year < 1000 || year > 9999) {
       setStatus('Enter a title, at least one author, a venue or type, and a four-digit year.', true);
+      return;
+    }
+    if ([...coFirstAuthors, ...correspondingAuthors].some((name) => !authors.includes(name))) {
+      setStatus('Use names exactly as listed in Authors for co-first and corresponding authors.', true);
       return;
     }
     if (!isWebUrl(paper) || [model, code].some((url) => url && !isWebUrl(url)) ||
@@ -328,7 +341,11 @@
     const current = currentFigure();
     const optional = {
       publication_date: publicationDate,
-      co_first_author: values.has('co_first_author'),
+      co_first_authors: coFirstAuthors.length ? coFirstAuthors : undefined,
+      corresponding_authors: correspondingAuthors.length ? correspondingAuthors : undefined,
+      co_first_author: coFirstAuthors.length
+        ? coFirstAuthors.some((name) => /^(?:Suhyeong|Su-Hyeong) Park$/i.test(name))
+        : values.has('co_first_author'),
       project, model, code,
       figure: current,
       figure_alt: current ? values.get('figure_alt').trim() : ''

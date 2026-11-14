@@ -7,8 +7,13 @@ nav: blog
     <a class="back-link" href="{{ '/blog/#research-projects' | relative_url }}">← Research projects</a>
     <p class="eyebrow">{{ page.short_title | escape }} · {{ page.venue | escape }} {{ page.year }}</p>
     <h1 class="page-title">{{ page.title | escape }}</h1>
-    {% include publication-authors.html authors=page.authors %}
-    {% if page.author_note %}<p class="project-author-note">{{ page.author_note | escape }}</p>{% endif %}
+    {% assign paper_id = page.short_title | downcase %}
+    {% assign paper_record = site.data.added_publications[paper_id] %}
+    {% if paper_record %}
+      {% include publication-authors.html authors=paper_record.authors co_first_authors=paper_record.co_first_authors corresponding_authors=paper_record.corresponding_authors %}
+    {% else %}
+      {% include publication-authors.html authors=page.authors co_first_authors=page.co_first_authors corresponding_authors=page.corresponding_authors %}
+    {% endif %}
     <p class="project-summary">{{ page.summary | escape }}</p>
     {% include publication-links.html publication=page %}
     <p class="owner-actions" data-owner-only hidden>

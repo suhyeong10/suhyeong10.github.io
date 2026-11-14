@@ -2,10 +2,11 @@
   const form = document.getElementById('update-editor-form');
   if (!form) return;
 
-  const editPath = new URLSearchParams(location.search).get('edit');
+  const params = new URLSearchParams(location.search);
+  const editPath = params.get('edit');
   const validPath = /^_data\/updates\/[a-z0-9-]+\.json$/;
   const storageKey = 'suhyeong10.update-draft.v1' + (editPath ? ':' + editPath : '');
-  const fieldNames = ['date', 'before', 'label', 'url', 'after'];
+  const fieldNames = ['date', 'before', 'label', 'url', 'after', 'details'];
   const fields = form.querySelector('fieldset');
   const linkOptions = document.getElementById('update-link-options');
   const draftNote = document.getElementById('update-draft-note');
@@ -29,6 +30,19 @@
   let newPath;
   let loadJob = 0;
   let working = false;
+
+  if (params.get('from') === 'news') {
+    const destination = form.closest('.update-editor').dataset.newsDestination;
+    const linkText = { back: '← News', 'back-button': 'Back to News', result: 'View News' };
+    for (const link of document.querySelectorAll('[data-update-view]')) {
+      link.href = destination;
+      link.textContent = linkText[link.dataset.updateView];
+    }
+    const another = document.querySelector('[data-update-another]');
+    const anotherUrl = new URL(another.href);
+    anotherUrl.searchParams.set('from', 'news');
+    another.href = anotherUrl;
+  }
 
   function setStatus(message, error = false) {
     status.textContent = message;
@@ -106,7 +120,7 @@
       const draft = readDraft();
       pendingDraft = draft && draft.sha !== sha ? draft : undefined;
       reviewed = !needsReview && !pendingDraft;
-      fill(draft?.sha === sha ? draft.values : record);
+      fill(draft?.sha === sha ? { ...record, ...draft.values } : record);
       conflict.hidden = reviewed;
       applyDraft.hidden = !pendingDraft;
       showConfirmation(false);
@@ -127,7 +141,7 @@
     if (useDraft && pendingDraft) {
       const values = editableFields(base.record);
       for (const name of fieldNames) {
-        if (pendingDraft.values[name] !== pendingDraft.baseline?.[name]) {
+        if (Object.hasOwn(pendingDraft.values, name) && pendingDraft.values[name] !== pendingDraft.baseline?.[name]) {
           values[name] = pendingDraft.values[name];
         }
       }
@@ -154,7 +168,7 @@
   }
 
   function buildRecord() {
-    const { date, before: opening, label: link, url: target, after: ending } = fieldValues();
+    const { date, before: opening, label: link, url: target, after: ending, details } = fieldValues();
     const fullDate = date.length === 7 ? date + '-01' : date;
     const dateValue = new Date(fullDate + 'T00:00:00Z');
     const before = opening.trim();
@@ -167,6 +181,8 @@
     }
     const record = { ...base?.record, date, before };
     for (const field of ['label', 'url', 'after']) delete record[field];
+    if (details.trim()) record.details = details.trim();
+    else delete record.details;
     if (url !== base?.record.url) delete record.fallback_url;
     if (label || url || after) {
       linkOptions.open = true;
@@ -187,8 +203,8 @@
     result.hidden = false;
     document.getElementById('update-result-title').textContent = removing ? 'Update deleted' : 'Update saved';
     document.getElementById('update-result-description').textContent = removing
-      ? 'The item will disappear from Recently after GitHub Pages rebuilds.'
-      : 'Your update will appear in Recently after GitHub Pages rebuilds.';
+      ? 'The item will disappear after GitHub Pages rebuilds.'
+      : 'Your update will appear after GitHub Pages rebuilds.';
     result.focus();
   }
 

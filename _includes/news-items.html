@@ -1,0 +1,40 @@
+{%- capture news_keys -%}
+  {%- for item in site.data.updates -%}
+    {{- item[1].date -}}:{{- item[0] -}}{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{% assign news_order = news_keys | split: ',' | sort | reverse %}
+{% if include.limit %}
+  {% assign news_order = news_order | slice: 0, include.limit %}
+{% endif %}
+{% for key in news_order %}
+  {% assign update_id = key | split: ':' | last %}
+  {% assign update = site.data.updates[update_id] %}
+  {% assign update_url = update.url %}
+  {% assign project_prefix = update_url | slice: 0, 15 %}
+  {% if project_prefix == '/blog/projects/' and update.fallback_url %}
+    {% assign project = site.pages | where: 'url', update_url | first %}
+    {% unless project %}{% assign update_url = update.fallback_url %}{% endunless %}
+  {% endif %}
+  {% assign prefix = update_url | slice: 0 %}
+  {% if prefix == '/' %}{% assign update_url = update_url | relative_url %}{% endif %}
+  {% assign edit_path = '_data/updates/' | append: update_id | append: '.json' %}
+  {% assign display_date = update.date %}
+  {% assign date_label_format = '%B %-d, %Y' %}
+  {% if update.date.size == 7 %}
+    {% assign display_date = update.date | append: '-01' %}
+    {% assign date_label_format = '%B %Y' %}
+  {% endif %}
+  <li>
+    <time datetime="{{ update.date | escape }}">{{ display_date | date: '%b %Y' }}</time>
+    <div class="news-item-text">
+      <p>{{ update.before | escape }}{% if update_url and update.label %}<a href="{{ update_url | escape }}">{{ update.label | escape }}</a>{% endif %}{{ update.after | escape }}</p>
+      {% if include.details and update.details and update.details != '' %}
+        <p class="news-item-details">{{ update.details | escape | newline_to_br }}</p>
+      {% endif %}
+      <p class="owner-actions" data-owner-only hidden>
+        <a href="{{ '/write/update/' | relative_url }}?edit={{ edit_path | url_encode }}{% if include.details %}&amp;from=news{% endif %}" aria-label="Edit update from {{ display_date | date: date_label_format }}">Edit update</a>
+      </p>
+    </div>
+  </li>
+{% endfor %}

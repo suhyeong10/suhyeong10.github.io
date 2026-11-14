@@ -4,5 +4,6 @@
   "label": "SaMer",
   "after": ", which merges visual tokens while preserving evidence for retrieval.",
   "url": "/blog/projects/samer/",
-  "fallback_url": "https://arxiv.org/abs/2607.04605"
+  "fallback_url": "https://arxiv.org/abs/2607.04605",
+  "details": "The method reduces the number of image tokens a retrieval system needs to store and score while retaining object-level evidence that a text query can match."
 }

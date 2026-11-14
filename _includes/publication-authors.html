@@ -1,10 +1,22 @@
-<p class="publication-authors">
+<p class="{{ include.class_name | default: 'publication-authors' }}">
   {%- for author in include.authors -%}
     {%- if author == 'Suhyeong Park' or author == 'Su-Hyeong Park' -%}
       <strong>{{ author | escape }}</strong>
     {%- else -%}
       {{ author | escape }}
     {%- endif -%}
+    {%- if include.co_first_authors contains author -%}
+      <sup class="author-mark" title="Equal contribution">*</sup>
+    {%- endif -%}
+    {%- if include.corresponding_authors contains author -%}
+      <sup class="author-mark" title="Corresponding author">†</sup>
+    {%- endif -%}
     {%- unless forloop.last %}, {% endunless -%}
   {%- endfor -%}
 </p>
+{% if include.co_first_authors.size > 0 or include.corresponding_authors.size > 0 %}
+  <p class="author-legend">
+    {%- if include.co_first_authors.size > 0 -%}<span>* Equal contribution</span>{%- endif -%}
+    {%- if include.corresponding_authors.size > 0 -%}<span>† Corresponding author</span>{%- endif -%}
+  </p>
+{% endif %}

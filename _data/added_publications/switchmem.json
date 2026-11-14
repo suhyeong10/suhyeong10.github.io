@@ -16,5 +16,8 @@
   "project_summary": "Select a text or image memory representation for each step of a GUI agent’s interaction.",
   "figure": "/assets/projects/switchmem-figure.webp",
   "figure_credit": "Figure 5 by Roh et al. (2026), CC BY 4.0. Resized and converted to WebP.",
-  "code": "https://github.com/dmis-lab/SwitchMem"
+  "code": "https://github.com/dmis-lab/SwitchMem",
+  "corresponding_authors": [
+    "Jaewoo Kang"
+  ]
 }

@@ -32,11 +32,21 @@ permalink: /write/publication/
         <label class="editor-field">
           Authors
           <input name="authors" type="text" maxlength="2000" aria-describedby="publication-authors-help" required>
-          <small id="publication-authors-help">Separate authors with commas in publication order.</small>
+          <small id="publication-authors-help">Enter names in publication order, separated by commas. Use the same names in the role fields.</small>
         </label>
+        <div class="editor-field-row">
+          <label class="editor-field">
+            Co-first authors (*)
+            <input name="co_first_authors" type="text" maxlength="2000" aria-describedby="publication-authors-help">
+          </label>
+          <label class="editor-field">
+            Corresponding authors (†)
+            <input name="corresponding_authors" type="text" maxlength="2000" aria-describedby="publication-authors-help">
+          </label>
+        </div>
         <label class="editor-checkbox">
           <input name="co_first_author" type="checkbox">
-          Suhyeong Park is a co-first author
+          Keep Suhyeong Park in the first-author group when the co-first list is blank
         </label>
         <div class="editor-field-row">
           <label class="editor-field">

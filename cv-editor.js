@@ -16,6 +16,7 @@
   const submit = document.getElementById('cv-editor-submit');
   const refresh = document.getElementById('cv-editor-refresh');
   const entryKeys = ['organization', 'date', 'location', 'href', 'description'];
+  const authorRoleKeys = ['co_first_authors', 'corresponding_authors'];
 
   let expanded = false;
   let saved = false;
@@ -71,10 +72,14 @@
     return Number.isFinite(date.valueOf()) && date.toISOString().slice(0, 10) === value;
   }
 
+  function splitNames(value) {
+    return value.split(',').map((name) => name.trim()).filter(Boolean);
+  }
+
   function fill(entry, publication) {
     form.elements.title.value = entry.title || '';
     if (publication) {
-      form.elements.authors.value = (entry.authors || []).join(', ');
+      for (const key of ['authors', ...authorRoleKeys]) form.elements[key].value = (entry[key] || []).join(', ');
       for (const key of ['venue', 'year', 'publication_date', 'paper']) form.elements[key].value = entry[key] ?? '';
       return;
     }
@@ -87,7 +92,7 @@
     const next = { ...original, title: field('title') };
     if (!next.title) throw new Error('Enter a title.');
     if (publication) {
-      next.authors = field('authors').split(',').map((name) => name.trim()).filter(Boolean);
+      next.authors = splitNames(field('authors'));
       next.venue = field('venue');
       next.year = Number(field('year'));
       next.paper = field('paper');
@@ -98,6 +103,14 @@
         throw new Error('Enter a valid YYYY-MM-DD, YYYY-MM, or YYYY publication date that matches the year.');
       }
       if (!validLink(next.paper)) throw new Error('Enter an HTTP or HTTPS paper URL.');
+      for (const key of authorRoleKeys) {
+        const names = [...new Set(splitNames(field(key)))];
+        if (names.some((name) => !next.authors.includes(name))) {
+          throw new Error('Use names exactly as listed in Authors for co-first and corresponding authors.');
+        }
+        if (names.length) next[key] = names;
+        else delete next[key];
+      }
       if (publicationDate) next.publication_date = publicationDate;
       else delete next.publication_date;
       return next;

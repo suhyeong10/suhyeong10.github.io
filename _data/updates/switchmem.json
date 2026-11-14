@@ -3,5 +3,6 @@
   "before": "Co-authored ",
   "label": "SwitchMem",
   "after": ", which learns when GUI agents should remember in text or images.",
-  "url": "https://txxnrd.github.io/switchmem/"
+  "url": "https://txxnrd.github.io/switchmem/",
+  "details": "Across three GUI benchmarks, choosing between text and screenshots at each step worked better than always showing the agent the same kind of memory."
 }

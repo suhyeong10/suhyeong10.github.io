@@ -2,7 +2,7 @@
   <div class="admin-options" id="admin-options" hidden>
     <a href="{{ '/write/blog/' | relative_url }}">New blog post</a>
     <a href="{{ '/write/publication/' | relative_url }}">Add publication</a>
-    <a href="{{ '/write/update/' | relative_url }}">Add update</a>
+    <a href="{{ '/write/update/' | relative_url }}{% if page.nav == 'news' %}?from=news{% endif %}">Add update</a>
     {% if page.nav == 'cv' %}<a href="{{ '/cv/#cv-sign-in' | relative_url }}" id="cv-sign-in-link">Sign in to edit CV</a>{% endif %}
     <button type="button" id="admin-sign-out" hidden>Sign out of editor</button>
   </div>

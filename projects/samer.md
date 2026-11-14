@@ -11,6 +11,8 @@ authors:
   - Junha Jung
   - Jungwoo Park
   - Jaewoo Kang
+corresponding_authors:
+  - Jaewoo Kang
 venue: Preprint
 year: 2026
 publication_date: '2026-07-06'

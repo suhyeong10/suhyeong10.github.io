@@ -122,6 +122,7 @@
       const titleLines = wrap(text(title), entryTitle, available - (date ? dateWidth + 15 : 0));
       const details = [
         { lines: wrap(text(entry.querySelector('.cv-entry-meta')), small), style: small },
+        { lines: wrap([...entry.querySelectorAll('.author-legend span')].map(text).join(' · '), small), style: small },
         { lines: wrap(text(entry.querySelector('.cv-entry-description')), body), style: body },
         ...[...entry.querySelectorAll('.cv-entry-details li')].map((bullet) => ({
           lines: wrap(text(bullet), body, available - 11), style: body, bullet: true

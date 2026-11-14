@@ -13,5 +13,8 @@
   "project": "/blog/projects/samer/",
   "figure": "/assets/projects/samer-figure.webp",
   "model": "https://huggingface.co/collections/dmis-lab/samer",
-  "code": "https://github.com/dmis-lab/SaMer"
+  "code": "https://github.com/dmis-lab/SaMer",
+  "corresponding_authors": [
+    "Jaewoo Kang"
+  ]
 }

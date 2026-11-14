@@ -12,7 +12,11 @@ authors:
   - Seong-Jin Park
   - Dinara Aliyeva
   - Kang-Min Kim
-author_note: "Su-Hyeong Park and Ho-Beom Kim contributed equally."
+co_first_authors:
+  - Su-Hyeong Park
+  - Ho-Beom Kim
+corresponding_authors:
+  - Kang-Min Kim
 venue: EMNLP
 year: 2025
 publication_date: '2025-11'

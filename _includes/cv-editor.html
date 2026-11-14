@@ -51,8 +51,18 @@
       <label class="editor-field">
         Authors
         <input name="authors" type="text" required maxlength="2000" aria-describedby="cv-editor-authors-help">
-        <small id="cv-editor-authors-help">Enter the author names in order, separated by commas.</small>
+        <small id="cv-editor-authors-help">Enter names in publication order, separated by commas. Use the same names in the role fields.</small>
       </label>
+      <div class="editor-field-row">
+        <label class="editor-field">
+          Co-first authors (*)
+          <input name="co_first_authors" type="text" maxlength="2000" aria-describedby="cv-editor-authors-help">
+        </label>
+        <label class="editor-field">
+          Corresponding authors (†)
+          <input name="corresponding_authors" type="text" maxlength="2000" aria-describedby="cv-editor-authors-help">
+        </label>
+      </div>
       <div class="editor-field-row">
         <label class="editor-field">
           Venue or publication type

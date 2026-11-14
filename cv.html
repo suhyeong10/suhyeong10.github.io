@@ -43,17 +43,7 @@ permalink: /cv/
                 </button>
               </div>
             </div>
-            <p class="cv-entry-meta">
-              {%- for author in paper.authors -%}
-                {%- assign normalized_author = author | downcase | remove: '-' -%}
-                {%- if normalized_author == 'suhyeong park' -%}
-                  <strong>{{ author | escape }}</strong>
-                {%- else -%}
-                  {{ author | escape }}
-                {%- endif -%}
-                {%- unless forloop.last %}, {% endunless -%}
-              {%- endfor -%}
-            </p>
+            {% include publication-authors.html authors=paper.authors co_first_authors=paper.co_first_authors corresponding_authors=paper.corresponding_authors class_name='cv-entry-meta' %}
           </div>
         {% endfor %}
       </div>

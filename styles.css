@@ -314,6 +314,8 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
 }
 
 .publication-authors strong { color: var(--ink); font-weight: 600; }
+.author-mark { margin-left: .08em; color: var(--accent); font-size: .73em; line-height: 0; }
+.author-legend { display: flex; flex-wrap: wrap; gap: .1rem .8rem; margin-top: .15rem; color: var(--muted); font-size: .8rem; }
 .publication-links { display: flex; flex-wrap: wrap; gap: .25rem 1.2rem; margin-top: .55rem; }
 
 .page-heading { padding: clamp(3rem, 6.5vw, 5rem) 0 2rem; }
@@ -352,7 +354,6 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
 .project-hero .eyebrow { margin: 1.4rem 0 .65rem; }
 .project-hero .page-title { font-size: clamp(2.3rem, 5vw, 3.9rem); line-height: 1.04; }
 .project-hero .publication-authors { margin-top: .9rem; }
-.project-author-note { color: var(--muted); font-size: .85rem; }
 .project-summary { max-width: 61ch; margin-top: .9rem; font-size: 1.1rem; }
 .project-hero .publication-links { margin-top: .95rem; }
 
@@ -577,6 +578,8 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
 }
 
 @media (max-width: 355px) {
+  .site-header { flex-wrap: wrap; gap: 0; padding-top: .8rem; }
+  .site-nav { flex-basis: 100%; gap: 1rem; }
   .section-heading { flex-wrap: wrap; gap: 0; }
   .section-heading h2 { margin-bottom: .5rem; }
 }

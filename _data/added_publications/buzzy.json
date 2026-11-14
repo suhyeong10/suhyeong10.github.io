@@ -17,5 +17,8 @@
   "external_project": "BUZZY",
   "project_summary": "Reduce text-induced answer bias with training-free contrastive scoring.",
   "figure": "/assets/projects/buzzy-figure.webp",
-  "figure_credit": "Framework figure by Roh et al. (2026), CC BY 4.0. Resized and converted to WebP."
+  "figure_credit": "Framework figure by Roh et al. (2026), CC BY 4.0. Resized and converted to WebP.",
+  "corresponding_authors": [
+    "Jaewoo Kang"
+  ]
 }

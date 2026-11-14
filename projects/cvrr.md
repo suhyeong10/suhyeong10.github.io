@@ -10,6 +10,8 @@ authors:
   - Suhyeong Park
   - Junha Jung
   - Jaewoo Kang
+corresponding_authors:
+  - Jaewoo Kang
 venue: Preprint
 year: 2026
 publication_date: '2026-09-06'

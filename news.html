@@ -1,0 +1,27 @@
+---
+layout: default
+title: News
+nav: news
+stylesheet: /news.css
+script: /news.js
+permalink: /news/
+---
+
+<section class="news-page" aria-labelledby="news-title">
+  <header class="page-heading">
+    <h1 id="news-title" class="page-title">News</h1>
+  </header>
+  {% if site.data.updates.size > 0 %}
+    <h2 class="news-section-title" id="recent-news-title" hidden>Recent news</h2>
+    <ol id="recent-news" class="news-timeline" role="list">
+      {% include news-items.html details=true %}
+    </ol>
+    <p id="recent-news-empty" class="news-empty" hidden>No updates in the last six months.</p>
+    <details id="older-news" class="news-archive" hidden>
+      <summary>Older news <span id="older-news-count"></span></summary>
+      <ol id="older-news-items" class="news-timeline" role="list"></ol>
+    </details>
+  {% else %}
+    <p class="news-empty">No updates yet.</p>
+  {% endif %}
+</section>

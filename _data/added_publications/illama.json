@@ -13,5 +13,12 @@
   "paper": "https://aclanthology.org/2025.emnlp-main.1549/",
   "project": "/blog/projects/illama/",
   "figure": "/assets/projects/illama-figure.webp",
-  "code": "https://github.com/suhyeong10/ILlama"
+  "code": "https://github.com/suhyeong10/ILlama",
+  "co_first_authors": [
+    "Su-Hyeong Park",
+    "Ho-Beom Kim"
+  ],
+  "corresponding_authors": [
+    "Kang-Min Kim"
+  ]
 }

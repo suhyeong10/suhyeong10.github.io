@@ -6,9 +6,9 @@ editor: update
 stylesheet: /update-editor.css
 permalink: /write/update/
 ---
-<section class="write-page update-editor" aria-labelledby="update-editor-title">
+<section class="write-page update-editor" aria-labelledby="update-editor-title" data-news-destination="{{ '/news/' | relative_url }}">
   <header class="page-heading">
-    <a class="back-link" href="{{ '/#recently' | relative_url }}">← Recently</a>
+    <a class="back-link" data-update-view="back" href="{{ '/#recently' | relative_url }}">← Recently</a>
     <h1 id="update-editor-title" class="page-title">Add update</h1>
   </header>
 
@@ -55,17 +55,22 @@ permalink: /write/update/
             </label>
           </div>
         </details>
+        <label class="editor-field">
+          News details (optional)
+          <textarea name="details" maxlength="4000" rows="5" aria-describedby="update-details-help"></textarea>
+          <small id="update-details-help">This additional context appears on the News page.</small>
+        </label>
       </fieldset>
       <p id="update-draft-note" class="editor-status"></p>
       <p id="update-editor-status" class="editor-status" role="status"></p>
       <div class="editor-actions">
-        <a class="button" href="{{ '/#recently' | relative_url }}">Back to Recently</a>
+        <a class="button" data-update-view="back-button" href="{{ '/#recently' | relative_url }}">Back to Recently</a>
         <button id="update-save" class="button button-primary" type="submit">Publish update</button>
       </div>
       <div id="update-delete-zone" class="editor-danger-zone" hidden>
         <button id="update-delete" class="button button-danger" type="button">Delete update</button>
         <div id="update-delete-confirmation" hidden>
-          <p>Remove this update from Recently?</p>
+          <p>Remove this update from the site?</p>
           <div class="update-editor-buttons">
             <button id="update-cancel-delete" class="button" type="button">Keep editing</button>
             <button id="update-confirm-delete" class="button button-danger" type="button">Confirm deletion</button>
@@ -77,8 +82,8 @@ permalink: /write/update/
       <h2 id="update-result-title"></h2>
       <p id="update-result-description"></p>
       <div class="editor-actions">
-        <a class="button button-primary" href="{{ '/#recently' | relative_url }}">View Recently</a>
-        <a class="button" href="{{ '/write/update/' | relative_url }}">Add another update</a>
+        <a class="button button-primary" data-update-view="result" href="{{ '/#recently' | relative_url }}">View Recently</a>
+        <a class="button" data-update-another href="{{ '/write/update/' | relative_url }}">Add another update</a>
       </div>
     </section>
   </div>
