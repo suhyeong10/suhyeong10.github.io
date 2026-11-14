@@ -23,6 +23,7 @@ venue: EMNLP
 year: 2025
 publication_date: '2025-11'
 paper: https://aclanthology.org/2025.emnlp-main.1549/
+model: https://huggingface.co/collections/Codingchild/illama
 code: https://github.com/suhyeong10/ILlama
 figure: /assets/projects/illama-figure.webp
 figure_width: 1130
