@@ -20,6 +20,12 @@ permalink: /write/blog/
         <label for="blog-title-input">Title</label>
         <input id="blog-title-input" name="title" required maxlength="160">
 
+        <label class="blog-section-label" for="blog-section">Section</label>
+        <select id="blog-section" name="section">
+          <option value="post">Posts</option>
+          <option value="research">Research projects</option>
+        </select>
+
         <div class="blog-template-toolbar">
           <button class="button" type="button" data-blog-outline>Use research outline</button>
         </div>
@@ -53,7 +59,7 @@ permalink: /write/blog/
       </fieldset>
       <button class="button" type="button" data-blog-load-latest hidden>Discard draft and load latest</button>
       <p class="editor-status blog-editor-status" role="status" data-blog-status></p>
-      <a data-blog-view hidden>Open post</a>
+      <a data-blog-view hidden>Open article</a>
     </form>
     <section class="editor-danger-zone" data-blog-delete-area aria-labelledby="blog-delete-title" hidden>
       <h2 id="blog-delete-title">Delete post</h2>

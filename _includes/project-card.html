@@ -4,7 +4,9 @@
       <img src="{{ include.figure | relative_url }}" alt="" loading="lazy" decoding="async">
     </div>
   {% endif %}
-  <p class="eyebrow">{{ include.venue | escape }} · {{ include.year }}</p>
+  {% if include.venue or include.year %}
+    <p class="eyebrow">{{ include.venue | escape }}{% if include.venue and include.year %} · {% endif %}{{ include.year }}</p>
+  {% endif %}
   <h3>{{ include.title | escape }} <span aria-hidden="true">↗</span></h3>
-  <p>{{ include.summary | escape }}</p>
+  {% if include.summary %}<p>{{ include.summary | escape }}</p>{% endif %}
 </a>

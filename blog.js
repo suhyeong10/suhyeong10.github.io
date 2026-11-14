@@ -45,7 +45,7 @@ markdown.core.ruler.after("inline", "project_heading_ids", (state) => {
 const postSource = document.getElementById("post-markdown");
 const postContent = document.getElementById("post-content");
 if (postSource && postContent) {
-  postContent.innerHTML = markdown.render(postSource.value);
+  postContent.innerHTML = markdown.render(postSource.value, { project: postSource.hasAttribute("data-project-markdown") });
 }
 
 const editorForm = document.getElementById("blog-form");
@@ -71,8 +71,7 @@ function setupEditor(form) {
   const params = new URLSearchParams(location.search);
   const editPath = params.get("edit");
   const editing = params.has("edit");
-  const project = editPath?.startsWith("projects/");
-  const entryType = project ? "project article" : "blog post";
+  const projectPath = editPath?.startsWith("projects/");
   const storageKey = editing ? `${draftKey}:${editPath}` : draftKey;
   const destination = postDestination(params.get("return"));
   const title = document.getElementById("blog-editor-title");
@@ -88,6 +87,7 @@ function setupEditor(form) {
   const deletedMessage = document.querySelector("[data-blog-deleted]");
   const deletedTitle = deletedMessage.querySelector("h2");
   const titleField = form.elements.title;
+  const sectionField = form.elements.section;
   const bodyField = form.elements.markdown;
   const fields = form.querySelector("[data-blog-fields]");
   const preview = form.querySelector("#blog-preview");
@@ -111,24 +111,29 @@ function setupEditor(form) {
   let draft = { images: [] };
 
   if (editing) {
-    title.textContent = `Edit ${entryType}`;
-    document.title = `Edit ${entryType} · Suhyeong Park`;
+    updateLabels(projectPath ? "research" : "post");
     publishButton.textContent = "Save changes";
-    if (project) {
-      deleteTitle.textContent = openDelete.textContent = "Delete project article";
-      confirmation.querySelector("p").textContent = "Delete this project article from the site? GitHub Pages will remove its public page in its next build.";
-      deletedTitle.textContent = "Project article deleted";
-      deletedMessage.querySelector("p").textContent = "GitHub Pages will remove the project article in its next build.";
-    }
     form.hidden = true;
   } else {
     hydrateDraft(readDraft(storageKey) ?? draft);
+  }
+
+  function updateLabels(section) {
+    const project = section === "research";
+    const article = project ? "project article" : "post";
+    title.textContent = `${editing ? "Edit" : "New"} ${project ? "research project" : "blog post"}`;
+    document.title = `${title.textContent} · Suhyeong Park`;
+    deleteTitle.textContent = openDelete.textContent = `Delete ${article}`;
+    confirmation.querySelector("p").textContent = `Delete this published ${article} from the site? This removes its public page after the next build.`;
+    deletedTitle.textContent = project ? "Project article deleted" : "Post deleted";
+    deletedMessage.querySelector("p").textContent = `GitHub Pages will remove the ${article} in its next build.`;
   }
 
   function hydrateDraft(saved) {
     draft = saved;
     titleField.value = draft.title ?? "";
     bodyField.value = draft.body ?? "";
+    sectionField.value = draft.section ?? record?.section ?? "post";
   }
 
   function setStatus(element, message, error = false) {
@@ -139,9 +144,10 @@ function setupEditor(form) {
   function updatePreview() {
     const body = bodyField.value;
     if (!body.trim()) {
-      preview.textContent = "Your formatted post will appear here.";
+      preview.textContent = "Your formatted article will appear here.";
       return;
     }
+    const project = record ? projectPath : sectionField.value === "research";
     preview.innerHTML = markdown.render(body, { ...attachmentContext(draft.images, true), project });
   }
 
@@ -150,9 +156,12 @@ function setupEditor(form) {
     if (deleted || (editing && !record)) return;
     const title = titleField.value;
     const body = bodyField.value;
-    draft = { ...draft, title, body };
+    const section = sectionField.value;
+    draft = { ...draft, title, body, section };
     try {
-      const dirty = editing ? title !== record.title || body !== record.body : title || body;
+      const dirty = editing
+        ? title !== record.title || body !== record.body || section !== record.section
+        : title || body || section !== "post";
       if (dirty) {
         localStorage.setItem(storageKey, JSON.stringify(draft));
         draftMessage.textContent = "Draft saved in this browser.";
@@ -168,6 +177,7 @@ function setupEditor(form) {
   function updateEditor() {
     saveDraft();
     updatePreview();
+    updateLabels(sectionField.value);
     outlineButton.hidden = Boolean(bodyField.value.trim());
   }
 
@@ -195,7 +205,7 @@ function setupEditor(form) {
     loading = true;
     loadLatest.disabled = true;
     const generation = authGeneration;
-    setStatus(loadStatus, "Loading published post…");
+    setStatus(loadStatus, "Loading published article…");
     try {
       const { contents, sha } = await window.siteAdmin.readEntry(editPath);
       if (generation !== authGeneration || !window.siteAdmin.isSignedIn()) return;
@@ -253,8 +263,9 @@ function setupEditor(form) {
     if (!record || conflicted || publishing || preparing || !window.siteAdmin?.isSignedIn()) return;
     saveDraft();
     publishing = fields.disabled = confirmDelete.disabled = cancelDelete.disabled = true;
-    setStatus(deleteStatus, "Deleting post…");
+    setStatus(deleteStatus, "Deleting article…");
     try {
+      const entryType = record.section === "research" ? "project article" : "blog post";
       await window.siteAdmin.deleteEntry(editPath, `Delete ${entryType}: ${record.title}`, record.sha);
       deleted = true;
       try { localStorage.removeItem(storageKey); } catch { /* Keep the deleted state visible. */ }
@@ -275,11 +286,15 @@ function setupEditor(form) {
   window.addEventListener("pagehide", saveDraft);
 
   form.addEventListener("input", (event) => {
-    if (event.target !== titleField && event.target !== bodyField) return;
+    if (event.target !== titleField && event.target !== bodyField && event.target !== sectionField) return;
     event.target.setCustomValidity("");
     if (event.target === titleField && !editing) draft.createdAt = undefined;
     if (!conflicted) setStatus(status, "");
     postLink.hidden = true;
+    if (event.target === sectionField) {
+      updateEditor();
+      return;
+    }
     clearTimeout(updateTimer);
     updateTimer = setTimeout(updateEditor, 180);
   });
@@ -356,8 +371,11 @@ function setupEditor(form) {
 
     const title = titleField.value.trim();
     const body = bodyField.value;
+    const section = sectionField.value;
+    const entryType = section === "research" ? "project article" : "blog post";
+    postLink.textContent = section === "research" ? "Open project" : "Open post";
     titleField.setCustomValidity(title ? "" : "Enter a title.");
-    bodyField.setCustomValidity(body.trim() ? "" : "Write something for this post.");
+    bodyField.setCustomValidity(body.trim() ? "" : "Write something for this article.");
     if (!form.reportValidity()) return;
 
     if (!window.siteAdmin?.createFile) {
@@ -376,25 +394,25 @@ function setupEditor(form) {
       markdown.render(body, context);
       const images = [...context.usedImages];
       if (editing) {
-        const contents = updatePost(record, title, body);
+        const contents = updatePost(record, title, body, section);
         const result = await window.siteAdmin.updateEntry(editPath, contents, `Update ${entryType}: ${title}`, images, record.sha);
         record = { ...parsePost(contents, editPath), sha: result.content.sha };
         hydrateDraft({ title: record.title, body: record.body, baseSha: record.sha, images: [] });
         updateEditor();
-        setStatus(status, "Changes saved. GitHub Pages will update the post in its next build.");
+        setStatus(status, "Changes saved. GitHub Pages will update the article in its next build.");
         postLink.href = destination;
         postLink.hidden = false;
         postLink.focus();
         return;
       }
-      const post = makePost(title, body, new Date(draft.createdAt));
-      await window.siteAdmin.createFile(post.path, post.contents, `Publish blog post: ${title}`, images);
+      const post = makePost(title, body, new Date(draft.createdAt), section);
+      await window.siteAdmin.createFile(post.path, post.contents, `Publish ${entryType}: ${title}`, images);
 
       form.reset();
       draft = { images: [] };
       setStatus(imageStatus, "");
       updateEditor();
-      setStatus(status, "Post committed. It will appear after GitHub Pages deploys it.");
+      setStatus(status, `${section === "research" ? "Project" : "Post"} committed. It will appear after GitHub Pages deploys it.`);
       postLink.href = post.url;
       postLink.hidden = false;
       postLink.focus();
@@ -417,7 +435,8 @@ function readDraft(storageKey) {
       const createdAt = Number.isFinite(saved.createdAt) ? saved.createdAt : undefined;
       const images = Array.isArray(saved.images) ? saved.images.slice(0, maxImages).filter(validAttachment) : [];
       const baseSha = typeof saved.baseSha === "string" ? saved.baseSha : undefined;
-      return { title: saved.title, body: saved.body, createdAt, baseSha, images };
+      const section = saved.section === "research" || saved.section === "post" ? saved.section : undefined;
+      return { title: saved.title, body: saved.body, section, createdAt, baseSha, images };
     }
   } catch {
     // The open editor can still retain the draft in memory.
@@ -437,7 +456,7 @@ function postDestination(value) {
   return blog;
 }
 
-// Only title and the site's Markdown block belong to this editor. Keep the
+// The editor owns the title, blog section and Markdown body. Keep the
 // other front matter (including the permalink, authors and date) as written.
 function parsePost(contents, path) {
   const input = contents.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
@@ -448,12 +467,16 @@ function parsePost(contents, path) {
   const metadata = frontMatter[1].split("\n");
   const titleField = locateField(metadata, "title");
   const markdownField = locateField(metadata, "markdown");
+  const sectionField = locateField(metadata, "blog_section");
   const titleFallback = path.split("/").at(-1).replace(/^\d{4}-\d{2}-\d{2}-/, "")
     .replace(/\.(?:md|markdown)$/i, "").replace(/[-_]+/g, " ");
   const title = titleField ? readTitle(metadata, titleField) : titleFallback;
+  const sectionValue = sectionField && readTitle(metadata, sectionField);
+  const section = sectionValue === "research" || sectionValue === "post" ? sectionValue :
+    path.startsWith("projects/") ? "research" : "post";
   const originalBody = input.slice(frontMatter[0].length);
   const body = markdownField ? readBlock(metadata, markdownField) : originalBody;
-  return { title, body, metadata, titleField, markdownField, originalBody, contents };
+  return { title, body, section, metadata, titleField, markdownField, sectionField, originalBody, contents };
 }
 
 function locateField(lines, name) {
@@ -494,8 +517,8 @@ function readBlock(lines, field) {
   return block.map((line) => line.slice(spaces)).join("\n").replace(/\n+$/, "");
 }
 
-function updatePost(record, title, body) {
-  if (title === record.title && body === record.body) return record.contents;
+function updatePost(record, title, body, section) {
+  if (title === record.title && body === record.body && section === record.section) return record.contents;
   const output = [...record.metadata];
   const changes = [];
   if (title !== record.title) {
@@ -505,6 +528,10 @@ function updatePost(record, title, body) {
   if (record.markdownField && body !== record.body) {
     const { start, end } = record.markdownField;
     changes.push({ start, end, lines: ["markdown: |2-", ...markdownBlock(body)] });
+  }
+  if (section !== record.section) {
+    const { start, end } = record.sectionField ?? { start: output.length, end: output.length };
+    changes.push({ start, end, lines: [`blog_section: ${section}`] });
   }
   for (const change of changes.sort((left, right) => right.start - left.start)) {
     output.splice(change.start, change.end - change.start, ...change.lines);
@@ -524,25 +551,29 @@ function encodeTitle(title) {
   });
 }
 
-function makePost(title, body, createdAt) {
+function makePost(title, body, createdAt, section) {
   const parts = Object.fromEntries(postClock.formatToParts(createdAt).map(({ type, value }) => [type, value]));
   const { year, month, day, hour, minute, second } = parts;
   const date = `${year}-${month}-${day}`;
   const slug = slugify(title);
+  const project = section === "research";
+  const route = project ? `blog/projects/${slug}/` : `blog/${year}/${month}/${day}/${slug}/`;
   const contents = [
     "---",
     `title: ${encodeTitle(title)}`,
     `date: "${date} ${hour}:${minute}:${second} +0900"`,
     `slug: ${JSON.stringify(slug)}`,
+    `blog_section: ${section}`,
+    ...(project ? ["layout: project", `permalink: /${route}`, "project_card: true", `publication_date: "${date}"`] : []),
     "markdown: |2-",
     ...markdownBlock(body),
     "---",
     ""
   ].join("\n");
   return {
-    path: `_posts/${date}-${slug}.md`,
+    path: project ? `projects/${slug}.md` : `_posts/${date}-${slug}.md`,
     contents,
-    url: new URL(`./blog/${year}/${month}/${day}/${slug}/`, import.meta.url)
+    url: new URL(`./${route}`, import.meta.url)
   };
 }
 

@@ -1,6 +1,8 @@
 {%- capture news_keys -%}
   {%- for item in site.data.updates -%}
-    {{- item[1].date -}}:{{- item[0] -}}{%- unless forloop.last -%},{%- endunless -%}
+    {%- assign sort_date = item[1].date -%}
+    {%- if sort_date.size == 7 -%}{%- assign sort_date = sort_date | append: '-00' -%}{%- endif -%}
+    {{- sort_date -}}:{{- item[0] -}}{%- unless forloop.last -%},{%- endunless -%}
   {%- endfor -%}
 {%- endcapture -%}
 {% assign news_order = news_keys | split: ',' | sort | reverse %}

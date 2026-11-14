@@ -66,6 +66,9 @@
   line-height: 1.5;
 }
 
+#blog-form .blog-section-label { margin-top: 1rem; }
+#blog-form select { max-width: 18rem; }
+
 .blog-editor-columns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -90,6 +93,7 @@
 .blog-image-status:not(:empty) { margin-top: .5rem; }
 
 #blog-form input,
+#blog-form select,
 .blog-editor textarea,
 .blog-editor-preview {
   box-sizing: border-box;
@@ -102,6 +106,7 @@
 }
 
 #blog-form input,
+#blog-form select,
 .blog-editor textarea {
   font: inherit;
 }

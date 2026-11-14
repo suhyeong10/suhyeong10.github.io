@@ -4,11 +4,15 @@ nav: blog
 ---
 <article class="blog-post">
   <header class="page-heading">
-    <a class="back-link" href="{{ '/blog/' | relative_url }}">← Blog</a>
+    {% if page.blog_section == 'research' %}
+      <a class="back-link" href="{{ '/blog/#research-projects' | relative_url }}">← Research projects</a>
+    {% else %}
+      <a class="back-link" href="{{ '/blog/' | relative_url }}">← Blog</a>
+    {% endif %}
     <h1 class="page-title">{{ page.title | escape }}</h1>
     <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B %-d, %Y' }}</time>
     <p class="owner-actions" data-owner-only hidden>
-      <a class="button" href="{{ '/write/blog/' | relative_url }}?edit={{ page.path | url_encode }}&amp;return={{ page.url | relative_url | url_encode }}">Edit or delete post</a>
+      <a class="button" href="{{ '/write/blog/' | relative_url }}?edit={{ page.path | url_encode }}&amp;return={{ page.url | relative_url | url_encode }}">{% if page.blog_section == 'research' %}Edit or delete project article{% else %}Edit or delete post{% endif %}</a>
     </p>
   </header>
   {% if page.markdown %}

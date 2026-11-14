@@ -8,14 +8,33 @@ permalink: /blog/
   <h1 id="blog-title" class="page-title">Blog</h1>
 </header>
 
-{% assign projects = site.pages | where: 'project_card', true | sort: 'publication_date' | reverse %}
+{% assign project_pages = site.pages | where: 'project_card', true %}
+{% assign local_articles = site.posts | concat: project_pages %}
+{%- capture article_order -%}
+  {%- for article in local_articles -%}
+    {%- assign article_date = article.publication_date | default: article.date | append: '' -%}
+    {%- if article_date.size == 7 -%}{%- assign article_date = article_date | append: '-01' -%}{%- endif -%}
+    {%- if article_date.size == 4 -%}{%- assign article_date = article_date | append: '-01-01' -%}{%- endif -%}
+    {{- article_date | date: '%Y%m%d%H%M%S' | default: '0000' -}}:{{- forloop.index0 -}}
+    {%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{% assign article_order = article_order | split: ',' | sort | reverse %}
 <section class="blog-projects" id="research-projects" aria-labelledby="projects-title">
   <h2 class="blog-section-title" id="projects-title">Research projects</h2>
   <div class="project-card-grid">
-    {% for project in projects %}
+    {% for entry in article_order %}
+      {% assign article_index = entry | split: ':' | last | plus: 0 %}
+      {% assign project = local_articles[article_index] %}
+      {% if project.blog_section != 'research' %}
+        {% if project.blog_section == 'post' or project.project_card != true %}{% continue %}{% endif %}
+      {% endif %}
       {% assign project_url = project.url | relative_url %}
+      {% assign project_title = project.short_title | default: project.title %}
+      {% assign project_date = project.publication_date | default: project.date %}
+      {% assign project_year = project.year | default: project_date | slice: 0, 4 %}
       <div>
-        {% include project-card.html href=project_url figure=project.figure venue=project.venue year=project.year title=project.short_title summary=project.summary %}
+        {% include project-card.html href=project_url figure=project.figure venue=project.venue year=project_year title=project_title summary=project.summary %}
         <p class="owner-actions" data-owner-only hidden>
           <a href="{{ '/write/blog/' | relative_url }}?edit={{ project.path | url_encode }}&amp;return={{ project_url | url_encode }}">Edit or delete project article</a>
         </p>
@@ -35,11 +54,15 @@ permalink: /blog/
   </div>
 </section>
 
-<section class="blog-index" aria-labelledby="posts-title">
+<section class="blog-index" id="posts" aria-labelledby="posts-title">
   <h2 class="blog-section-title" id="posts-title">Posts</h2>
-  {% if site.posts.size > 0 %}
-    <ul class="blog-posts">
-      {% for post in site.posts %}
+  {%- capture posts -%}
+    {% for entry in article_order %}
+      {% assign article_index = entry | split: ':' | last | plus: 0 %}
+      {% assign post = local_articles[article_index] %}
+      {% if post.blog_section == 'research' %}{% continue %}{% endif %}
+      {% if post.project_card == true and post.blog_section != 'post' %}{% continue %}{% endif %}
+      {% assign post_date = post.date | default: post.publication_date | append: '' %}
         <li>
           <div>
             <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
@@ -47,10 +70,19 @@ permalink: /blog/
               <a href="{{ '/write/blog/' | relative_url }}?edit={{ post.path | url_encode }}&amp;return={{ post.url | relative_url | url_encode }}">Edit or delete post</a>
             </p>
           </div>
-          <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%b %d, %Y' }}</time>
+          {% if post_date.size == 4 %}
+            <time>{{ post_date | escape }}</time>
+          {% elsif post_date.size == 7 %}
+            <time datetime="{{ post_date | escape }}">{{ post_date | append: '-01' | date: '%b %Y' }}</time>
+          {% elsif post_date != empty %}
+            <time datetime="{{ post_date | date: '%Y-%m-%d' }}">{{ post_date | date: '%b %d, %Y' }}</time>
+          {% endif %}
         </li>
-      {% endfor %}
-    </ul>
+    {% endfor %}
+  {%- endcapture -%}
+  {% assign posts = posts | strip %}
+  {% if posts != empty %}
+    <ul class="blog-posts">{{ posts }}</ul>
   {% else %}
     <p class="blog-empty">No posts yet.</p>
   {% endif %}

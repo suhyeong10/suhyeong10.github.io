@@ -4,20 +4,28 @@ nav: blog
 ---
 <article class="project-page">
   <header class="project-hero">
-    <a class="back-link" href="{{ '/blog/#research-projects' | relative_url }}">← Research projects</a>
-    <p class="eyebrow">{{ page.short_title | escape }} · {{ page.venue | escape }} {{ page.year }}</p>
+    {% if page.blog_section == 'post' %}
+      <a class="back-link" href="{{ '/blog/#posts' | relative_url }}">← Posts</a>
+    {% else %}
+      <a class="back-link" href="{{ '/blog/#research-projects' | relative_url }}">← Research projects</a>
+    {% endif %}
+    {% if page.short_title or page.venue or page.year %}
+      <p class="eyebrow">{{ page.short_title | escape }}{% if page.short_title %} · {% endif %}{{ page.venue | escape }} {{ page.year }}</p>
+    {% elsif page.date %}
+      <p class="eyebrow"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B %-d, %Y' }}</time></p>
+    {% endif %}
     <h1 class="page-title">{{ page.title | escape }}</h1>
     {% assign paper_id = page.short_title | downcase %}
     {% assign paper_record = site.data.added_publications[paper_id] %}
     {% if paper_record %}
       {% include publication-authors.html authors=paper_record.authors co_first_authors=paper_record.co_first_authors corresponding_authors=paper_record.corresponding_authors %}
-    {% else %}
+    {% elsif page.authors %}
       {% include publication-authors.html authors=page.authors co_first_authors=page.co_first_authors corresponding_authors=page.corresponding_authors %}
     {% endif %}
-    <p class="project-summary">{{ page.summary | escape }}</p>
-    {% include publication-links.html publication=page %}
+    {% if page.summary %}<p class="project-summary">{{ page.summary | escape }}</p>{% endif %}
+    {% if page.paper %}{% include publication-links.html publication=page %}{% endif %}
     <p class="owner-actions" data-owner-only hidden>
-      <a class="button" href="{{ '/write/blog/' | relative_url }}?edit={{ page.path | url_encode }}&amp;return={{ page.url | relative_url | url_encode }}">Edit or delete project article</a>
+      <a class="button" href="{{ '/write/blog/' | relative_url }}?edit={{ page.path | url_encode }}&amp;return={{ page.url | relative_url | url_encode }}">{% if page.blog_section == 'post' %}Edit or delete post{% else %}Edit or delete project article{% endif %}</a>
     </p>
   </header>
   {% if page.figure %}
@@ -44,5 +52,12 @@ nav: blog
   {% if section_links != empty %}
     <nav class="project-section-nav" aria-label="On this page">{{ section_links }}</nav>
   {% endif %}
-  <div class="prose project-prose">{{ content }}</div>
+  {% if page.markdown %}
+    <textarea id="post-markdown" data-project-markdown hidden aria-hidden="true">
+{{ page.markdown | escape }}</textarea>
+    <div id="post-content" class="prose project-prose"></div>
+    <noscript><pre class="post-source">{{ page.markdown | escape }}</pre></noscript>
+  {% else %}
+    <div class="prose project-prose">{{ content }}</div>
+  {% endif %}
 </article>
