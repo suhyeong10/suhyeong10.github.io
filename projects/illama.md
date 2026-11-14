@@ -28,11 +28,15 @@ figure_license: https://aclanthology.org/faq/copyright/
 figure_credit: "Figure 1 from Park et al. (EMNLP 2025), cropped from the paper and converted to WebP."
 ---
 
-## Why use a medical knowledge graph?
+## Abstract {#abstract}
+
+ILlama uses a medical knowledge graph as a source of evidence for retrieval-augmented language models. It converts local graph neighborhoods into searchable text, retrieves and reranks the documents for each patient-style question, and gives the selected evidence to the generator. In the paper’s evaluation, ILlama 8B reached semantic similarity F1 of 0.884 on HealthCareMagic and 0.871 on iCliniq. [Paper](https://aclanthology.org/2025.emnlp-main.1549/)
+
+## Why use a medical knowledge graph? {#problem}
 
 Clinical questions often describe a combination of symptoms in everyday language. ILlama studies whether explicitly retrieving relationships among symptoms, conditions, and treatments can improve a model’s responses to these questions. [Paper](https://aclanthology.org/2025.emnlp-main.1549/)
 
-## How ILlama works
+## How ILlama works {#method}
 
 1. **Build searchable documents from a graph.** The system takes a relationship from a UMLS-based medical knowledge graph, gathers its nearby connections, and turns the resulting subgraph into a short document.
 2. **Retrieve and rerank the evidence.** A domain-tuned embedding model retrieves candidate documents through FAISS. A cross-encoder scores the question and each candidate together.
@@ -40,7 +44,9 @@ Clinical questions often describe a combination of symptoms in everyday language
 
 The authors also generate patient-style questions from the subgraph documents and filter them for relevance before training the retriever and reranker. [Method, §3](https://aclanthology.org/2025.emnlp-main.1549.pdf#page=3)
 
-## Results
+## Main results {#results}
+
+The paper compares generated answers against reference responses on two medical consultation datasets using semantic similarity F1. [Paper, Table 2](https://aclanthology.org/2025.emnlp-main.1549.pdf#page=6)
 
 | Model | HealthCareMagic F1 | iCliniq F1 |
 | --- | ---: | ---: |
@@ -48,4 +54,17 @@ The authors also generate patient-style questions from the subgraph documents an
 | ILlama 8B | 0.884 | 0.871 |
 | IGemma 27B | 0.897 | 0.881 |
 
-The table reports the paper’s semantic similarity F1 against reference responses. It evaluates answer similarity on two datasets. The paper also reports that subgraph retrieval performed better than full-graph retrieval, and discusses limits in language and disease coverage. [Results, Table 2](https://aclanthology.org/2025.emnlp-main.1549.pdf#page=6) · [Limitations](https://aclanthology.org/2025.emnlp-main.1549.pdf#page=9)
+## What changes when retrieval changes? {#analysis}
+
+### Graph neighborhoods and reranking
+
+In the paper’s component analysis, removing reranking from the UMLS-based ILlama 8B pipeline lowered F1 from 0.884 to 0.857. The paper also found that retrieving focused subgraphs outperformed its full-graph retrieval comparison. [Paper, Table 3 and Figure 7](https://aclanthology.org/2025.emnlp-main.1549.pdf#page=9)
+
+### Scope
+
+The paper identifies narrow disease and language coverage, the risk of an outdated knowledge graph, and the need for evaluation of clinical safety and decision quality beyond answer-similarity metrics. [Limitations](https://aclanthology.org/2025.emnlp-main.1549.pdf#page=9)
+
+## Resources and citation {#resources}
+
+- [Code](https://github.com/suhyeong10/ILlama)
+- [ACL Anthology](https://aclanthology.org/2025.emnlp-main.1549/) · [BibTeX](https://aclanthology.org/2025.emnlp-main.1549.bib)

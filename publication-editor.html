@@ -1,0 +1,99 @@
+---
+layout: default
+title: Add publication
+nav: publications
+editor: publication
+permalink: /write/publication/
+---
+<section class="write-page publication-editor" aria-labelledby="publication-editor-title">
+  <header class="page-heading">
+    <a class="back-link" href="{{ '/publications/' | relative_url }}">← Publications</a>
+    <h1 id="publication-editor-title" class="page-title">Add publication</h1>
+  </header>
+
+  {% include editor-sign-in.html %}
+
+  <div data-auth-required hidden>
+    <form class="editor-form publication-form" id="publication-editor-form">
+      <fieldset class="editor-fields">
+        <label class="editor-field">
+          Title
+          <input name="title" type="text" maxlength="350" required>
+        </label>
+        <label class="editor-field">
+          Authors
+          <input name="authors" type="text" maxlength="2000" aria-describedby="publication-authors-help" required>
+          <small id="publication-authors-help">Separate authors with commas in publication order.</small>
+        </label>
+        <label class="editor-checkbox">
+          <input name="co_first_author" type="checkbox">
+          Suhyeong Park is a co-first author
+        </label>
+        <div class="editor-field-row">
+          <label class="editor-field">
+            Venue or type
+            <input name="venue" type="text" maxlength="100" placeholder="EMNLP, Preprint, …" required>
+          </label>
+          <label class="editor-field">
+            Year
+            <input name="year" type="number" min="1000" max="9999" inputmode="numeric" required>
+          </label>
+        </div>
+        <label class="editor-field">
+          Publication date (optional)
+          <input name="publication_date" type="date" aria-describedby="publication-date-help">
+          <small id="publication-date-help">Use the paper’s first public release date. The year is used when a date is unavailable.</small>
+        </label>
+        <label class="editor-field">
+          Paper URL
+          <input name="paper" type="url" maxlength="2048" required>
+        </label>
+        <label class="editor-field">
+          Project URL (optional)
+          <input name="project" type="url" maxlength="2048">
+        </label>
+        <div class="editor-field-row">
+          <label class="editor-field">
+            Model URL (optional)
+            <input name="model" type="url" maxlength="2048">
+          </label>
+          <label class="editor-field">
+            Code URL (optional)
+            <input name="code" type="url" maxlength="2048">
+          </label>
+        </div>
+        <section class="editor-figure" aria-labelledby="publication-figure-title">
+          <h2 id="publication-figure-title">Main figure</h2>
+          <label class="editor-field">
+            Upload image (optional)
+            <input name="figure_file" type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" aria-describedby="publication-figure-help">
+            <small id="publication-figure-help">PNG, JPEG, WebP, AVIF, or GIF up to 20 MB. The figure becomes the publication thumbnail.</small>
+          </label>
+          <div class="editor-image-controls" id="publication-image-controls" hidden>
+            <img class="editor-image-preview" id="publication-image-preview" alt="Selected publication figure preview">
+            <label class="editor-field">
+              Image description (optional)
+              <input name="figure_alt" type="text" maxlength="300" placeholder="Describe what the figure shows">
+            </label>
+            <button class="button" id="publication-image-remove" type="button">Remove image</button>
+          </div>
+        </section>
+      </fieldset>
+
+      <p class="editor-status editor-draft-note" id="publication-draft-note"></p>
+      <p class="editor-status" id="publication-editor-status" role="status"></p>
+      <div class="editor-actions">
+        <a class="button" href="{{ '/publications/' | relative_url }}">Back to publications</a>
+        <button class="button button-primary" type="submit">Publish publication</button>
+      </div>
+    </form>
+    <section class="editor-result" id="publication-editor-result" tabindex="-1" hidden>
+      <h2>Publication saved</h2>
+      <p>It will appear in Publications after GitHub Pages rebuilds.</p>
+      <div class="editor-actions">
+        <a class="button button-primary" href="{{ '/publications/' | relative_url }}">View publications</a>
+        <button class="button" id="publication-add-another" type="button">Add another publication</button>
+      </div>
+    </section>
+  </div>
+</section>

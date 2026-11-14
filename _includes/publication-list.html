@@ -22,15 +22,19 @@
   {% for entry in publication_order %}
     {% assign publication_index = entry | split: ':' | last | plus: 0 %}
     {% assign publication = publications[publication_index] %}
-    <article class="publication{% if publication.project and publication.figure %} publication-with-figure{% endif %}">
-      {% if publication.project and publication.figure %}
+    <article class="publication{% if publication.figure %} publication-with-figure{% endif %}">
+      {% if publication.figure %}
         {% assign thumbnail_project = publication.project %}
         {% assign thumbnail_prefix = thumbnail_project | slice: 0 %}
         {% if thumbnail_prefix == '/' %}{% assign thumbnail_project = thumbnail_project | relative_url %}{% endif %}
         <figure class="publication-figure">
-          <a class="publication-thumbnail" href="{{ thumbnail_project | escape }}" aria-label="Project page for {{ publication.title | escape }}">
-            <img src="{{ publication.figure | relative_url }}" alt="" loading="lazy" decoding="async">
-          </a>
+          {% if thumbnail_project %}
+            <a class="publication-thumbnail" href="{{ thumbnail_project | escape }}" aria-label="Project page for {{ publication.title | escape }}">
+          {% else %}
+            <div class="publication-thumbnail">
+          {% endif %}
+          <img src="{{ publication.figure | relative_url }}" alt="{{ publication.figure_alt | escape }}" loading="lazy" decoding="async">
+          {% if thumbnail_project %}</a>{% else %}</div>{% endif %}
           {% if publication.figure_credit %}
             <figcaption>{{ publication.figure_credit | escape }} <a href="https://creativecommons.org/licenses/by/4.0/">License ↗</a></figcaption>
           {% endif %}

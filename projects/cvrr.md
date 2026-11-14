@@ -26,11 +26,15 @@ figure_license: https://creativecommons.org/licenses/by/4.0/
 figure_credit: "Figure 2 from Park, Jung, and Kang (2026), resized and re-encoded as WebP, CC BY 4.0."
 ---
 
-## When does a model use its latent reasoning?
+## Abstract {#abstract}
 
-A vision-language model can encode visual evidence in a hidden state and still answer through its original image context. In our initial experiments, replacing the latent state with noise or a mismatched example barely changed accuracy for some methods. We designed CVRR to test whether a model could preserve its visual reasoning ability when the answer actually had to use the recurrent state. [Preliminary experiments](https://arxiv.org/html/2609.06746v3#S2)
+Causal Visual Recurrent Reasoning (CVRR) tests whether a vision-language model can retain visual reasoning ability when it has to answer through a recurrent hidden state. The model starts with a question representation formed by the pretrained backbone, updates that representation against the image several times, and decodes through the final state. Across four benchmarks, CVRR outperformed retrained latent reasoning baselines subject to the same decoder constraint. [Paper](https://arxiv.org/abs/2609.06746)
 
-## How CVRR works
+## When does a model use its latent reasoning? {#problem}
+
+A model can encode the right visual evidence in a hidden state while its answer still depends on the original image context. In preliminary experiments, replacing a latent state with noise or a state from a mismatched example barely changed accuracy for some methods. The resulting question was whether an answer could be made to depend on the latent state while preserving the image understanding learned during pretraining. [Preliminary experiments](https://arxiv.org/html/2609.06746v3#S2)
+
+## How CVRR works {#method}
 
 1. **Start from the pretrained model’s question state.** Swapping visual activations between paired images helps locate the layer where the question tokens already carry the visual evidence needed for the task.
 2. **Revisit fixed visual evidence.** A shared decoder layer updates the question state repeatedly. At each step, its existing attention mechanism can consult the same visual tokens with the updated question state.
@@ -38,15 +42,33 @@ A vision-language model can encode visual evidence in a hidden state and still a
 
 The backbone stays frozen, with low-rank adapters trained only on the shared transition layer. The training signal is answer-token cross-entropy. [Method and training](https://arxiv.org/html/2609.06746v3#S3)
 
-## What the experiments show
+## Main results {#results}
 
-| Benchmark | CVRR | Best retrained latent baseline with the same decoder constraint |
+The comparison uses a decoder that can receive image-conditioned information only through the latent state. On MMVP, a pair counts as correct when the model answers both image questions correctly. [Benchmark protocol and results](https://arxiv.org/html/2609.06746v3#S4)
+
+| Benchmark | CVRR | Best retrained latent baseline |
 | --- | ---: | ---: |
 | V★ overall accuracy | 81.2% | 39.8% |
 | MMVP pair accuracy | 52.7% | 2.7% |
 | BLINK overall accuracy | 55.2% | 38.8% |
 | MME-RealWorld-Lite overall accuracy | 46.7% | 33.1% |
 
-On MMVP, a pair counts as correct only when the model answers both image questions correctly. Removing visual access during the recurrent steps and retraining reduced that score from 52.7% to 18.0%. In a separate test, swapping the final state between images that shared the exact same question substantially changed the answer. Together, these tests show that the updates use the image and carry evidence that influences the final prediction. [Benchmark results](https://arxiv.org/html/2609.06746v3#S4) · [Causal analysis](https://arxiv.org/html/2609.06746v3#S5)
+## What the recurrent state carries {#analysis}
 
-The boundary is selected separately for each backbone. The paper’s mechanistic tests mainly cover multiple-choice tasks and use the visual evidence available at initialization. [Limitations](https://arxiv.org/html/2609.06746v3#S6)
+### Image access during recurrence
+
+Removing visual access during the recurrent steps and retraining reduced MMVP pair accuracy from 52.7% to 18.0%. This test starts from the same kind of multimodal question state and isolates the contribution of rereading the image during the updates. [Component analysis](https://arxiv.org/html/2609.06746v3#S5.SS1)
+
+### A fixed question with different evidence
+
+For MMVP image pairs that shared the same question, swapping in the competing image’s final state reduced accuracy in the intervention experiment from 73.3% to 26.7%. Holding the question fixed isolates the effect of changing the visual evidence carried by the state. [State replacement experiment](https://arxiv.org/html/2609.06746v3#S5.SS3)
+
+### Scope
+
+The visual-read boundary is selected separately for each backbone. The mechanistic tests mainly cover multiple-choice tasks, and the model reuses the visual evidence available at initialization. [Limitations](https://arxiv.org/html/2609.06746v3#S6)
+
+## Resources and citation {#resources}
+
+- [Code and reproduction instructions](https://github.com/dmis-lab/CVRR)
+- [Model checkpoints](https://huggingface.co/collections/dmis-lab/cvrr)
+- [Paper](https://arxiv.org/abs/2609.06746) · [BibTeX](https://arxiv.org/bibtex/2609.06746)

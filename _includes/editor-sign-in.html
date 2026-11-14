@@ -1,0 +1,15 @@
+<section id="editor-sign-in" class="editor-sign-in" aria-labelledby="auth-title">
+  <form class="editor-form" id="admin-auth-form" autocomplete="off" method="post">
+    <div class="editor-heading"><h2 id="auth-title">Connect GitHub</h2></div>
+    <p>Sign in as <strong>@suhyeong10</strong> to publish. This tab remembers your sign-in across page changes and reloads.</p>
+    <label class="editor-field">
+      <span>Fine-grained access token</span>
+      <input id="admin-token" type="password" placeholder="github_pat_…" required spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="auth-hint">
+    </label>
+    <p id="auth-hint" class="field-help"><a href="https://github.com/settings/personal-access-tokens/new?name=Website+editor&amp;target_name=suhyeong10&amp;expires_in=30&amp;contents=write" target="_blank" rel="noopener noreferrer">Create a token on GitHub <span aria-hidden="true">↗</span></a> for <strong>suhyeong10.github.io</strong> with <strong>Contents → Read and write</strong>.</p>
+    <div class="editor-actions">
+      <p class="editor-status" id="auth-status" role="status" aria-live="polite"></p>
+      <button type="submit" id="admin-connect" class="button button-primary">Verify GitHub account</button>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,57 @@
+---
+layout: default
+title: New blog post
+nav: blog
+editor: blog
+permalink: /write/blog/
+---
+<section class="write-page blog-editor" aria-labelledby="blog-editor-title">
+  <header class="page-heading">
+    <a class="back-link" href="{{ '/blog/' | relative_url }}">← Blog</a>
+    <h1 class="page-title" id="blog-editor-title">New blog post</h1>
+  </header>
+
+  {% include editor-sign-in.html %}
+
+  <div data-auth-required hidden>
+    <form id="blog-form">
+      <fieldset data-blog-fields>
+        <label for="blog-title-input">Title</label>
+        <input id="blog-title-input" name="title" required maxlength="160">
+
+        <div class="blog-template-toolbar">
+          <button class="button" type="button" data-blog-outline>Use research outline</button>
+        </div>
+
+        <div class="blog-image-toolbar">
+          <label for="blog-image-upload">Image
+            <input id="blog-image-upload" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif">
+          </label>
+          <label for="blog-image-alt">Alternative text (optional)
+            <input id="blog-image-alt" type="text" maxlength="160" placeholder="Describe the image">
+          </label>
+          <button class="button" type="button" data-blog-attach>Insert image</button>
+        </div>
+        <p class="editor-status blog-image-status" data-blog-image-status role="status"></p>
+
+        <div class="blog-editor-columns">
+          <div>
+            <label for="blog-markdown">Markdown</label>
+            <textarea id="blog-markdown" name="markdown" required maxlength="100000" rows="15" placeholder="Start writing…"></textarea>
+          </div>
+          <div>
+            <h2 id="blog-preview-heading">Preview</h2>
+            <div id="blog-preview" class="blog-editor-preview prose" role="region" aria-labelledby="blog-preview-heading" tabindex="0"></div>
+          </div>
+        </div>
+
+        <div class="blog-editor-actions">
+          <p data-blog-draft></p>
+          <button class="button button-primary blog-editor-publish" type="submit">Publish</button>
+        </div>
+      </fieldset>
+      <p class="editor-status blog-editor-status" role="status" data-blog-status></p>
+      <a data-blog-view hidden>Open post</a>
+    </form>
+  </div>
+</section>

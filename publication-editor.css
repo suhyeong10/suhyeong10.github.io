@@ -1,0 +1,50 @@
+.publication-editor {
+  max-width: 760px;
+  padding-bottom: clamp(3rem, 7vw, 5rem);
+}
+
+.publication-editor .page-heading .back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.publication-form, .editor-result {
+  padding: clamp(1rem, 4vw, 1.75rem);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+.editor-figure {
+  display: grid;
+  gap: .75rem;
+  padding-top: .95rem;
+  border-top: 1px solid var(--border);
+}
+
+.editor-figure h2, .editor-result h2 {
+  margin-bottom: 0;
+  font: 700 1.3rem/1.2 var(--display);
+  letter-spacing: -.035em;
+}
+
+.editor-image-controls {
+  display: grid;
+  justify-items: start;
+  gap: .7rem;
+}
+
+.editor-image-controls .editor-field { width: 100%; }
+
+.editor-image-preview {
+  display: block;
+  max-width: min(100%, 22rem);
+  max-height: 13rem;
+  padding: .4rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.editor-result p { margin: .55rem 0 1rem; }
+.editor-draft-note { margin: 0; }

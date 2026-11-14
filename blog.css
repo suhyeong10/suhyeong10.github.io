@@ -35,42 +35,14 @@
   color: var(--muted);
 }
 
-.blog-editor {
-  box-sizing: border-box;
-  width: min(58rem, calc(100% - 2rem));
-  padding: clamp(1rem, 3vw, 2rem);
-}
+.blog-editor { margin-bottom: 4rem; }
+.blog-editor .back-link { display: inline-block; margin-bottom: 1rem; }
 
-.blog-editor-heading,
 .blog-editor-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-}
-
-.blog-editor-heading {
-  margin-bottom: 1.25rem;
-}
-
-.blog-editor-close {
-  display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
-  flex: none;
-  place-items: center;
-  padding: 0;
-  background: transparent;
-  color: inherit;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  font: inherit;
-  font-size: 1.5rem;
-  line-height: 1;
-}
-
-.blog-editor-close:hover {
-  background: var(--accent-soft);
 }
 
 .blog-editor-publish {
@@ -84,8 +56,8 @@
   border: 0;
 }
 
-.blog-editor label,
-.blog-editor-columns h3 {
+#blog-form label,
+.blog-editor-columns h2 {
   display: block;
   margin: 0 0 0.5rem;
   font-family: inherit;
@@ -101,7 +73,23 @@
   margin-top: 1rem;
 }
 
-.blog-editor input,
+.blog-editor-columns > div { min-width: 0; }
+
+.blog-template-toolbar { margin-top: .75rem; }
+.blog-image-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: .5rem 1rem;
+  margin-top: 1rem;
+}
+#blog-form .blog-image-toolbar label { min-width: 0; margin-bottom: 0; }
+.blog-image-toolbar input { margin-top: .35rem; }
+.blog-image-toolbar input[type="file"] { padding: .65rem; }
+.blog-image-toolbar .button { min-height: 3rem; }
+.blog-image-status:not(:empty) { margin-top: .5rem; }
+
+#blog-form input,
 .blog-editor textarea,
 .blog-editor-preview {
   box-sizing: border-box;
@@ -113,14 +101,14 @@
   border-radius: 3px;
 }
 
-.blog-editor input,
+#blog-form input,
 .blog-editor textarea {
   font: inherit;
 }
 
 .blog-editor textarea {
   display: block;
-  min-height: 16rem;
+  min-height: 23rem;
   font-family: var(--mono);
   font-size: 0.9rem;
   line-height: 1.5;
@@ -128,7 +116,7 @@
 }
 
 .blog-editor-preview {
-  height: 16rem;
+  height: 23rem;
   overflow: auto;
   overflow-wrap: anywhere;
 }
@@ -169,7 +157,10 @@
     grid-template-columns: 1fr;
   }
 
+  .blog-image-toolbar { grid-template-columns: minmax(0, 1fr); }
+  .blog-image-toolbar .button { justify-self: start; }
+
   .blog-editor-preview {
-    height: 12rem;
+    height: 16rem;
   }
 }
