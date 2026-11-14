@@ -249,6 +249,7 @@
   .cv-section-heading { break-after: avoid; page-break-after: avoid; }
 
   .cv-entries { display: block; }
+  .cv-entries > .author-legend { margin-bottom: 2mm; break-after: avoid; }
   .cv-entry { break-inside: avoid; page-break-inside: avoid; }
   .cv-entry + .cv-entry { margin-top: 2.25mm; }
   .cv-entry h3 { flex-basis: 46mm; font-size: 10.1pt; }

@@ -175,9 +175,9 @@ button:disabled { cursor: wait; }
   align-items: start;
   margin-bottom: clamp(2.6rem, 5vw, 4.1rem);
   padding: clamp(1.15rem, 3vw, 1.9rem);
-  border: 1px solid #d9cde4;
+  border: 1px solid #d2dbcd;
   border-radius: .4rem;
-  background: #efe7f5;
+  background: #e8eee4;
 }
 
 .recent-updates h2 {
@@ -355,9 +355,14 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
 .blog-posts h3 { font-size: 1.12rem; line-height: 1.4; }
 
 .project-page { margin-bottom: 4.5rem; }
-.project-hero { padding: clamp(2.5rem, 6vw, 4.5rem) 0 1.7rem; }
+.project-hero {
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0 1.7rem;
+  border-bottom: 1px solid var(--border);
+}
 .project-hero .page-title { margin-top: 1.25rem; font-size: clamp(1.75rem, 4vw, 2.05rem); line-height: 1.12; }
-.project-hero .publication-authors { margin-top: .9rem; }
+.project-hero .publication-authors { margin-top: .9rem; text-align: center; }
+.project-hero .author-legend { justify-content: center; text-align: center; }
 .project-summary { max-width: 61ch; margin-top: .9rem; font-size: 1.1rem; }
 .project-hero .publication-links { margin-top: .95rem; }
 
