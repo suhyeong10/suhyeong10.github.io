@@ -149,26 +149,27 @@ button:disabled { cursor: wait; }
   text-decoration: underline;
 }
 
-.affiliation {
-  min-height: 218px;
-  padding: 1.5rem;
-  border-left: 2px solid var(--accent);
+.profile-photo { margin: 0; }
+
+.profile-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
   background: var(--accent-soft);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1rem;
 }
 
-.affiliation-name {
+.profile-photo figcaption {
+  display: grid;
+  gap: .05rem;
   margin-top: .65rem;
-  font: 600 clamp(1.9rem, 3vw, 2.55rem)/1 var(--display);
-  letter-spacing: -.06em;
+  color: var(--muted);
+  font-size: .87rem;
+  line-height: 1.4;
 }
 
-.affiliation-meta { font-size: .88rem; color: var(--muted); }
-.affiliation-meta a { font-weight: 600; text-decoration: none; }
-.affiliation-meta a:hover { text-decoration: underline; }
+.profile-photo a { width: fit-content; font-weight: 600; text-decoration: none; }
+.profile-photo a:hover { text-decoration: underline; }
 
 .home-section { margin-bottom: 3.5rem; }
 
@@ -394,10 +395,7 @@ button:disabled { cursor: wait; }
   .site-header { min-height: 72px; }
   .profile { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; padding-block: 2.9rem 2.65rem; }
   .profile h1 { margin-bottom: 1.12rem; }
-  .affiliation { min-height: auto; flex-direction: row; align-items: end; padding: 1rem; }
-  .affiliation-name br { display: none; }
-  .affiliation-name br::after { content: " "; }
-  .affiliation-meta { text-align: right; }
+  .profile-photo { width: min(58%, 240px); }
   .home-section { margin-bottom: 2.6rem; }
   .site-footer { padding-right: 3.5rem; }
 }
@@ -410,8 +408,6 @@ button:disabled { cursor: wait; }
   .site-nav a { font-size: .82rem; }
   .profile h1 { font-size: clamp(2.65rem, 11.8vw, 3.65rem); }
   .profile-intro > p:not(.eyebrow) { font-size: 1rem; }
-  .affiliation { gap: .6rem; }
-  .affiliation-name { font-size: 1.45rem; }
   .section-heading { align-items: start; }
   .section-heading > a { text-align: right; }
   .publication, .detail-row { grid-template-columns: minmax(0, 1fr); gap: .3rem; padding-block: .95rem; }
