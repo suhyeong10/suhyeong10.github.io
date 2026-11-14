@@ -14,6 +14,14 @@ nav: home
     <p>I am an integrated M.S./Ph.D. student in Computer Science at <a href="https://dmis.korea.ac.kr/people">Korea University’s DMIS Lab</a>, advised by <a href="https://dmis.korea.ac.kr/jaewoo-kang-p-i">Prof. Jaewoo Kang</a>.</p>
     <ul class="profile-links" aria-label="Contact and profiles">
       <li>
+        <a href="{{ '/cv/' | relative_url }}">
+          <svg class="profile-link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M6 3h8l4 4v14H6zM14 3v5h4M9 13h6m-6 4h6"/>
+          </svg>
+          Curriculum Vitae
+        </a>
+      </li>
+      <li>
         <a href="https://scholar.google.com/citations?user=rBHtcawAAAAJ">
           <svg class="profile-link-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
             <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>
@@ -58,24 +66,42 @@ nav: home
   </figure>
 </section>
 
-<section class="recent-updates" aria-labelledby="recent-title">
+<section id="recently" class="recent-updates" aria-labelledby="recent-title">
   <h2 id="recent-title">Recently</h2>
+  {%- capture update_keys -%}
+    {%- for item in site.data.updates -%}
+      {{- item[1].date -}}:{{- item[0] -}}{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {% assign update_order = update_keys | split: ',' | sort | reverse %}
+  {% if update_order.size > 0 %}
   <ul>
-    {% assign cvrr_update = site.pages | where: 'url', '/blog/projects/cvrr/' | first %}
-    {% assign samer_update = site.pages | where: 'url', '/blog/projects/samer/' | first %}
-    <li>
-      <time datetime="2026-10-13">Oct 2026</time>
-      <p>Co-authored <a href="https://txxnrd.github.io/switchmem/">SwitchMem</a>, which learns when GUI agents should remember in text or images.</p>
-    </li>
-    <li>
-      <time datetime="2026-09-06">Sep 2026</time>
-      <p>Released <a href="{% if cvrr_update %}{{ cvrr_update.url | relative_url }}{% else %}https://arxiv.org/abs/2609.06746{% endif %}">CVRR</a>, a study of how vision-language models use latent visual reasoning.</p>
-    </li>
-    <li>
-      <time datetime="2026-07-06">Jul 2026</time>
-      <p>Released <a href="{% if samer_update %}{{ samer_update.url | relative_url }}{% else %}https://arxiv.org/abs/2607.04605{% endif %}">SaMer</a>, which merges visual tokens while preserving evidence for retrieval.</p>
-    </li>
+    {% for key in update_order %}
+      {% assign update_id = key | split: ':' | last %}
+      {% assign update = site.data.updates[update_id] %}
+      {% assign update_url = update.url %}
+      {% assign project_prefix = update_url | slice: 0, 15 %}
+      {% if project_prefix == '/blog/projects/' and update.fallback_url %}
+        {% assign project = site.pages | where: 'url', update_url | first %}
+        {% unless project %}{% assign update_url = update.fallback_url %}{% endunless %}
+      {% endif %}
+      {% assign prefix = update_url | slice: 0 %}
+      {% if prefix == '/' %}{% assign update_url = update_url | relative_url %}{% endif %}
+      {% assign edit_path = '_data/updates/' | append: update_id | append: '.json' %}
+      <li>
+        <time datetime="{{ update.date | escape }}">{{ update.date | date: '%b %Y' }}</time>
+        <div>
+          <p>{{ update.before | escape }}{% if update_url and update.label %}<a href="{{ update_url | escape }}">{{ update.label | escape }}</a>{% endif %}{{ update.after | escape }}</p>
+          <p class="owner-actions" data-owner-only hidden>
+            <a href="{{ '/write/update/' | relative_url }}?edit={{ edit_path | url_encode }}" aria-label="Edit update from {{ update.date | date: '%B %d, %Y' }}">Edit update</a>
+          </p>
+        </div>
+      </li>
+    {% endfor %}
   </ul>
+  {% else %}
+    <p>No updates yet.</p>
+  {% endif %}
 </section>
 
 <section class="home-section" id="research" aria-labelledby="research-title">

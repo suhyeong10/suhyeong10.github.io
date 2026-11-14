@@ -67,4 +67,22 @@ The paper identifies narrow disease and language coverage, the risk of an outdat
 ## Resources and citation {#resources}
 
 - [Code](https://github.com/suhyeong10/ILlama)
-- [ACL Anthology](https://aclanthology.org/2025.emnlp-main.1549/) · [BibTeX](https://aclanthology.org/2025.emnlp-main.1549.bib)
+- [ACL Anthology](https://aclanthology.org/2025.emnlp-main.1549/)
+
+### BibTeX
+
+```bibtex
+@inproceedings{park-etal-2025-leveraging-knowledge,
+  title = {Leveraging Knowledge Graph-Enhanced {LLM}s for Context-Aware Medical Consultation},
+  author = {Park, Su-Hyeong and Kim, Ho-Beom and Park, Seong-Jin
+            and Aliyeva, Dinara and Kim, Kang-Min},
+  booktitle = {Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing},
+  month = nov,
+  year = {2025},
+  address = {Suzhou, China},
+  publisher = {Association for Computational Linguistics},
+  pages = {30459--30475},
+  doi = {10.18653/v1/2025.emnlp-main.1549},
+  url = {https://aclanthology.org/2025.emnlp-main.1549/}
+}
+```

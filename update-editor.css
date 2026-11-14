@@ -1,0 +1,25 @@
+.update-editor { max-width: 700px; }
+
+.update-editor-panel {
+  padding: clamp(1rem, 3vw, 1.6rem);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+.update-editor textarea { resize: vertical; }
+.update-editor input[type="date"] { max-width: 14rem; }
+.update-editor details { border-top: 1px solid var(--border); padding-top: .85rem; }
+.update-editor summary { color: var(--accent); cursor: pointer; font-weight: 600; }
+.update-editor details[open] > fieldset, .update-editor details[open] > .editor-fields { margin-top: .85rem; }
+.update-editor .editor-danger-zone { margin: 0; }
+
+.update-draft-conflict {
+  padding: .85rem 1rem;
+  background: var(--accent-soft);
+  border-radius: 4px;
+}
+
+.update-editor-buttons { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .6rem; }
+#update-load-retry, #update-result-description { margin-top: .55rem; }
+#update-editor-result .editor-actions { margin-top: 1rem; }

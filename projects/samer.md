@@ -76,6 +76,8 @@ The 64-token setting removes 93.79% of ColPali’s visual tokens. Increasing the
 - [Code](https://github.com/dmis-lab/SaMer) · [Model checkpoints](https://huggingface.co/collections/dmis-lab/samer)
 - [Paper](https://arxiv.org/abs/2607.04605) · [Qualitative phrase-grounding examples](https://suhyeong10.github.io/samer-project-page/)
 
+### BibTeX
+
 ```bibtex
 @misc{park2026visualtokensmatterequally,
   title = {Do All Visual Tokens Matter Equally? Object-Evidence Preserving Token Merging for Vision-Language Retrieval},

@@ -1,0 +1,79 @@
+<div id="cv-edit-notice" class="editor-status cv-edit-notice" role="status" hidden>
+  CV changes saved. Refresh after GitHub Pages rebuilds to see the updated entries.
+  <a href="{{ '/cv/' | relative_url }}">Refresh CV</a>
+</div>
+
+<dialog id="cv-editor-dialog" class="cv-editor-dialog" aria-labelledby="cv-editor-title">
+  <form id="cv-editor-form" class="editor-form">
+    <header class="editor-heading">
+      <h2 id="cv-editor-title">Edit CV</h2>
+    </header>
+
+    <fieldset class="editor-fields" id="cv-editor-common">
+      <label class="editor-field">
+        Title
+        <input name="title" type="text" required maxlength="350">
+      </label>
+    </fieldset>
+
+    <fieldset class="editor-fields" id="cv-editor-entry-fields">
+      <legend class="sr-only">CV entry details</legend>
+      <label class="editor-field">
+        Organization
+        <input name="organization" type="text" maxlength="300">
+      </label>
+      <div class="editor-field-row">
+        <label class="editor-field">
+          Dates
+          <input name="date" type="text" placeholder="Sep 2026 to present" maxlength="120">
+        </label>
+        <label class="editor-field">
+          Location
+          <input name="location" type="text" maxlength="150">
+        </label>
+      </div>
+      <label class="editor-field">
+        Link
+        <input name="href" type="text" inputmode="url" placeholder="https://example.com or /blog/…" maxlength="2048">
+      </label>
+      <label class="editor-field">
+        Description
+        <textarea name="description" rows="3" maxlength="3000"></textarea>
+      </label>
+      <label class="editor-field">
+        Bullet points (one per line)
+        <textarea name="bullets" rows="5" maxlength="6000"></textarea>
+      </label>
+    </fieldset>
+
+    <fieldset class="editor-fields" id="cv-editor-publication-fields" hidden disabled>
+      <legend class="sr-only">Publication details</legend>
+      <label class="editor-field">
+        Authors
+        <input name="authors" type="text" required maxlength="2000" aria-describedby="cv-editor-authors-help">
+        <small id="cv-editor-authors-help">Enter the author names in order, separated by commas.</small>
+      </label>
+      <div class="editor-field-row">
+        <label class="editor-field">
+          Venue or publication type
+          <input name="venue" type="text" required maxlength="150" placeholder="EMNLP, Preprint, …">
+        </label>
+        <label class="editor-field">
+          Year
+          <input name="year" type="number" inputmode="numeric" min="1000" max="9999" step="1" required>
+        </label>
+      </div>
+      <label class="editor-field">
+        Paper URL
+        <input name="paper" type="url" required maxlength="2048">
+      </label>
+    </fieldset>
+
+    <p id="cv-editor-status" class="editor-status" role="status" aria-live="polite"></p>
+    <div class="editor-actions">
+      <button class="button" type="button" id="cv-editor-close">Cancel</button>
+      <a class="button" id="cv-editor-refresh" href="{{ '/cv/' | relative_url }}" hidden>Refresh CV</a>
+      <button class="button button-primary" type="submit" id="cv-editor-submit">Save changes</button>
+    </div>
+  </form>
+</dialog>

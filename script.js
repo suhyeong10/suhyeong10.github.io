@@ -4,7 +4,7 @@
   const api = 'https://api.github.com';
   const sessionKey = 'suhyeong10.editor-pat';
   const patPattern = /^github_pat_[a-zA-Z0-9_]+$/;
-  const entryPath = /^(?:(?:_posts\/\d{4}-\d{2}-\d{2}-|projects\/)[a-zA-Z0-9][a-zA-Z0-9_-]*\.(?:md|markdown)|_data\/added_publications\/[a-z0-9-]+\.json)$/;
+  const entryPath = /^(?:(?:_posts\/\d{4}-\d{2}-\d{2}-|projects\/)[a-zA-Z0-9][a-zA-Z0-9_-]*\.(?:md|markdown)|_data\/(?:cv\.json|(?:added_publications|updates)\/[a-z0-9-]+\.json))$/;
   const contentSha = /^[a-f0-9]{40}$/i;
   const imagePath = /^assets\/uploads\/[a-z0-9-]+\.webp$/;
   const maxImageBytes = 700 * 1024;
@@ -18,6 +18,8 @@
   const authStatus = document.getElementById('auth-status');
   const editor = document.querySelector('[data-auth-required]');
   const ownerActions = document.querySelectorAll('[data-owner-only]');
+  const cvSignIn = document.getElementById('cv-sign-in');
+  const cvSignInLinks = [document.getElementById('cv-sign-in-link'), document.getElementById('cv-inline-sign-in')].filter(Boolean);
   let credential = readSession();
   let verified = false;
   let authAttempt = 0;
@@ -52,6 +54,11 @@
       authStatus.textContent = status;
       connect.disabled = false;
     }
+    cvSignInLinks.forEach((link) => { link.hidden = verified; });
+    if (verified && cvSignIn?.open) {
+      cvSignIn.close();
+      document.getElementById('cv-edit-toggle')?.focus();
+    }
     window.dispatchEvent(new CustomEvent('site-admin-auth', { detail: { signedIn: verified } }));
   }
 
@@ -78,6 +85,20 @@
     setOptions(false);
     toggle.focus();
   });
+  if (cvSignIn) {
+    const openCvSignIn = () => {
+      if (verified || cvSignIn.open) return;
+      setOptions(false);
+      cvSignIn.showModal();
+      tokenField.focus();
+    };
+    cvSignInLinks.forEach((link) => link.addEventListener('click', (event) => {
+      event.preventDefault();
+      openCvSignIn();
+    }));
+    document.getElementById('cv-close-sign-in').addEventListener('click', () => cvSignIn.close());
+    if (location.hash === '#cv-sign-in') openCvSignIn();
+  }
 
   async function github(path, token, { method = 'GET', body, allow = [] } = {}) {
     let response;

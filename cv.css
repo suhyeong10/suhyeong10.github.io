@@ -1,0 +1,259 @@
+.cv-page {
+  max-width: 920px;
+  margin-inline: auto;
+  padding-block: clamp(2.8rem, 7vw, 5.5rem) 4.7rem;
+}
+
+.cv-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.2rem 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--accent);
+}
+
+.cv-heading h1 {
+  margin-top: .6rem;
+  font: 700 clamp(2.75rem, 7vw, 4.6rem)/1 var(--display);
+  letter-spacing: -.07em;
+}
+
+.cv-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .2rem 1.15rem;
+  margin: .85rem 0 0;
+  padding: 0;
+  color: var(--muted);
+  list-style: none;
+  font-size: .94rem;
+}
+
+.cv-actions,
+.cv-entry-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem .7rem;
+}
+
+.cv-actions { flex-shrink: 0; }
+.cv-inline-sign-in { font-size: .88rem; font-weight: 600; }
+
+.cv-export,
+.cv-edit-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  flex-shrink: 0;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.cv-export svg, .cv-edit-toggle svg { flex: none; }
+.cv-edit-toggle[aria-pressed="true"] { background: var(--accent-soft); }
+#cv-export-status:not(:empty) { margin-top: .8rem; }
+
+.cv-section {
+  display: grid;
+  grid-template-columns: minmax(135px, 1fr) minmax(0, 3.5fr);
+  column-gap: clamp(1rem, 3.8vw, 2.7rem);
+  padding-block: 1.65rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cv-section h2 {
+  color: var(--accent);
+  font: 700 1.36rem/1.2 var(--display);
+  letter-spacing: -.035em;
+}
+
+.cv-section-heading { align-self: start; }
+.cv-edit-control {
+  display: inline-grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0;
+  color: var(--accent);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+.cv-edit-control:hover { background: var(--accent-soft); }
+.cv-section-heading .cv-edit-control { margin-top: .55rem; }
+
+.cv-entries {
+  display: grid;
+  gap: 1rem;
+}
+
+.cv-entry {
+  min-width: 0;
+}
+
+.cv-entry-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 .85rem;
+}
+
+.cv-entry h3 {
+  flex: 1 1 16rem;
+  font-size: 1.04rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.cv-entry h3 a {
+  color: var(--ink);
+  text-decoration-color: var(--border);
+}
+
+.cv-entry h3 a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.cv-entry-date,
+.cv-entry-meta {
+  color: var(--muted);
+  font-size: .91rem;
+}
+
+.cv-entry-meta { margin-top: .15rem; }
+
+.cv-entry-description,
+.cv-entry-details {
+  margin: .32rem 0 0;
+  font-size: .96rem;
+}
+
+.cv-entry-details { padding-left: 1.2em; }
+.cv-entry-details li + li { margin-top: .14rem; }
+
+.cv-editor-dialog, .cv-sign-in-dialog {
+  width: min(580px, calc(100% - 2rem));
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  overflow: auto;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.cv-editor-dialog::backdrop, .cv-sign-in-dialog::backdrop { background: rgb(15 33 34 / 45%); }
+.cv-sign-in-dialog .editor-sign-in {
+  max-width: none;
+  margin: 0;
+  border: 0;
+}
+#cv-close-sign-in { margin: 0 1rem 1rem; }
+.cv-editor-dialog .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.cv-edit-notice {
+  max-width: 920px;
+  margin: -3rem auto 2rem;
+  padding: .85rem 1rem;
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 650px) {
+  .cv-heading { flex-wrap: wrap; padding-bottom: 1.35rem; }
+  .cv-heading h1 { overflow-wrap: anywhere; }
+  .cv-section {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .9rem;
+    padding-block: 1.3rem;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 15mm 17mm;
+}
+
+@media print {
+  body {
+    display: block;
+    min-height: 0;
+    background: white;
+    color: #171717;
+    font-size: 10.1pt;
+    line-height: 1.32;
+  }
+
+  .site-header,
+  .site-footer,
+  .site-admin,
+  .skip-link,
+  .cv-actions,
+  .cv-edit-control,
+  #cv-export-status,
+  .cv-edit-notice,
+  .cv-editor-dialog,
+  .cv-sign-in-dialog { display: none !important; }
+
+  .site-main.shell,
+  .cv-page {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cv-heading {
+    display: block;
+    padding-bottom: 4mm;
+    border-width: 1.2pt;
+    break-inside: avoid;
+  }
+
+  .cv-heading .eyebrow { font-size: 7.25pt; }
+  .cv-heading h1 { margin-top: 1.3mm; font-size: 29pt; }
+  .cv-contact { margin-top: 1.8mm; font-size: 9.2pt; }
+  .cv-contact a { color: inherit; text-decoration: none; }
+
+  .cv-section {
+    display: block;
+    padding-block: 3.4mm;
+    border: 0;
+  }
+
+  .cv-section h2 {
+    margin: 0 0 2.3mm;
+    padding-bottom: .9mm;
+    border-bottom: .55pt solid #aab4af;
+    font-size: 12pt;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  .cv-section-heading { break-after: avoid; page-break-after: avoid; }
+
+  .cv-entries { display: block; }
+  .cv-entry { break-inside: avoid; page-break-inside: avoid; }
+  .cv-entry + .cv-entry { margin-top: 2.25mm; }
+  .cv-entry h3 { flex-basis: 46mm; font-size: 10.1pt; }
+  .cv-entry h3 a { color: inherit; }
+  .cv-entry-date, .cv-entry-meta { color: #393939; font-size: 9.3pt; }
+  .cv-entry-meta { margin-top: .45mm; }
+  .cv-entry-description, .cv-entry-details { margin-top: .8mm; font-size: 9.7pt; }
+}

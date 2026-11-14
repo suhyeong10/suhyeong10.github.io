@@ -1,0 +1,246 @@
+{
+  "revision": "initial-2026-11-14",
+  "contact": {
+    "location": "Seoul, Republic of Korea",
+    "email": "pshpulip22@korea.ac.kr"
+  },
+  "sections": [
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "title": "Integrated M.S./Ph.D. in Computer Science",
+          "organization": "Korea University",
+          "date": "Sep 2026 to present",
+          "location": "Seoul, Republic of Korea",
+          "href": "https://dmis.korea.ac.kr/people",
+          "description": "Data Mining & Information Systems Lab (DMIS Lab), advised by Prof. Jaewoo Kang.",
+          "id": "cv-1-1"
+        },
+        {
+          "title": "B.S. in Data Science",
+          "organization": "The Catholic University of Korea",
+          "date": "Mar 2022 to Feb 2026",
+          "location": "Bucheon, Republic of Korea",
+          "id": "cv-1-2"
+        }
+      ]
+    },
+    {
+      "title": "Research Experience",
+      "entries": [
+        {
+          "title": "Freelance Researcher",
+          "organization": "AIGEN Sciences",
+          "date": "Sep 2026 to present",
+          "id": "cv-2-1"
+        },
+        {
+          "title": "AI Research Intern",
+          "organization": "AIGEN Sciences",
+          "date": "Jul 2025 to Aug 2026",
+          "location": "Seongsu, Republic of Korea",
+          "bullets": [
+            "Developed an LLM agent to track clinical trial research.",
+            "Developed a retrieval-augmented generation chatbot for pediatric emergency queries."
+          ],
+          "id": "cv-2-2"
+        },
+        {
+          "title": "Undergraduate Researcher",
+          "organization": "Biomedical Acoustics Innovation Laboratory",
+          "date": "Jun 2024 to Jul 2025",
+          "location": "Bucheon, Republic of Korea",
+          "description": "Analyzed ultrasound signals and images and participated in research paper seminars.",
+          "id": "cv-2-3"
+        },
+        {
+          "title": "Undergraduate Researcher",
+          "organization": "Medical AI Lab",
+          "date": "May 2022 to Jun 2024",
+          "location": "Uijeongbu, Republic of Korea",
+          "description": "Applied natural language processing to clinical text and participated in research paper seminars.",
+          "id": "cv-2-4"
+        }
+      ]
+    },
+    {
+      "title": "Selected Projects",
+      "entries": [
+        {
+          "title": "Efficient Lesion Search in Ultrasound Images via RL",
+          "organization": "Individual course project",
+          "date": "May 2025 to Jul 2025",
+          "description": "Trained a PPO agent to learn efficient ultrasound scan paths for lesion localization.",
+          "id": "cv-3-1"
+        },
+        {
+          "title": "LLM-Based Educational Chatbot with Celebrity Persona",
+          "organization": "Team lead and presenter",
+          "date": "Sep 2024 to Nov 2024",
+          "description": "Used web search to model celebrity speech patterns and semantic retrieval to surface curated coding problems during tutoring.",
+          "id": "cv-3-2"
+        },
+        {
+          "title": "Named Entity Recognition for Kiosk Interaction",
+          "organization": "Team lead and presenter",
+          "date": "May 2024 to Jul 2024",
+          "description": "Fine-tuned RoBERTa for store classification and extraction of order details such as menu items and quantities.",
+          "id": "cv-3-3"
+        },
+        {
+          "title": "MPRAG for Open-Domain Question Answering",
+          "organization": "Team lead and presenter, ToBig’s NLP course",
+          "date": "May 2024 to Jul 2024",
+          "description": "Proposed momentum updates for the passage encoder and a graph reranker that selects passages using Monte Carlo search.",
+          "id": "cv-3-4"
+        },
+        {
+          "title": "Additional projects",
+          "bullets": [
+            "Patient outcome prediction from EHR time series with LSTMs.",
+            "Whole-slide image classification with attention-based multiple instance learning.",
+            "Context-aware insurance recommendations with retrieval-augmented generation.",
+            "Ultrasound speckle reduction using synthesized MRI data for supervision.",
+            "Financial forecasting with BERT-based sentiment analysis and LSTM time-series modeling."
+          ],
+          "id": "cv-3-5"
+        }
+      ]
+    },
+    {
+      "title": "Additional Experience",
+      "entries": [
+        {
+          "title": "NAVER AI RUSH Ambassador",
+          "organization": "NAVER Cloud",
+          "date": "Jul 2024 to Sep 2024",
+          "description": "Developed a HyperCLOVA X chatbot that retrieved learning materials, explained them, and generated summary notes. Shared example uses through outreach.",
+          "id": "cv-4-1"
+        },
+        {
+          "title": "Executive Member",
+          "organization": "ToBig’s, Intercollegiate AI Club",
+          "date": "Jul 2023 to Jul 2024",
+          "description": "Led an NLP paper review seminar and represented the club in the U.S. Embassy in Korea’s Tech Talk Program.",
+          "id": "cv-4-2"
+        }
+      ]
+    },
+    {
+      "title": "Honors & Awards",
+      "entries": [
+        {
+          "title": "2024 Biohealth Challenge",
+          "organization": "The Catholic University of Korea",
+          "description": "First prize (team) for applying machine learning to Doppler ultrasound signals for breast cancer detection.",
+          "id": "cv-5-1"
+        },
+        {
+          "title": "2023 Data Analysis Competition",
+          "organization": "The Catholic University of Korea",
+          "description": "First prize (team) for detecting anomalies in printed circuit board images.",
+          "id": "cv-5-2"
+        },
+        {
+          "title": "2023 Data Analysis Competition (Medical AI Track)",
+          "organization": "The Catholic University of Korea",
+          "description": "First prize (team) for classifying whole-slide pathology images with multiple instance learning.",
+          "id": "cv-5-3"
+        },
+        {
+          "title": "2022 Data Analysis Competition",
+          "organization": "The Catholic University of Korea",
+          "description": "First prize (team) for classifying pet diseases from structured veterinary data.",
+          "id": "cv-5-4"
+        }
+      ]
+    },
+    {
+      "title": "Technical Skills",
+      "entries": [
+        {
+          "title": "Programming",
+          "description": "Python, C, C++",
+          "id": "cv-6-1"
+        },
+        {
+          "title": "Machine Learning and Data Analysis",
+          "description": "Hugging Face, LangChain, LangGraph, PyTorch, TensorFlow, scikit-learn, NumPy, pandas, Matplotlib, Seaborn",
+          "id": "cv-6-2"
+        }
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "title": "Reason Through the Latent! Making Latent Visual Reasoning Necessary",
+      "authors": [
+        "Suhyeong Park",
+        "Junha Jung",
+        "Jaewoo Kang"
+      ],
+      "venue": "Preprint",
+      "year": 2026,
+      "paper": "https://arxiv.org/abs/2609.06746",
+      "id": "cvrr"
+    },
+    {
+      "title": "Do All Visual Tokens Matter Equally? Object-Evidence Preserving Token Merging for Vision-Language Retrieval",
+      "authors": [
+        "Suhyeong Park",
+        "Junha Jung",
+        "Jungwoo Park",
+        "Jaewoo Kang"
+      ],
+      "venue": "Preprint",
+      "year": 2026,
+      "paper": "https://arxiv.org/abs/2607.04605",
+      "id": "samer"
+    },
+    {
+      "title": "Leveraging Knowledge Graph-Enhanced LLMs for Context-Aware Medical Consultation",
+      "authors": [
+        "Su-Hyeong Park",
+        "Ho-Beom Kim",
+        "Seong-Jin Park",
+        "Dinara Aliyeva",
+        "Kang-Min Kim"
+      ],
+      "venue": "EMNLP",
+      "year": 2025,
+      "paper": "https://aclanthology.org/2025.emnlp-main.1549/",
+      "id": "illama"
+    },
+    {
+      "title": "Learning How to Remember: Memory Modality Selection for GUI Agents",
+      "authors": [
+        "Taeyun Roh",
+        "Suhyeong Park",
+        "Gijin Kim",
+        "Wonjune Jang",
+        "Jaewoo Kang"
+      ],
+      "venue": "Preprint",
+      "year": 2026,
+      "paper": "https://arxiv.org/abs/2610.17928",
+      "id": "switchmem"
+    },
+    {
+      "title": "BUZZY: Contrastive Scoring to Mitigate Text-Induced Bias in Multimodal Multiple-Choice QA",
+      "authors": [
+        "Taeyun Roh",
+        "Suhyeong Park",
+        "Dongyoung Lee",
+        "Wonjune Jang",
+        "Junha Jung",
+        "Eunyeong Jo",
+        "Jaewoo Kang"
+      ],
+      "venue": "Preprint",
+      "year": 2026,
+      "paper": "https://arxiv.org/abs/2603.28026",
+      "id": "buzzy"
+    }
+  ]
+}

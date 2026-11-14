@@ -71,4 +71,18 @@ The visual-read boundary is selected separately for each backbone. The mechanist
 
 - [Code and reproduction instructions](https://github.com/dmis-lab/CVRR)
 - [Model checkpoints](https://huggingface.co/collections/dmis-lab/cvrr)
-- [Paper](https://arxiv.org/abs/2609.06746) · [BibTeX](https://arxiv.org/bibtex/2609.06746)
+- [Paper](https://arxiv.org/abs/2609.06746)
+
+### BibTeX
+
+```bibtex
+@misc{park2026reasonlatentmakinglatent,
+  title = {Reason Through the Latent! Making Latent Visual Reasoning Necessary},
+  author = {Park, Suhyeong and Jung, Junha and Kang, Jaewoo},
+  year = {2026},
+  eprint = {2609.06746},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.AI},
+  url = {https://arxiv.org/abs/2609.06746}
+}
+```

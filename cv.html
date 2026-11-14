@@ -1,0 +1,147 @@
+---
+layout: default
+title: Curriculum Vitae
+nav: cv
+stylesheet: /cv.css
+permalink: /cv/
+---
+
+{% assign cv = site.data.cv %}
+{%- capture cv_publications -%}
+  {% if cv.publications.size > 0 %}
+    <section class="cv-section" aria-labelledby="cv-publications">
+      <div class="cv-section-heading">
+        <h2 id="cv-publications">Publications</h2>
+        <button type="button" class="cv-edit-control" data-cv-section="publications" data-cv-section-name="Publications" data-cv-edit-control hidden aria-label="Add a publication" title="Add a publication">+</button>
+      </div>
+      <div class="cv-entries">
+        {% for paper in cv.publications %}
+          <div class="cv-entry">
+            <div class="cv-entry-heading">
+              <h3><a href="{{ paper.paper | escape }}">{{ paper.title | escape }}</a></h3>
+              <div class="cv-entry-controls">
+                <p class="cv-entry-date">{{ paper.venue | escape }} {{ paper.year | escape }}</p>
+                <button type="button" class="cv-edit-control" data-cv-section="publications" data-cv-section-name="Publications" data-cv-edit="{{ forloop.index0 }}" data-cv-entry="{{ paper.id | escape }}" data-cv-edit-control hidden aria-label="Edit {{ paper.title | escape }}" title="Edit publication">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6 4 4M5 19l4-.7L19 8.2a2.8 2.8 0 0 0-4-4L5 14.3 5 19Z"/></svg>
+                </button>
+              </div>
+            </div>
+            <p class="cv-entry-meta">
+              {%- for author in paper.authors -%}
+                {%- assign normalized_author = author | downcase | remove: '-' -%}
+                {%- if normalized_author == 'suhyeong park' -%}
+                  <strong>{{ author | escape }}</strong>
+                {%- else -%}
+                  {{ author | escape }}
+                {%- endif -%}
+                {%- unless forloop.last %}, {% endunless -%}
+              {%- endfor -%}
+            </p>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+{%- endcapture -%}
+{% assign publications_after = cv.publications_after | default: 'Research Experience' | slugify %}
+{% assign publications_shown = false %}
+<article class="cv-page" data-cv-revision="{{ cv.revision | escape }}" aria-labelledby="cv-name">
+  <header class="cv-heading">
+    <div>
+      <p class="eyebrow">Curriculum Vitae</p>
+      <h1 id="cv-name">Suhyeong Park</h1>
+      {% if cv.contact.location or cv.contact.email %}
+        <ul class="cv-contact" aria-label="Contact information" role="list">
+          {% if cv.contact.location %}
+            <li>{{ cv.contact.location | escape }}</li>
+          {% endif %}
+          {% if cv.contact.email %}
+            <li><a href="mailto:{{ cv.contact.email | escape }}">{{ cv.contact.email | escape }}</a></li>
+          {% endif %}
+        </ul>
+      {% endif %}
+    </div>
+    <div class="cv-actions">
+      <a class="cv-inline-sign-in" id="cv-inline-sign-in" href="#cv-sign-in">Sign in to edit</a>
+      <button type="button" class="button cv-edit-toggle" id="cv-edit-toggle" data-owner-only hidden aria-label="Edit curriculum vitae" aria-pressed="false" title="Edit curriculum vitae">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6 4 4M5 19l4-.7L19 8.2a2.8 2.8 0 0 0-4-4L5 14.3 5 19Z"/></svg>
+        <span>Edit CV</span>
+      </button>
+      <button type="button" class="button cv-export" id="cv-export">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M12 3v12m-4-4 4 4 4-4M5 16v4h14v-4"/>
+        </svg>
+        Export PDF
+      </button>
+    </div>
+  </header>
+  <p id="cv-export-status" class="editor-status" role="status"></p>
+
+  {% for section in cv.sections %}
+    {% assign section_index = forloop.index0 %}
+    {% if section.title %}
+      {% assign heading_id = section.title | slugify | prepend: 'cv-' %}
+      <section class="cv-section" aria-labelledby="{{ heading_id }}">
+        <div class="cv-section-heading">
+          <h2 id="{{ heading_id }}">{{ section.title | escape }}</h2>
+          <button type="button" class="cv-edit-control" data-cv-section="{{ section_index }}" data-cv-section-name="{{ section.title | escape }}" data-cv-edit-control hidden aria-label="Add to {{ section.title | escape }}" title="Add to {{ section.title | escape }}">+</button>
+        </div>
+        <div class="cv-entries">
+          {% for entry in section.entries %}
+            <div class="cv-entry">
+              <div class="cv-entry-heading">
+                <h3>
+                  {% if entry.href %}
+                    {% assign link = entry.href %}
+                    {% assign first_character = link | slice: 0 %}
+                    {% if first_character == '/' %}{% assign link = link | relative_url %}{% endif %}
+                    <a href="{{ link | escape }}">{{ entry.title | escape }}</a>
+                  {% else %}
+                    {{ entry.title | escape }}
+                  {% endif %}
+                </h3>
+                <div class="cv-entry-controls">
+                  {% if entry.date %}
+                    <p class="cv-entry-date">{{ entry.date | escape }}</p>
+                  {% endif %}
+                  <button type="button" class="cv-edit-control" data-cv-section="{{ section_index }}" data-cv-section-name="{{ section.title | escape }}" data-cv-edit="{{ forloop.index0 }}" data-cv-entry="{{ entry.id | escape }}" data-cv-edit-control hidden aria-label="Edit {{ entry.title | escape }}" title="Edit entry">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6 4 4M5 19l4-.7L19 8.2a2.8 2.8 0 0 0-4-4L5 14.3 5 19Z"/></svg>
+                  </button>
+                </div>
+              </div>
+              {% if entry.organization or entry.location %}
+                <p class="cv-entry-meta">
+                  {% if entry.organization %}{{ entry.organization | escape }}{% endif %}
+                  {% if entry.organization and entry.location %}<span aria-hidden="true"> · </span>{% endif %}
+                  {% if entry.location %}{{ entry.location | escape }}{% endif %}
+                </p>
+              {% endif %}
+              {% if entry.description %}
+                <p class="cv-entry-description">{{ entry.description | escape }}</p>
+              {% endif %}
+              {% if entry.bullets.size > 0 %}
+                <ul class="cv-entry-details">
+                  {% for bullet in entry.bullets %}
+                    <li>{{ bullet | escape }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+      {% assign section_slug = section.title | slugify %}
+      {% if section_slug == publications_after and publications_shown == false %}
+        {{ cv_publications }}
+        {% assign publications_shown = true %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% unless publications_shown %}{{ cv_publications }}{% endunless %}
+</article>
+<dialog id="cv-sign-in" class="cv-sign-in-dialog" aria-label="Sign in to edit CV">
+  {% include editor-sign-in.html %}
+  <div data-auth-required hidden></div>
+  <button type="button" class="button" id="cv-close-sign-in">Close</button>
+</dialog>
+{% include cv-editor.html %}

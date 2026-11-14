@@ -1,0 +1,84 @@
+---
+layout: default
+title: Add update
+nav: home
+editor: update
+stylesheet: /update-editor.css
+permalink: /write/update/
+---
+<section class="write-page update-editor" aria-labelledby="update-editor-title">
+  <header class="page-heading">
+    <a class="back-link" href="{{ '/#recently' | relative_url }}">← Recently</a>
+    <h1 id="update-editor-title" class="page-title">Add update</h1>
+  </header>
+
+  {% include editor-sign-in.html %}
+
+  <div data-auth-required hidden>
+    <div id="update-editor-load" class="update-editor-panel" role="status" hidden>
+      <p id="update-load-status"></p>
+      <button id="update-load-retry" class="button" type="button" hidden>Retry</button>
+    </div>
+    <form id="update-editor-form" class="editor-form update-editor-panel" method="post" hidden>
+      <div id="update-draft-conflict" class="update-draft-conflict" hidden>
+        <p>GitHub has a newer version of this update. Review it before saving or deleting.</p>
+        <div class="update-editor-buttons">
+          <button id="update-restore-draft" class="button" type="button" hidden>Apply my draft changes</button>
+          <button id="update-accept-latest" class="button" type="button">Use latest version</button>
+        </div>
+      </div>
+      <fieldset class="editor-fields">
+        <label class="editor-field">
+          Date
+          <input name="date" type="date" required>
+        </label>
+        <label class="editor-field">
+          Update text
+          <textarea name="before" maxlength="500" rows="2" aria-describedby="update-text-help"></textarea>
+          <small id="update-text-help">Write the entire update here, or just the text before an optional link.</small>
+        </label>
+        <details id="update-link-options">
+          <summary>Add a link</summary>
+          <div class="editor-fields">
+            <label class="editor-field">
+              Link text
+              <input name="label" type="text" maxlength="100">
+            </label>
+            <label class="editor-field">
+              Link URL
+              <input name="url" type="text" inputmode="url" maxlength="2048" placeholder="https://… or /blog/…">
+            </label>
+            <label class="editor-field">
+              Text after the link (optional)
+              <textarea name="after" maxlength="500" rows="2"></textarea>
+            </label>
+          </div>
+        </details>
+      </fieldset>
+      <p id="update-draft-note" class="editor-status"></p>
+      <p id="update-editor-status" class="editor-status" role="status"></p>
+      <div class="editor-actions">
+        <a class="button" href="{{ '/#recently' | relative_url }}">Back to Recently</a>
+        <button id="update-save" class="button button-primary" type="submit">Publish update</button>
+      </div>
+      <div id="update-delete-zone" class="editor-danger-zone" hidden>
+        <button id="update-delete" class="button button-danger" type="button">Delete update</button>
+        <div id="update-delete-confirmation" hidden>
+          <p>Remove this update from Recently?</p>
+          <div class="update-editor-buttons">
+            <button id="update-cancel-delete" class="button" type="button">Keep editing</button>
+            <button id="update-confirm-delete" class="button button-danger" type="button">Confirm deletion</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <section id="update-editor-result" class="update-editor-panel" tabindex="-1" hidden>
+      <h2 id="update-result-title"></h2>
+      <p id="update-result-description"></p>
+      <div class="editor-actions">
+        <a class="button button-primary" href="{{ '/#recently' | relative_url }}">View Recently</a>
+        <a class="button" href="{{ '/write/update/' | relative_url }}">Add another update</a>
+      </div>
+    </section>
+  </div>
+</section>
