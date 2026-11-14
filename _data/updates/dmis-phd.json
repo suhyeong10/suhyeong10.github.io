@@ -1,8 +1,8 @@
 {
-  "date": "2026-09",
+  "date": "2026-09-01",
   "before": "Started my Ph.D. in Computer Science at ",
+  "details": "I joined Prof. Jaewoo Kang’s group to study how models reason with visual evidence and how agents reuse past experience.",
   "label": "Korea University’s DMIS Lab",
   "url": "https://dmis.korea.ac.kr/people",
-  "after": ".",
-  "details": "I joined Prof. Jaewoo Kang’s group to study how models reason with visual evidence and how agents reuse past experience."
+  "after": "."
 }
