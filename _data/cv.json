@@ -1,5 +1,5 @@
 {
-  "revision": "cv-publication-date-order-2026-11-14",
+  "revision": "cv-phd-student-2026-11-15",
   "contact": {
     "location": "Seoul, Republic of Korea",
     "email": "pshpulip22@korea.ac.kr"
@@ -9,8 +9,8 @@
       "title": "Education",
       "entries": [
         {
-          "title": "Integrated M.S./Ph.D. in Computer Science",
-          "organization": "Korea University",
+          "title": "Ph.D. Student",
+          "organization": "Korea University, Computer Science",
           "date": "Sep 2026 to present",
           "location": "Seoul, Republic of Korea",
           "href": "https://dmis.korea.ac.kr/people",
