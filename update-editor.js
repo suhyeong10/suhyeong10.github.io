@@ -155,14 +155,15 @@
 
   function buildRecord() {
     const { date, before: opening, label: link, url: target, after: ending } = fieldValues();
-    const dateValue = new Date(date + 'T00:00:00Z');
+    const fullDate = date.length === 7 ? date + '-01' : date;
+    const dateValue = new Date(fullDate + 'T00:00:00Z');
     const before = opening.trim();
     const label = link.trim();
     const url = target.trim();
     const after = ending.trim();
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(dateValue.valueOf()) ||
-        dateValue.toISOString().slice(0, 10) !== date) {
-      throw new Error('Choose a valid date.');
+    if (!/^\d{4}-\d{2}(-\d{2})?$/.test(date) || !Number.isFinite(dateValue.valueOf()) ||
+        dateValue.toISOString().slice(0, 10) !== fullDate) {
+      throw new Error('Enter a valid month or date.');
     }
     const record = { ...base?.record, date, before };
     for (const field of ['label', 'url', 'after']) delete record[field];

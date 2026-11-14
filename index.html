@@ -88,12 +88,18 @@ nav: home
       {% assign prefix = update_url | slice: 0 %}
       {% if prefix == '/' %}{% assign update_url = update_url | relative_url %}{% endif %}
       {% assign edit_path = '_data/updates/' | append: update_id | append: '.json' %}
+      {% assign display_date = update.date %}
+      {% assign date_label_format = '%B %d, %Y' %}
+      {% if update.date.size == 7 %}
+        {% assign display_date = update.date | append: '-01' %}
+        {% assign date_label_format = '%B %Y' %}
+      {% endif %}
       <li>
-        <time datetime="{{ update.date | escape }}">{{ update.date | date: '%b %Y' }}</time>
+        <time datetime="{{ update.date | escape }}">{{ display_date | date: '%b %Y' }}</time>
         <div>
           <p>{{ update.before | escape }}{% if update_url and update.label %}<a href="{{ update_url | escape }}">{{ update.label | escape }}</a>{% endif %}{{ update.after | escape }}</p>
           <p class="owner-actions" data-owner-only hidden>
-            <a href="{{ '/write/update/' | relative_url }}?edit={{ edit_path | url_encode }}" aria-label="Edit update from {{ update.date | date: '%B %d, %Y' }}">Edit update</a>
+            <a href="{{ '/write/update/' | relative_url }}?edit={{ edit_path | url_encode }}" aria-label="Edit update from {{ display_date | date: date_label_format }}">Edit update</a>
           </p>
         </div>
       </li>

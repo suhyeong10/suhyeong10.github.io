@@ -30,7 +30,8 @@ permalink: /write/update/
       <fieldset class="editor-fields">
         <label class="editor-field">
           Date
-          <input name="date" type="date" required>
+          <input name="date" type="text" inputmode="numeric" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}(-[0-9]{2})?" maxlength="10" aria-describedby="update-date-help" required>
+          <small id="update-date-help">Use YYYY-MM-DD, or YYYY-MM if you only know the month.</small>
         </label>
         <label class="editor-field">
           Update text
