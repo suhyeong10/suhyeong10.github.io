@@ -57,8 +57,8 @@
   display: grid;
   grid-template-columns: minmax(135px, 1fr) minmax(0, 3.5fr);
   column-gap: clamp(1rem, 3.8vw, 2.7rem);
-  padding-block: 2rem;
-  border-bottom: 1px solid #a1aaa0;
+  padding-block: 1.65rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .cv-section h2 {
@@ -91,11 +91,6 @@
 
 .cv-entry {
   min-width: 0;
-}
-
-.cv-publications {
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: .75rem;
 }
 
 .cv-publication {
@@ -193,7 +188,7 @@
   .cv-section {
     grid-template-columns: minmax(0, 1fr);
     gap: .9rem;
-    padding-block: 1.6rem;
+    padding-block: 1.3rem;
   }
 }
 
