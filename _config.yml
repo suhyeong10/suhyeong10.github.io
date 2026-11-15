@@ -1,6 +1,7 @@
 title: Suhyeong Park
 url: https://suhyeong10.github.io
 timezone: Asia/Seoul
+goatcounter_site: pshpulip22
 permalink: /blog/:year/:month/:day/:title/
 defaults:
   - scope:

@@ -422,6 +422,15 @@ a.publication-thumbnail:hover, .project-card:hover .project-card-media { border-
   font-size: .88rem;
 }
 
+.site-visit-count {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  margin-top: .25rem;
+  font-size: .82rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .site-admin {
   position: fixed;
   z-index: 2;
