@@ -52,6 +52,10 @@ nav: blog
     <div id="post-content" class="prose project-prose"></div>
     <noscript><pre class="post-source">{{ page.markdown | escape }}</pre></noscript>
   {% else %}
-    <div class="prose project-prose">{{ content }}</div>
+    {% if page.content contains '$' and page.content != content %}
+      <textarea id="post-markdown" data-project-markdown data-legacy-project hidden aria-hidden="true">
+{{ page.content | escape }}</textarea>
+    {% endif %}
+    <div id="post-content" class="prose project-prose">{{ content }}</div>
   {% endif %}
 </article>

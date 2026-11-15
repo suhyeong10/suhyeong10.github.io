@@ -52,7 +52,7 @@ The comparison uses a decoder that can receive image-conditioned information onl
 
 | Benchmark | CVRR | Best retrained latent baseline |
 | --- | ---: | ---: |
-| <math><msup><mi>V</mi><mo>∗</mo></msup></math> overall accuracy | 81.2% | 39.8% |
+| $V^\*$ overall accuracy | 81.2% | 39.8% |
 | MMVP pair accuracy | 52.7% | 2.7% |
 | BLINK overall accuracy | 55.2% | 38.8% |
 | MME-RealWorld-Lite overall accuracy | 46.7% | 33.1% |

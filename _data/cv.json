@@ -1,5 +1,5 @@
 {
-  "revision": "cv-degree-2026-11-15",
+  "revision": "cv-publication-citations-2026-11-15",
   "contact": {
     "location": "Seoul, Republic of Korea",
     "email": "pshpulip22@korea.ac.kr"
@@ -216,6 +216,8 @@
         "Kang-Min Kim"
       ],
       "venue": "EMNLP",
+      "proceedings": "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing",
+      "citation_details": "pages 30459–30475, Suzhou, China. Association for Computational Linguistics",
       "year": 2025,
       "paper": "https://aclanthology.org/2025.emnlp-main.1549/",
       "id": "illama",

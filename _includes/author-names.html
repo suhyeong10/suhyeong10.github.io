@@ -1,0 +1,17 @@
+{%- for author in include.authors -%}
+  {%- if author == 'Suhyeong Park' or author == 'Su-Hyeong Park' -%}
+    <strong>{{ author | escape }}</strong>
+  {%- else -%}
+    {{ author | escape }}
+  {%- endif -%}
+  {%- if include.co_first_authors contains author -%}
+    <sup class="author-mark" title="Equal contribution">*</sup>
+  {%- endif -%}
+  {%- if include.corresponding_authors contains author -%}
+    <sup class="author-mark" title="Corresponding author">†</sup>
+  {%- endif -%}
+  {%- unless forloop.last -%}
+    {%- if include.conjunction and forloop.rindex == 2 -%}
+      {%- if include.authors.size > 2 -%},{%- endif %} and {% else -%}, {% endif -%}
+  {%- endunless -%}
+{%- endfor -%}

@@ -1,6 +1,4 @@
 .cv-page {
-  max-width: 920px;
-  margin-inline: auto;
   padding-block: clamp(2.8rem, 7vw, 5.5rem) 4.7rem;
 }
 
@@ -95,6 +93,20 @@
   min-width: 0;
 }
 
+.cv-publications {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: .75rem;
+}
+
+.cv-publication {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+}
+
+.cv-publication .cv-edit-control { flex: none; }
+.cv-citation { min-width: 0; overflow-wrap: anywhere; }
+
 .cv-entry-heading {
   display: flex;
   flex-wrap: wrap;
@@ -168,7 +180,6 @@
 }
 
 .cv-edit-notice {
-  max-width: 920px;
   margin: -3rem auto 2rem;
   padding: .85rem 1rem;
   background: var(--accent-soft);

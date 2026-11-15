@@ -4,9 +4,12 @@
   if (!cv || !button) return;
 
   const colors = { ink: '#212823', accent: '#07536b', muted: '#56615b', rule: '#c6cfca' };
-  const body = { size: 10.1, line: 12.85, color: colors.ink };
-  const small = { size: 9.15, line: 11.9, color: colors.muted };
+  const body = { size: 10.1, line: 12.3, color: colors.ink };
+  const small = { size: 9.15, line: 11.6, color: colors.muted };
   const entryTitle = { ...body, weight: 'bold' };
+  const citationTitle = { ...body, color: colors.accent };
+  const citationVenue = { ...body, italic: true };
+  const citationMark = { ...body, size: 7 };
   const page = { top: 44, side: 47, bottom: 48 };
   // PDF's standard Helvetica uses WinAnsi. Use the browser's text layout for
   // other glyphs to keep future multilingual content readable.
@@ -28,11 +31,12 @@
     let y = page.top;
 
     function setFont(style) {
-      doc.setFont('helvetica', style.weight || 'normal').setFontSize(style.size).setTextColor(style.color);
+      const fontStyle = style.italic ? 'italic' : style.weight || 'normal';
+      doc.setFont('helvetica', fontStyle).setFontSize(style.size).setTextColor(style.color);
     }
 
     function setCanvasFont(context, style) {
-      context.font = `${style.weight || 'normal'} ${style.size}px Arial, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif`;
+      context.font = `${style.italic ? 'italic ' : ''}${style.weight || 'normal'} ${style.size}px Arial, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif`;
     }
 
     function measure(line, style) {
@@ -114,7 +118,86 @@
       doc.setDrawColor(color).setLineWidth(weight).line(page.side, at, right, at);
     }
 
+    function formatCitation(citation) {
+      const lines = [];
+      let line = [];
+      let lineWidth = 0;
+      let word = [];
+
+      function finishLine() {
+        if (line.length) lines.push(line);
+        line = [];
+        lineWidth = 0;
+      }
+
+      function append(item) {
+        const previous = line.at(-1);
+        if (previous?.style === item.style && previous.link === item.link) {
+          lineWidth -= previous.width;
+          previous.value += item.value;
+          previous.width = measure(previous.value, previous.style);
+          lineWidth += previous.width;
+        } else {
+          line.push(item);
+          lineWidth += item.width;
+        }
+      }
+
+      function finishWord() {
+        if (!word.length) return;
+        const wordWidth = word.reduce((sum, item) => sum + item.width, 0);
+        const previous = line.at(-1);
+        const continuingRun = previous?.style === word[0].style && previous.link === word[0].link;
+        const spaceStyle = continuingRun ? previous.style : body;
+        const space = {
+          value: ' ', style: spaceStyle, width: measure(' ', spaceStyle),
+          link: continuingRun ? previous.link : undefined
+        };
+        if (line.length && lineWidth + space.width + wordWidth > available) finishLine();
+        if (line.length) append(space);
+        for (const item of word) {
+          if (wordWidth <= available) {
+            append(item);
+            continue;
+          }
+          const parts = graphemes
+            ? Array.from(graphemes.segment(item.value), (part) => part.segment)
+            : [...item.value];
+          for (const value of parts) {
+            const width = measure(value, item.style);
+            if (lineWidth + width > available && line.length) finishLine();
+            append({ ...item, value, width });
+          }
+        }
+        word = [];
+      }
+
+      const walker = document.createTreeWalker(citation, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const element = node.parentElement;
+        const link = element.closest('a')?.href;
+        let style = body;
+        if (element.closest('sup')) style = citationMark;
+        else if (link) style = citationTitle;
+        else if (element.closest('em, i')) style = citationVenue;
+        else if (element.closest('strong, b')) style = entryTitle;
+
+        for (const part of node.nodeValue.match(/\s+|\S+/g) || []) {
+          if (/^\s/.test(part)) finishWord();
+          else word.push({ value: part, style, width: measure(part, style), link });
+        }
+      }
+      finishWord();
+      finishLine();
+      return lines;
+    }
+
     function formatEntry(entry) {
+      const citation = entry.querySelector(':scope > .cv-citation');
+      if (citation) {
+        const lines = formatCitation(citation);
+        return { citation: lines, height: lines.length * body.line };
+      }
       const title = entry.querySelector('h3');
       const date = text(entry.querySelector('.cv-entry-date'));
       const dateWidth = date ? Math.min(125, measure(date, small)) : 0;
@@ -135,6 +218,18 @@
     }
 
     function printEntry(entry) {
+      if (entry.citation) {
+        for (const line of entry.citation) {
+          if (y + body.line > bottom) newPage();
+          let x = page.side;
+          for (const { value, style, width, link } of line) {
+            print(value, x, y, style, { link });
+            x += width;
+          }
+          y += body.line;
+        }
+        return;
+      }
       for (let index = 0; index < entry.headingRows; index += 1) {
         if (y + entryTitle.line > bottom) newPage();
         if (entry.dateLines[index]) print(entry.dateLines[index], right, y, small, { alignRight: true });
@@ -185,7 +280,7 @@
     }
     y += small.line + 10;
     rule(y, colors.accent, 1.15);
-    y += 17;
+    y += 14;
 
     for (const section of cv.querySelectorAll('.cv-section')) {
       const titleLines = wrap(text(section.querySelector('h2')), sectionTitle);
@@ -206,9 +301,9 @@
         const minimum = entry.height <= pageSpace ? entry.height : body.line * 2;
         if (index > 0 && y + minimum > bottom) newPage();
         printEntry(entry);
-        y += 6.5;
+        y += 4.5;
       }
-      y += 9;
+      y += 7;
     }
 
     const pageCount = doc.getNumberOfPages();

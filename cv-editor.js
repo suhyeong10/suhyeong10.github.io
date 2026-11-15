@@ -17,6 +17,7 @@
   const refresh = document.getElementById('cv-editor-refresh');
   const entryKeys = ['organization', 'date', 'location', 'href', 'description'];
   const authorRoleKeys = ['co_first_authors', 'corresponding_authors'];
+  const citationKeys = ['proceedings', 'citation_details'];
 
   let expanded = false;
   let saved = false;
@@ -80,7 +81,7 @@
     form.elements.title.value = entry.title || '';
     if (publication) {
       for (const key of ['authors', ...authorRoleKeys]) form.elements[key].value = (entry[key] || []).join(', ');
-      for (const key of ['venue', 'year', 'publication_date', 'paper']) form.elements[key].value = entry[key] ?? '';
+      for (const key of ['venue', 'year', 'publication_date', 'paper', ...citationKeys]) form.elements[key].value = entry[key] ?? '';
       return;
     }
     for (const key of entryKeys) form.elements[key].value = entry[key] ?? '';
@@ -113,6 +114,11 @@
       }
       if (publicationDate) next.publication_date = publicationDate;
       else delete next.publication_date;
+      for (const key of citationKeys) {
+        const value = field(key);
+        if (value) next[key] = value;
+        else delete next[key];
+      }
       return next;
     }
     if (field('href') && !validLink(field('href'), true)) throw new Error('Use HTTP, HTTPS, or a link within this site.');

@@ -24,7 +24,7 @@ permalink: /cv/
 {%- assign cv_publication_order = cv_publication_order | split: ',' | sort | reverse -%}
 {%- capture cv_publications -%}
   {% if cv.publications.size > 0 %}
-    <section class="cv-section" aria-labelledby="cv-publications">
+    <section class="cv-section cv-publications" aria-labelledby="cv-publications">
       <div class="cv-section-heading">
         <h2 id="cv-publications">Publications</h2>
         <button type="button" class="cv-edit-control" data-cv-section="publications" data-cv-section-name="Publications" data-cv-edit-control hidden aria-label="Add a publication" title="Add a publication">+</button>
@@ -41,19 +41,26 @@ permalink: /cv/
           {% assign paper = cv.publications[paper_index] %}
           {% assign display_date = paper.year %}
           {% if paper.publication_date.size >= 7 %}
-            {% assign display_date = paper.publication_date | slice: 0, 7 | append: '-01' | date: '%b %Y' %}
+            {% assign display_date = paper.publication_date | slice: 0, 7 | append: '-01' | date: '%B %Y' %}
           {% endif %}
-          <div class="cv-entry">
-            <div class="cv-entry-heading">
-              <h3><a href="{{ paper.paper | escape }}">{{ paper.title | escape }}</a></h3>
-              <div class="cv-entry-controls">
-                <p class="cv-entry-date">{{ paper.venue | escape }} · {{ display_date | escape }}</p>
-                <button type="button" class="cv-edit-control" data-cv-section="publications" data-cv-section-name="Publications" data-cv-edit="{{ paper_index }}" data-cv-entry="{{ paper.id | escape }}" data-cv-edit-control hidden aria-label="Edit {{ paper.title | escape }}" title="Edit publication">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6 4 4M5 19l4-.7L19 8.2a2.8 2.8 0 0 0-4-4L5 14.3 5 19Z"/></svg>
-                </button>
-              </div>
-            </div>
-            {% include publication-authors.html authors=paper.authors co_first_authors=paper.co_first_authors corresponding_authors=paper.corresponding_authors class_name='cv-entry-meta' hide_legend=true %}
+          {% assign paper_url_parts = paper.paper | split: '#' | first | split: '?' | first | split: '/' %}
+          {% assign title_end = paper.title | slice: -1 %}
+          {% assign details_end = paper.citation_details | slice: -1 %}
+          <div class="cv-entry cv-publication">
+            <p class="cv-citation">
+              {% if paper.authors.size > 0 %}<span class="cv-citation-authors">{% include author-names.html authors=paper.authors co_first_authors=paper.co_first_authors corresponding_authors=paper.corresponding_authors conjunction=true %}</span>. {% endif %}{{ display_date | escape }}.
+              <a href="{{ paper.paper | escape }}">{{ paper.title | escape }}</a>{% unless '.?!' contains title_end %}.{% endunless %}
+              {% if paper.proceedings %}
+                In <em>{{ paper.proceedings | escape }}</em>{% if paper.citation_details %}, {{ paper.citation_details | escape }}{% endif %}{% unless details_end == '.' %}.{% endunless %}
+              {% elsif paper.venue == 'Preprint' and paper_url_parts[2] == 'arxiv.org' %}
+                <em>arXiv preprint</em> arXiv:{{ paper_url_parts | last | remove: '.pdf' | escape }}{% if paper.citation_details %}, {{ paper.citation_details | escape }}{% endif %}{% unless details_end == '.' %}.{% endunless %}
+              {% elsif paper.venue %}
+                <em>{{ paper.venue | escape }}</em>{% if paper.citation_details %}, {{ paper.citation_details | escape }}{% endif %}{% unless details_end == '.' %}.{% endunless %}
+              {% endif %}
+            </p>
+            <button type="button" class="cv-edit-control" data-cv-section="publications" data-cv-section-name="Publications" data-cv-edit="{{ paper_index }}" data-cv-entry="{{ paper.id | escape }}" data-cv-edit-control hidden aria-label="Edit {{ paper.title | escape }}" title="Edit publication">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6 4 4M5 19l4-.7L19 8.2a2.8 2.8 0 0 0-4-4L5 14.3 5 19Z"/></svg>
+            </button>
           </div>
         {% endfor %}
       </div>

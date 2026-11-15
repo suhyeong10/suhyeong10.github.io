@@ -1,6 +1,8 @@
 import markdownIt from "./assets/blog/markdown-it.esm.min.js";
+import { enableInlineMath, typesetInlineMath } from "./assets/blog/inline-math.js";
 
 const markdown = markdownIt({ html: false });
+enableInlineMath(markdown);
 const draftKey = "suhyeong10.blog-draft.v1";
 const postPathPattern = /^(?:_posts\/\d{4}-\d{2}-\d{2}-|projects\/)[a-zA-Z0-9][a-zA-Z0-9_-]*\.(?:md|markdown)$/;
 const maxImages = 6;
@@ -46,11 +48,23 @@ markdown.core.ruler.after("inline", "project_heading_ids", (state) => {
 const postSource = document.getElementById("post-markdown");
 const postContent = document.getElementById("post-content");
 if (postSource && postContent) {
-  postContent.innerHTML = markdown.render(postSource.value, { project: postSource.hasAttribute("data-project-markdown") });
+  renderMarkdown(postContent, postSource.value, { project: postSource.hasAttribute("data-project-markdown") },
+    postSource.hasAttribute("data-legacy-project"));
 }
 
 const editorForm = document.getElementById("blog-form");
 if (editorForm) setupEditor(editorForm);
+
+function renderMarkdown(container, source, context, keepLegacyContent = false) {
+  const content = markdown.render(source, context);
+  if (keepLegacyContent && !hasInlineMath(content)) return;
+  container.innerHTML = content;
+  typesetInlineMath(container);
+}
+
+function hasInlineMath(html) {
+  return html.includes("<span data-blog-inline-math>");
+}
 
 function attachmentContext(images, showPreview = false) {
   return {
@@ -158,7 +172,7 @@ function setupEditor(form) {
       return;
     }
     const project = record ? projectPath : sectionField.value === "research";
-    preview.innerHTML = markdown.render(body, { ...attachmentContext(draft.images, true), project });
+    renderMarkdown(preview, body, { ...attachmentContext(draft.images, true), project });
   }
 
   function saveDraft() {
@@ -409,10 +423,10 @@ function setupEditor(form) {
 
     try {
       const context = attachmentContext(draft.images);
-      markdown.render(body, context);
+      const html = markdown.render(body, context);
       const images = [...context.usedImages];
       if (editing) {
-        const contents = updatePost(record, title, body, section, resources);
+        const contents = updatePost(record, title, body, section, resources, hasInlineMath(html));
         const result = await window.siteAdmin.updateEntry(editPath, contents, `Update ${entryType}: ${title}`, images, record.sha);
         record = { ...parsePost(contents, editPath), sha: result.content.sha };
         hydrateDraft({ title: record.title, body: record.body, baseSha: record.sha, images: [] });
@@ -513,7 +527,8 @@ function parsePost(contents, path) {
     const field = resourceFields[name];
     return [name, field ? readScalar(metadata, field) : ""];
   }));
-  return { title, body, section, resources, metadata, titleField, markdownField, sectionField, resourceFields, originalBody, contents };
+  const legacyPost = !markdownField && path.startsWith("_posts/");
+  return { title, body, section, resources, metadata, titleField, markdownField, sectionField, resourceFields, originalBody, contents, legacyPost };
 }
 
 function locateField(lines, name) {
@@ -554,15 +569,17 @@ function readBlock(lines, field) {
   return block.map((line) => line.slice(spaces)).join("\n").replace(/\n+$/, "");
 }
 
-function updatePost(record, title, body, section, resources) {
+function updatePost(record, title, body, section, resources, inlineMath) {
   const output = [...record.metadata];
   const changes = [];
+  // A legacy Jekyll post cannot supply its raw Markdown to the layout after conversion.
+  const migrateBody = record.legacyPost && inlineMath;
   if (title !== record.title) {
     const { start, end } = record.titleField ?? { start: 0, end: 0 };
     changes.push({ start, end, lines: [`title: ${encodeScalar(title)}`] });
   }
-  if (record.markdownField && body !== record.body) {
-    const { start, end } = record.markdownField;
+  if (migrateBody || (record.markdownField && body !== record.body)) {
+    const { start, end } = record.markdownField ?? { start: output.length, end: output.length };
     changes.push({ start, end, lines: ["markdown: |2-", ...markdownBlock(body)] });
   }
   if (section !== record.section) {
@@ -579,7 +596,9 @@ function updatePost(record, title, body, section, resources) {
     output.splice(change.start, change.end - change.start, ...change.lines);
   }
   while (output.at(-1) === "") output.pop();
-  const postBody = record.markdownField || body === record.body ? record.originalBody : body.endsWith("\n") ? body : body + "\n";
+  let postBody = record.originalBody;
+  if (migrateBody) postBody = "";
+  else if (!record.markdownField && body !== record.body) postBody = body.endsWith("\n") ? body : body + "\n";
   return ["---", ...output, "---", postBody].join("\n");
 }
 
