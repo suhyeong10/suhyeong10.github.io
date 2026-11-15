@@ -18,7 +18,7 @@ corresponding_authors:
 venue: Preprint
 year: 2026
 publication_date: '2026-07-06'
-paper: https://arxiv.org/abs/2607.04605
+paper: https://arxiv.org/pdf/2607.04605
 model: https://huggingface.co/collections/dmis-lab/samer
 code: https://github.com/dmis-lab/SaMer
 figure: /assets/projects/samer-figure.webp
@@ -32,7 +32,7 @@ figure_license: https://creativecommons.org/licenses/by/4.0/
 
 ## Abstract {#abstract}
 
-SaMer compresses the visual representations used by multi-vector image retrievers while trying to keep the small objects and regions a future query might mention. It merges nearby and semantically similar tokens after projection, using object annotations to guide the merge during training. With ColPali and 64 visual tokens per image, SaMer reduced estimated embedding storage by 16.09× and improved top-1 retrieval on Flickr30K and MSCOCO in the reported experiments. [Paper](https://arxiv.org/abs/2607.04605)
+SaMer compresses the visual representations used by multi-vector image retrievers while trying to keep the small objects and regions a future query might mention. It merges nearby and semantically similar tokens after projection, using object annotations to guide the merge during training. With ColPali and 64 visual tokens per image, SaMer reduced estimated embedding storage by 16.09× and improved top-1 retrieval on Flickr30K and MSCOCO in the reported experiments. [Paper](https://arxiv.org/pdf/2607.04605)
 
 ## The retrieval problem {#problem}
 
@@ -78,7 +78,7 @@ The 64-token setting removes 93.79% of ColPali’s visual tokens. Increasing the
 ## Resources and citation {#resources}
 
 - [Code](https://github.com/dmis-lab/SaMer) · [Model checkpoints](https://huggingface.co/collections/dmis-lab/samer)
-- [Paper](https://arxiv.org/abs/2607.04605) · [Qualitative phrase-grounding examples](https://suhyeong10.github.io/samer-project-page/)
+- [Paper](https://arxiv.org/pdf/2607.04605) · [Qualitative phrase-grounding examples](https://suhyeong10.github.io/samer-project-page/)
 
 ### BibTeX
 

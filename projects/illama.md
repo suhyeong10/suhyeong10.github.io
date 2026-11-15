@@ -22,7 +22,7 @@ corresponding_authors:
 venue: EMNLP
 year: 2025
 publication_date: '2025-11'
-paper: https://aclanthology.org/2025.emnlp-main.1549/
+paper: https://aclanthology.org/2025.emnlp-main.1549.pdf
 model: https://huggingface.co/collections/Codingchild/illama
 code: https://github.com/suhyeong10/ILlama
 figure: /assets/projects/illama-figure.webp
@@ -37,11 +37,11 @@ figure_credit: "Figure 1 from Park et al. (EMNLP 2025), cropped from the paper a
 
 ## Abstract {#abstract}
 
-ILlama uses a medical knowledge graph as a source of evidence for retrieval-augmented language models. It converts local graph neighborhoods into searchable text, retrieves and reranks the documents for each patient-style question, and gives the selected evidence to the generator. In the paper’s evaluation, ILlama 8B reached semantic similarity F1 of 0.884 on HealthCareMagic and 0.871 on iCliniq. [Paper](https://aclanthology.org/2025.emnlp-main.1549/)
+ILlama uses a medical knowledge graph as a source of evidence for retrieval-augmented language models. It converts local graph neighborhoods into searchable text, retrieves and reranks the documents for each patient-style question, and gives the selected evidence to the generator. In the paper’s evaluation, ILlama 8B reached semantic similarity F1 of 0.884 on HealthCareMagic and 0.871 on iCliniq. [Paper](https://aclanthology.org/2025.emnlp-main.1549.pdf)
 
 ## Why use a medical knowledge graph? {#problem}
 
-Clinical questions often describe a combination of symptoms in everyday language. ILlama studies whether explicitly retrieving relationships among symptoms, conditions, and treatments can improve a model’s responses to these questions. [Paper](https://aclanthology.org/2025.emnlp-main.1549/)
+Clinical questions often describe a combination of symptoms in everyday language. ILlama studies whether explicitly retrieving relationships among symptoms, conditions, and treatments can improve a model’s responses to these questions. [Paper](https://aclanthology.org/2025.emnlp-main.1549.pdf)
 
 ## How ILlama works {#method}
 
@@ -74,7 +74,7 @@ The paper identifies narrow disease and language coverage, the risk of an outdat
 ## Resources and citation {#resources}
 
 - [Code](https://github.com/suhyeong10/ILlama)
-- [ACL Anthology](https://aclanthology.org/2025.emnlp-main.1549/)
+- [Paper](https://aclanthology.org/2025.emnlp-main.1549.pdf)
 
 ### BibTeX
 
