@@ -1,5 +1,5 @@
 {
-  "revision": "cv-authors-2026-11-15",
+  "revision": "cv-degree-2026-11-15",
   "contact": {
     "location": "Seoul, Republic of Korea",
     "email": "pshpulip22@korea.ac.kr"
@@ -18,9 +18,9 @@
           "id": "cv-1-1"
         },
         {
-          "title": "B.S. in Data Science",
+          "title": "B.E. in Data Science",
           "organization": "The Catholic University of Korea",
-          "date": "Mar 2022 to Feb 2026",
+          "date": "March 2022 to August 2026",
           "location": "Bucheon, Republic of Korea",
           "id": "cv-1-2"
         }
