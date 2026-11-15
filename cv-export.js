@@ -7,9 +7,11 @@
   const body = { size: 10.1, line: 12.3, color: colors.ink };
   const small = { size: 9.15, line: 11.6, color: colors.muted };
   const entryTitle = { ...body, weight: 'bold' };
-  const citationTitle = { ...body, color: colors.accent };
-  const citationVenue = { ...body, italic: true };
-  const citationMark = { ...body, size: 7 };
+  const citationText = { ...body, line: 11.7 };
+  const citationTitle = { ...citationText, color: colors.accent };
+  const citationVenue = { ...citationText, italic: true };
+  const citationMark = { ...citationText, size: 7 };
+  const citationAuthor = { ...citationText, weight: 'bold' };
   const page = { top: 44, side: 47, bottom: 48 };
   // PDF's standard Helvetica uses WinAnsi. Use the browser's text layout for
   // other glyphs to keep future multilingual content readable.
@@ -148,7 +150,7 @@
         const wordWidth = word.reduce((sum, item) => sum + item.width, 0);
         const previous = line.at(-1);
         const continuingRun = previous?.style === word[0].style && previous.link === word[0].link;
-        const spaceStyle = continuingRun ? previous.style : body;
+        const spaceStyle = continuingRun ? previous.style : citationText;
         const space = {
           value: ' ', style: spaceStyle, width: measure(' ', spaceStyle),
           link: continuingRun ? previous.link : undefined
@@ -176,11 +178,11 @@
       for (let node = walker.nextNode(); node; node = walker.nextNode()) {
         const element = node.parentElement;
         const link = element.closest('a')?.href;
-        let style = body;
+        let style = citationText;
         if (element.closest('sup')) style = citationMark;
         else if (link) style = citationTitle;
         else if (element.closest('em, i')) style = citationVenue;
-        else if (element.closest('strong, b')) style = entryTitle;
+        else if (element.closest('strong, b')) style = citationAuthor;
 
         for (const part of node.nodeValue.match(/\s+|\S+/g) || []) {
           if (/^\s/.test(part)) finishWord();
@@ -196,7 +198,7 @@
       const citation = entry.querySelector(':scope > .cv-citation');
       if (citation) {
         const lines = formatCitation(citation);
-        return { citation: lines, height: lines.length * body.line };
+        return { citation: lines, height: lines.length * citationText.line };
       }
       const title = entry.querySelector('h3');
       const date = text(entry.querySelector('.cv-entry-date'));
@@ -220,13 +222,13 @@
     function printEntry(entry) {
       if (entry.citation) {
         for (const line of entry.citation) {
-          if (y + body.line > bottom) newPage();
+          if (y + citationText.line > bottom) newPage();
           let x = page.side;
           for (const { value, style, width, link } of line) {
             print(value, x, y, style, { link });
             x += width;
           }
-          y += body.line;
+          y += citationText.line;
         }
         return;
       }
@@ -287,22 +289,30 @@
       const entries = [...section.querySelectorAll('.cv-entry')].map(formatEntry);
       if (!titleLines.length || !entries.length) continue;
       const legendLines = wrap([...section.querySelectorAll('.author-legend span')].map(text).join(' · '), small);
-      const headingHeight = titleLines.length * sectionTitle.line + 7 + legendLines.length * small.line;
-      const first = entries[0];
+      const headingHeight = titleLines.length * sectionTitle.line + 7;
       const pageSpace = bottom - page.top;
+      const entryGap = 4.5;
+      if (legendLines.length) {
+        const last = entries.at(-1);
+        const lastLimit = pageSpace - (entries.length === 1 ? headingHeight : 0);
+        const groupedHeight = last.height + entryGap + legendLines.length * small.line;
+        // Keep the legend with the final citation when both can fit on a page.
+        if (groupedHeight <= lastLimit) last.height = groupedHeight;
+      }
+      const first = entries[0];
       const firstMinimum = first.height + headingHeight <= pageSpace
         ? first.height : body.line * 2;
       if (y + headingHeight + firstMinimum > bottom) newPage();
       lineBlock(titleLines, sectionTitle);
       rule(y + 1);
       y += 7;
-      lineBlock(legendLines, small);
       for (const [index, entry] of entries.entries()) {
         const minimum = entry.height <= pageSpace ? entry.height : body.line * 2;
         if (index > 0 && y + minimum > bottom) newPage();
         printEntry(entry);
-        y += 4.5;
+        y += entryGap;
       }
+      lineBlock(legendLines, small);
       y += 7;
     }
 

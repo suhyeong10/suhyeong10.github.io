@@ -100,7 +100,7 @@
 }
 
 .cv-publication .cv-edit-control { flex: none; }
-.cv-citation { min-width: 0; overflow-wrap: anywhere; }
+.cv-citation { min-width: 0; line-height: 1.42; overflow-wrap: anywhere; }
 
 .cv-entry-heading {
   display: flex;
@@ -255,7 +255,8 @@
   .cv-section-heading { break-after: avoid; page-break-after: avoid; }
 
   .cv-entries { display: block; }
-  .cv-entries > .author-legend { margin-bottom: 2mm; break-after: avoid; }
+  .cv-entries > .author-legend { margin-top: 2mm; break-before: avoid; }
+  .cv-citation { line-height: 1.25; }
   .cv-entry { break-inside: avoid; page-break-inside: avoid; }
   .cv-entry + .cv-entry { margin-top: 2.25mm; }
   .cv-entry h3 { flex-basis: 46mm; font-size: 10.1pt; }

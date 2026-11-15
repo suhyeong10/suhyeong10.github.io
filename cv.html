@@ -30,12 +30,6 @@ permalink: /cv/
         <button type="button" class="cv-edit-control" data-cv-section="publications" data-cv-section-name="Publications" data-cv-edit-control hidden aria-label="Add a publication" title="Add a publication">+</button>
       </div>
       <div class="cv-entries">
-        {% if cv_has_equal or cv_has_corresponding %}
-          <p class="author-legend">
-            {% if cv_has_equal %}<span>* Equal contribution</span>{% endif %}
-            {% if cv_has_corresponding %}<span>† Corresponding author</span>{% endif %}
-          </p>
-        {% endif %}
         {% for key in cv_publication_order %}
           {% assign paper_index = key | split: ':' | last | plus: 0 %}
           {% assign paper = cv.publications[paper_index] %}
@@ -63,6 +57,12 @@ permalink: /cv/
             </button>
           </div>
         {% endfor %}
+        {% if cv_has_equal or cv_has_corresponding %}
+          <p class="author-legend">
+            {% if cv_has_equal %}<span>* Equal contribution</span>{% endif %}
+            {% if cv_has_corresponding %}<span>† Corresponding author</span>{% endif %}
+          </p>
+        {% endif %}
       </div>
     </section>
   {% endif %}
