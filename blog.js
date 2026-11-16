@@ -1,5 +1,6 @@
 import markdownIt from "./assets/blog/markdown-it.esm.min.js";
 import { enableInlineMath, typesetInlineMath } from "./assets/blog/inline-math.js";
+import { markExternalLinks } from "./external-links.js";
 
 const markdown = markdownIt({ html: false });
 enableInlineMath(markdown);
@@ -59,6 +60,7 @@ function renderMarkdown(container, source, context, keepLegacyContent = false) {
   const content = markdown.render(source, context);
   if (keepLegacyContent && !hasInlineMath(content)) return;
   container.innerHTML = content;
+  markExternalLinks(container);
   typesetInlineMath(container);
 }
 

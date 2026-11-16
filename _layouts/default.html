@@ -21,6 +21,7 @@
     <script src="{{ '/visit-counter.js' | relative_url }}" data-counter-origin="{{ counter_origin | escape }}" data-site-origin="{{ site.url | escape }}" data-page-path="{{ page.url | relative_url | escape }}" defer></script>
   {% endif %}
   {% if page.script %}<script src="{{ page.script | relative_url }}" defer></script>{% endif %}
+  <script type="module" src="{{ '/external-links.js' | relative_url }}"></script>
   <script type="module" src="{{ '/blog.js' | relative_url }}"></script>
   {% if page.editor == 'publication' %}
     <link rel="stylesheet" href="{{ '/publication-editor.css' | relative_url }}">
